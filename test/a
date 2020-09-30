@@ -1,1 +1,14 @@
-aaaaaa
+#kubectl delete ns root-test-2-auto-test &
+#kubectl delete ns root-test-2-pipeline &
+#kubectl delete ns root-test-2-uat
+
+#kubectl delete -f release-init-run.yaml 
+#kubectl apply -f release-init-run.yaml
+
+
+
+kubectl delete -f pipeline-a-auto-run.yaml
+kubectl delete configmap auto-test-token
+sleep 1
+kubectl apply -f pipeline-a-auto-run.yaml
+kubectl get pod -w

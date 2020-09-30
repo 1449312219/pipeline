@@ -14,10 +14,21 @@ spec:
       description: git revision to checkout (branch, tag, sha, ref…)
       type: string
       default: master
+    - name: refspec
+      description: (optional) git refspec to fetch before checking out revision
+      default: ""
+    - name: submodules
+      description: defines if the resource should initialize and fetch the submodules
+      type: string
+      default: "true"
     - name: depth
       description: performs a shallow clone where only the most recent commit(s) will be fetched
       type: string
       default: "1"
+    - name: sslVerify
+      description: defines if http.sslVerify should be set to true or false in the global git config
+      type: string
+      default: "true"
     - name: subdirectory
       description: subdirectory inside the "output" workspace to clone the git repo into
       type: string
@@ -26,16 +37,24 @@ spec:
       description: clean out the contents of the repo's destination directory (if it already exists) before trying to clone the repo there
       type: string
       default: "false"
-    - name: user
-      default: none
-    - name: email
-      default: none@no.user.com
+    - name: httpProxy
+      description: git HTTP proxy server for non-SSL requests
+      type: string
+      default: ""
+    - name: httpsProxy
+      description: git HTTPS proxy server for SSL requests
+      type: string
+      default: ""
+    - name: noProxy
+      description: git no proxy - opt out of proxying HTTP/HTTPS requests
+      type: string
+      default: ""
   results:
     - name: commit
       description: The precise commit SHA that was fetched by this Task
   steps:
     - name: clone
-      image: 10.1.40.43:5000/alpine/git:1.0.17
+      image: 10.1.40.43:5000/gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.13.2
       script: |
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
 
@@ -58,21 +77,18 @@ spec:
           cleandir
         fi
 
-        test -d $HOME/.ssh && ln -s $HOME/.ssh /root/.ssh
+        test -z "$(params.httpProxy)" || export HTTP_PROXY=$(params.httpProxy)
+        test -z "$(params.httpsProxy)" || export HTTPS_PROXY=$(params.httpsProxy)
+        test -z "$(params.noProxy)" || export NO_PROXY=$(params.noProxy)
 
-        git config --global user.email "$(params.email)"
-        git config --global user.name "$(params.user)"
-
-        # 仅下载指定commit
-        # cd $CHECKOUT_DIR
-        # git init
-        # git remote add origin $(params.url)
-        # git fetch origin $(params.revision)
-        # git reset --hard FETCH_HEAD
-
-        git clone $(params.url) $CHECKOUT_DIR \
-         -b $(params.revision) --single-branch --depth $(params.depth)
-
+        /ko-app/git-init \
+          -url "$(params.url)" \
+          -revision "$(params.revision)" \
+          -refspec "$(params.refspec)" \
+          -path "$CHECKOUT_DIR" \
+          -sslVerify="$(params.sslVerify)" \
+          -submodules="$(params.submodules)" \
+          -depth "$(params.depth)"
         cd "$CHECKOUT_DIR"
         RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
         EXIT_CODE="$?"
@@ -82,5 +98,3 @@ spec:
         fi
         # Make sure we don't add a trailing newline to the result!
         echo -n "$RESULT_SHA" > $(results.commit.path)
-
-        sleep 1d

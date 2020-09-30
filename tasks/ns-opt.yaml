@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ns-opt
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: names
+    - name: opt
+      description: create / delete 
+      default: create
+
+  steps:
+    - name: await
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+
+
+        for name in $(params.names); do
+          $kubectl $(params.opt) ns $name
+        done

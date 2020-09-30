@@ -1,0 +1,223 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: create-envs
+spec:
+  params:
+  - name: work-id
+    description: all-workspaces-pvc内唯一子目录,作为workspace根目录(伪pvc)
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+  - name: src-root
+    description: 代码根目录
+    default:  
+
+  workspaces:
+  - name: all-workspaces
+    description: |
+      workspace根, 提供独立path,成workspace, 供各PipelineRun执行
+  - name: workspace
+    description: |
+      存储输入资源, 作为后续步骤的数据来源/结果数据
+  - name: mvn-settings
+    description: |
+      maven settings.xml
+  - name: mvn-local-repo
+    description: |
+      maven 本地仓库
+  - name: gitea-user-token
+
+
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: workspace
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.repo-ref)
+    - name: deleteExisting
+      value: 'true'
+
+  - name: create-auto-test-images
+    runAfter:
+    - fetch-repo
+    conditions:
+    - conditionRef: token
+      params:
+      - name: exists
+        value: fail
+      - name: name
+        value: auto-test-token
+      - name: id
+        value: $(params.repo-ref)
+      - name: status
+        value: Processing
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: workspace
+    params:
+    - name: destination
+      value: 10.1.40.43:5000/busybox:$(params.repo-ref)
+
+  - name: await-auto-test-success
+    runAfter:
+    - create-auto-test-images
+    conditions:
+    - conditionRef: await
+      params:
+      - name: name
+        value: auto-test-token
+      - name: id
+        value: $(params.repo-ref)
+      - name: expect
+        value: Success
+      - name: waitKeys
+        value: Processing
+      - name: clean
+        value: "true"
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - 自动测试成功
+
+  - name: notify-auto-test-result-git-tag
+    runAfter:
+    - await-auto-test-success
+    taskRef:
+      name: git-tag
+    params:
+    - name: tag
+      value: auto-test-success
+    - name: branch
+      value: $(params.repo-branch)
+    workspaces:
+    - name: workspace
+      workspace: workspace
+      
+
+  - name: notify-auto-test-result-gitea
+    runAfter:
+    - notify-auto-test-result-git-tag
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: createIssue
+    - name: args
+      value: $(params.repo-full-name) 'Pipeline for $(params.repo-ref)' '已通过自动测试, 可以/deploy-uat 部署到手动测试环境'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      subPath: token
+
+  - name: await-uat-agree
+    runAfter:
+    - notify-auto-test-result-gitea
+    conditions:
+    - conditionRef: await
+      params:
+      - name: name
+        value: uat-reply
+      - name: id
+        value: issue$(tasks.notify-auto-test-result-gitea.results.id)
+      - name: expect
+        value: agree
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - 用户已同意继续
+  - name: create-uat-images
+    runAfter:
+    - await-uat-agree
+    conditions:
+    - conditionRef: token
+      params:
+      - name: exists
+        value: await
+      - name: name
+        value: uat-token
+      - name: id
+        value: $(params.repo-ref)
+      - name: status
+        value: Processing
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - 创建uat环境镜像
+  - name: notify-uat-result
+    runAfter:
+    - create-uat-images
+    conditions:
+    - conditionRef: await
+      params:
+      - name: name
+        value: uat-token
+      - name: id
+        value: $(params.repo-ref)
+      - name: expect
+        value: Success
+      - name: waitKeys
+        value: Processing
+      - name: clean
+        value: "true"
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: createComment
+    - name: args
+      value: $(params.repo-full-name) $(tasks.notify-auto-test-result-gitea.results.id) '已部署到UAT环境\n在您测试完成后 需以 /success-uat or /fail-uat 通知部署结果'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      subPath: token
+
+
+  - name: notify-uat-reply-result
+    runAfter:
+    - notify-uat-result
+    conditions:
+    - conditionRef: await
+      params:
+      - name: name
+        value: uat-reply
+      - name: id
+        value: issue$(tasks.notify-auto-test-result-gitea.results.id)
+      - name: expect
+        value: success
+      - name: waitKeys
+        value: agree
+      - name: emergKeys
+        value: agree
+      - name: clean
+        value: "true"
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - uat成功
+
+  
+
+---
+

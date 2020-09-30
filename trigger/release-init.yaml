@@ -1,0 +1,69 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: release-init
+spec:
+  serviceAccountName: trigger
+  triggers:
+  - name: release-init
+    interceptors:
+    - cel:
+        overlays:
+        - key: version
+          expression: "body.ref.substring(8)" #Release-xxx
+    bindings:
+    - ref: parse-release-init
+    template:
+      name: release-init
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: parse-release-init
+spec:
+  params:
+  - name: repo-url
+    value: $(body.repository.ssh_url)
+  - name: project
+    value: $(body.repository.full_name)
+  - name: version
+    value: $(body.version)
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: release-init
+spec:
+  params:
+  - name: repo-url
+  - name: project
+  - name: version
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: release-init-$(uid)
+    spec:
+      serviceAccountName: pipeline-git-ssh
+      pipelineRef:
+        name: release-init
+      workspaces:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: config-all-workspaces-pvc
+        subPath: aaaa
+      - name: add
+        configmap:
+          name: release
+      - name: token
+        secret:
+          secretName: gitea-user-token
+      params:
+      - name: repo-url
+        value: $(params.repo-url)
+      - name: project
+        value: $(params.project)
+      - name: version
+        value: $(params.version)

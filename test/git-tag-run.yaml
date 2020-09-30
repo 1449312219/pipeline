@@ -7,9 +7,16 @@ spec:
 
   params:
   - name: tag
-    value: auto-test-success
+    value: 1.0.0-auto-test-pass-
+  - name: append
+    value: "true"
+  - name: force
+    value: "true"
   - name: msg
-    value: ttttttttttttttttttttttttttttttttttt
+    value: |
+      aaaaaaaa
+      bbbbbbb
+      cccccc
   - name: user
     value: aaa
   - name: email
@@ -17,3 +24,7 @@ spec:
 
   taskRef:
     name: git-tag
+
+  workspaces:
+  - name: workspace
+    emptyDir: {}

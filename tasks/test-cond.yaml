@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: test
+spec:
+  params:
+    - name: arg
+
+  check:
+    image: 10.1.40.43:5000/busybox:1.31
+    imagePullPolicy: IfNotPresent 
+    script: |
+        eval test '$(params.arg)'

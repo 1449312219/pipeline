@@ -13,8 +13,13 @@ spec:
 
     - name: name
       description: ConfigMap name
+
     - name: id
+      description: ConfigMap content, create参数
+      default: ""
     - name: status
+      description: ConfigMap content, create/change参数
+      default: ""
 
     - name: jsonpath
       description: change/clean参数, 验证当前状态, ==expect后继续

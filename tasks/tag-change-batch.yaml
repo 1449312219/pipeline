@@ -1,0 +1,47 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: tag-change-batch
+spec:
+  params:
+  - name: images
+    description: 待修改tag的镜像列表
+  - name: tag
+    description: 改为指定tag
+
+  - name: verbosity
+    default: info
+
+  - name: insecure-registry
+    default: 10.1.40.43:5000
+
+  results:
+  - name: images
+  
+  steps:
+  - name: build-and-push
+    image: 10.1.40.43:5000/gcr.io/kaniko-project/executor:debug
+    script: |
+      #!/busybox/sh
+      set -ex
+
+      touch Dockerfile
+
+      while read image; do
+        if test -n "$image"; then
+          echo FROM $image > Dockerfile
+
+          destination=${image%:*}:$(params.tag)
+
+          /kaniko/executor \
+          --context=. \
+          --dockerfile=Dockerfile \
+          --destination=$destination \
+          --insecure-registry=$(params.insecure-registry) \
+          --verbosity=$(params.verbosity)
+
+          echo $destination >> $(results.images.path)
+        fi
+      done <<EOF
+      $(params.images)
+      EOF

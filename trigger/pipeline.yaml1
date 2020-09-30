@@ -28,29 +28,30 @@ spec:
     value: $(body.repository.ssh_url)
   - name: repo-full-name
     value: $(body.repository.full_name)
+  - name: repo-branch
+    value: $(body.branch)
   - name: repo-ref
     value: $(body.after)
-
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: pipeline-a-auto
+  name: branch-pipeline
 spec:
   params:
   - name: repo-url
   - name: repo-full-name
+  - name: repo-branch
   - name: repo-ref
-  - name: version
   resourcetemplates:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: pipeline-a-auto-$(uid)
+      name: pipeline-$(uid)
     spec:
       pipelineRef:
-        name: pipeline-a-auto
+        name: pipeline
       serviceAccountNames:
       - taskName: fetch-repo
         serviceAccountName: pipeline-git-ssh
@@ -80,9 +81,9 @@ spec:
         value: $(params.repo-url)
       - name: repo-full-name
         value: $(params.repo-full-name)
+      - name: repo-branch
+        value: $(params.repo-branch)
       - name: repo-ref
         value: $(params.repo-ref)
-      - name: version
-        value: $(params.version)
       - name: src-root
         value: api-gateway

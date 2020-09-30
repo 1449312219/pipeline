@@ -24,7 +24,7 @@ spec:
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         command:
-        - echo1
+        - ech1o
         - aaaaaaaaaaaaaaaaaaaaaaaaa
 
 ---

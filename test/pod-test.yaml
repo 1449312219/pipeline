@@ -12,11 +12,12 @@ spec:
   containers:
   - args:
     - sleep
-    - "120"
+    - 1d
     image: 10.1.40.43:5000/busybox:1.31
     name: test
     resources: {}
     volumeMounts:
     - name: t
       mountPath: /tmp
+      readOnly: false
   restartPolicy: Never

@@ -1,0 +1,560 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: flux
+spec:
+  params:
+    - name: apiserver-url
+      default: https://kubernetes.default
+
+    - name: git-url
+    - name: git-paths
+      default: '""'
+    - name: webhook
+    - name: envs
+    - name: namespaces
+      default: default
+    - name: manifest-gen
+      default: "true"
+    - name: http-registry
+
+  results:
+  - name: ssh-key
+
+  volumes:
+  - name: workspace
+    emptyDir: {}
+
+  steps:
+    - name: init
+      image: busybox:1.31
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace/flux
+      script: |
+        cd /workspace/flux
+
+        cat > install.sh <<EOF
+        set -ex
+        
+        gitUrl=\$1
+        gitPaths=\${2:-""}
+        webhook=\$3
+        env=\$4
+        ns=\${5:-default}
+        manifestGen=\${6:-true}
+        httpRegistry=\${7:-\$MASTER_IP:\$DOCKER_REGISTRY_PORT}
+        
+        
+        # 创建命名空间
+        kubectl get ns \${ns} >/dev/null 2>&1 || kubectl create ns \${ns}
+        
+        
+        # 创建flux资源文件
+        ./fluxctl install \\
+        --git-url=\${gitUrl} \\
+        --git-path=\${gitPaths} \\
+        --manifest-generation=\${manifestGen} \\
+        --namespace=\${ns} \\
+        --git-user=robot \\
+        --git-email=robot@users.noreply.github.com \\
+        > k/flux.yaml
+        
+        
+        # 获取gitServer ssh公钥
+        type ssh-keyscan 2>/dev/null \\
+        && ssh-keyscan \$(echo \${gitUrl} \\
+                    | sed -r 's|.*git@([^:/]+):?([^/]*)/.*|host=\1;port=\2;echo \${port:+-p \$port} \$host|e') \\
+           2>/dev/null > k/ssh-config.yaml
+        
+        
+        # 生成 flux + fluxcloud 资源文件
+        kubectl apply -k k --dry-run=client -o yaml \\
+        | sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1\${httpRegistry}/\2| }" \\
+                 -e "s|WEBHOOK_URL_PLACEHOLDER|\${webhook}|" \\
+                 -e "s|ENV_PLACEHOLDER|\${env}|" \\
+                 -e "s|GITHUB_URL_PLACEHOLDER|\${gitUrl}|" \\
+                 -e "s|NAMESPACE_PLACEHOLDER|\${ns}|" \\
+                 -e "s|HTTP_REGISTRYS_PLACEHOLDER|\${httpRegistry}|" \\
+        | kubectl apply -f - -n \${ns}
+        
+        
+        # 打印 ssh-key
+        kubectl wait -n \${ns} pod --all --for=condition=Ready --timeout=5m
+        key=\$(./fluxctl identity --k8s-fwd-ns=\${ns} --k8s-fwd-labels="name=flux")
+        key=\${key% *}
+        echo \$key
+        EOF
+        chmod u+x /workspace/flux/install.sh
+
+
+        mkdir k && cd k
+        cat > flux-args-patch.yaml <<EOF
+        
+        - op: add
+          path: /spec/template/spec/containers/1/args/-
+          value: --connect=ws://127.0.0.1:3032
+        
+        - op: add
+          path: /spec/template/spec/containers/1/args/-
+          value: --registry-insecure-host=HTTP_REGISTRYS_PLACEHOLDER
+        
+        - op: add
+          path: /spec/template/spec/containers/1/args/-
+          value: --k8s-allow-namespace=NAMESPACE_PLACEHOLDER
+        
+        - op: add
+          path: /spec/template/spec/containers/1/args/-
+          value: --k8s-default-namespace=NAMESPACE_PLACEHOLDER
+        
+        - op: add
+          path: /spec/template/spec/containers/1/args/-
+          value: --git-label=ENV_PLACEHOLDER-flux
+        EOF
+        cat > fluxcloud-patch.yaml <<EOF
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: flux
+        spec:
+          template:
+            spec:
+              containers:
+              - name: fluxcloud
+                image: kongshuai78/fluxcloud:v0.3.9
+                ports:
+                - containerPort: 3032
+                env:
+                - name: GITHUB_URL
+                  value: GITHUB_URL_PLACEHOLDER
+                - name: COMMIT_TEMPLATE
+                  value: "{{ .VCSLink }}"
+                - name: EXPORTER_TYPE
+                  value: webhook
+                - name: WEBHOOK_URL
+                  value: WEBHOOK_URL_PLACEHOLDER
+                - name: ADDITIONAL
+                  value: ENV_PLACEHOLDER
+                - name: LISTEN_ADDRESS
+                  value: :3032
+        EOF
+        cat > flux-role-patch.yaml <<EOF
+        
+        - op: replace
+          path: /metadata/name
+          value:  flux-NAMESPACE_PLACEHOLDER
+        
+        EOF
+        cat > flux-ssh-config-patch.yaml <<EOF
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: flux
+        spec:
+          template:
+            spec:
+              volumes:
+              - name: ssh-config
+                configMap:
+                  name: flux-ssh-config
+              containers:
+              - name: flux
+                volumeMounts:
+                - name: ssh-config
+                  mountPath: /root/.ssh
+        EOF
+        cat > flux.yaml <<EOF
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: flux-git-deploy
+          namespace: flux
+        type: Opaque
+        ---
+        # memcached deployment used by Flux to cache
+        # container image metadata.
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: memcached
+          namespace: flux
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: memcached
+          template:
+            metadata:
+              labels:
+                name: memcached
+            spec:
+              nodeSelector:
+                beta.kubernetes.io/os: linux
+              containers:
+              - name: memcached
+                image: memcached:1.5.20
+                imagePullPolicy: IfNotPresent
+                args:
+                - -m 512   # Maximum memory to use, in megabytes
+                - -I 5m    # Maximum size for one item
+                - -p 11211 # Default port
+                # - -vv    # Uncomment to get logs of each request and response.
+                ports:
+                - name: clients
+                  containerPort: 11211
+                securityContext:
+                  runAsUser: 11211
+                  runAsGroup: 11211
+                  allowPrivilegeEscalation: false
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: memcached
+          namespace: flux
+        spec:
+          ports:
+            - name: memcached
+              port: 11211
+          selector:
+            name: memcached
+        ---
+        # The service account, cluster roles, and cluster role binding are
+        # only needed for Kubernetes with role-based access control (RBAC).
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          labels:
+            name: flux
+          name: flux
+          namespace: flux
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1beta1
+        kind: ClusterRole
+        metadata:
+          labels:
+            name: flux
+          name: flux
+        rules:
+          - apiGroups: ['*']
+            resources: ['*']
+            verbs: ['*']
+          - nonResourceURLs: ['*']
+            verbs: ['*']
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1beta1
+        kind: ClusterRoleBinding
+        metadata:
+          labels:
+            name: flux
+          name: flux
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: flux
+        subjects:
+          - kind: ServiceAccount
+            name: flux
+            namespace: flux
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: flux
+          namespace: flux
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: flux
+          strategy:
+            type: Recreate
+          template:
+            metadata:
+              annotations:
+                prometheus.io/port: "3031" # tell prometheus to scrape /metrics endpoint's port.
+              labels:
+                name: flux
+            spec:
+              nodeSelector:
+                beta.kubernetes.io/os: linux
+              serviceAccountName: flux
+              volumes:
+              - name: git-key
+                secret:
+                  secretName: flux-git-deploy
+                  defaultMode: 0400 # when mounted read-only, we won't be able to chmod
+        
+              # This is a tmpfs used for generating SSH keys. In K8s >= 1.10,
+              # mounted secrets are read-only, so we need a separate volume we
+              # can write to.
+              - name: git-keygen
+                emptyDir:
+                  medium: Memory
+        
+              # The following volume is for using a customised known_hosts
+              # file, which you will need to do if you host your own git
+              # repo rather than using github or the like. You'll also need to
+              # mount it into the container, below. See
+              # https://docs.fluxcd.io/en/latest/guides/use-private-git-host
+              # - name: ssh-config
+              #   configMap:
+              #     name: flux-ssh-config
+        
+              # The following volume is for using a customised .kube/config,
+              # which you will need to do if you wish to have a different
+              # default namespace. You will also need to provide the configmap
+              # with an entry for \`config\`, and uncomment the volumeMount and
+              # env entries below.
+              # - name: kubeconfig
+              #   configMap:
+              #     name: flux-kubeconfig
+        
+              # The following volume is used to import GPG keys (for signing
+              # and verification purposes). You will also need to provide the
+              # secret with the keys, and uncomment the volumeMount and args
+              # below.
+              # - name: gpg-keys
+              #   secret:
+              #     secretName: flux-gpg-keys
+              #     defaultMode: 0400
+        
+              containers:
+              - name: flux
+                # There are no ":latest" images for flux. Find the most recent
+                # release or image version at https://hub.docker.com/r/fluxcd/flux/tags
+                # and replace the tag here.
+                image: docker.io/fluxcd/flux:1.20.1
+                imagePullPolicy: IfNotPresent
+                resources:
+                  requests:
+                    cpu: 50m
+                    memory: 64Mi
+                ports:
+                - containerPort: 3030 # informational
+                livenessProbe:
+                  httpGet:
+                    port: 3030
+                    path: /api/flux/v6/identity.pub
+                  initialDelaySeconds: 5
+                  timeoutSeconds: 5
+                readinessProbe:
+                  httpGet:
+                    port: 3030
+                    path: /api/flux/v6/identity.pub
+                  initialDelaySeconds: 5
+                  timeoutSeconds: 5
+                volumeMounts:
+                - name: git-key
+                  mountPath: /etc/fluxd/ssh # to match location given in image's /etc/ssh/config
+                  readOnly: true # this will be the case perforce in K8s >=1.10
+                - name: git-keygen
+                  mountPath: /var/fluxd/keygen # to match location given in image's /etc/ssh/config
+        
+                # Include this if you need to mount a customised known_hosts
+                # file; you'll also need the volume declared above.
+                # - name: ssh-config
+                #   mountPath: /root/.ssh
+        
+                # Include this and the volume "kubeconfig" above, and the
+                # environment entry "KUBECONFIG" below, to override the config
+                # used by kubectl.
+                # - name: kubeconfig
+                #   mountPath: /etc/fluxd/kube
+        
+                # Include this to point kubectl at a different config; you
+                # will need to do this if you have mounted an alternate config
+                # from a configmap, as in commented blocks above.
+                # env:
+                # - name: KUBECONFIG
+                #   value: /etc/fluxd/kube/config
+        
+                # Include this and the volume "gpg-keys" above, and the
+                # args below.
+                # - name: gpg-keys
+                #   mountPath: /root/gpg-import
+                #   readOnly: true
+        
+                # Include this if you want to supply HTTP basic auth credentials for git
+                # via the \`GIT_AUTHUSER\` and \`GIT_AUTHKEY\` environment variables using a
+                # secret.
+                # envFrom:
+                # - secretRef:
+                #     name: flux-git-auth
+        
+                args:
+        
+                # If you deployed memcached in a different namespace to flux,
+                # or with a different service name, you can supply these
+                # following two arguments to tell fluxd how to connect to it.
+                # - --memcached-hostname=memcached.default.svc.cluster.local
+        
+                # Use the memcached ClusterIP service name by setting the
+                # memcached-service to string empty
+                - --memcached-service=
+        
+                # This must be supplied, and be in the tmpfs (emptyDir)
+                # mounted above, for K8s >= 1.10
+                - --ssh-keygen-dir=/var/fluxd/keygen
+        
+                # Replace the following URL to change the Git repository used by Flux.
+                # HTTP basic auth credentials can be supplied using environment variables:
+                # https://\$(GIT_AUTHUSER):\$(GIT_AUTHKEY)@github.com/user/repository.git
+                - --git-url=ssh://git@10.1.40.43:30220/root/test.git
+                - --git-branch=master
+                # Include this if you want to restrict the manifests considered by flux
+                # to those under the following relative paths in the git repository
+                # - --git-path=subdir1,subdir2
+                - --git-label=flux
+                - --git-user=robot
+                - --git-email=robot@users.noreply.github.com
+        
+                # Include these two to enable git commit signing
+                # - --git-gpg-key-import=/root/gpg-import
+                # - --git-signing-key=<key id>
+                
+                # Include this to enable git signature verification
+                # - --git-verify-signatures
+        
+                # Tell flux it has readonly access to the repo (default \`false\`)
+                # - --git-readonly
+        
+                # Instruct flux where to put sync bookkeeping (default "git", meaning use a tag in the upstream git repo)
+                # - --sync-state=git
+        
+                # Include these next two to connect to an "upstream" service
+                # (e.g., Weave Cloud). The token is particular to the service.
+                # - --connect=wss://cloud.weave.works/api/flux
+                # - --token=abc123abc123abc123abc123
+        
+                # Enable manifest generation (default \`false\`)
+                - --manifest-generation=true
+        
+                # Serve /metrics endpoint at different port;
+                # make sure to set prometheus' annotation to scrape the port value.
+                - --listen-metrics=:3031
+        
+              # Optional DNS settings, configuring the ndots option may resolve
+              # nslookup issues on some Kubernetes setups.
+              # dnsPolicy: "None"
+              # dnsConfig:
+              #   options:
+              #     - name: ndots
+              #       value: "1"
+        EOF
+        cat > kustomization.yaml <<EOF
+        apiVersion: kustomize.config.k8s.io/v1beta1
+        kind: Kustomization
+        resources:
+        - flux.yaml
+        
+        patchesStrategicMerge:
+        - flux-ssh-config-patch.yaml
+        - fluxcloud-patch.yaml
+        patchesJson6902:
+        - target:
+            group: apps
+            version: v1
+            kind: Deployment
+            name: flux
+          path: flux-args-patch.yaml
+        - target:
+            group: rbac.authorization.k8s.io
+            version: v1beta1
+            kind: ClusterRoleBinding
+            name: flux
+          path: flux-role-patch.yaml
+         
+        
+        configMapGenerator:
+        - name: flux-ssh-config
+          files:
+          - known_hosts=ssh-config.yaml
+        generatorOptions:
+          disableNameSuffixHash: true
+        
+        namespace: NAMESPACE_PLACEHOLDER
+        EOF
+        cat > ssh-config.yaml <<EOF
+        [10.1.40.43]:30220 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHa3IilGRusTooHdnn7QD8nl34C+GAw4l+j8XNDg8xlEFa7qU5KwRCi7So7wO5YbNpCYmtBGs9WymUX/GE9zJPYIe4M8sP/emsU7eAqsaxm9FrUSBPWrDnQkx1oU8lbHZLsF8eSbfv1+bjcDZW+KSbCwnhVJXB+m+ETQr/PqXyujBRf/M6Nm6Iyu+sj9LVqE6/upwq3lLbhlHisZjU0t1A3CqXoIlGq54gOoc8GRYzsKkD3jgIfB8PuLKeui28s+qVH4CUT53Xdd38P3efDIibME+Qg41BdcZJ1v405/qa2oUzuT9fd7ieUC06uLc2x+m2NbNYlRgbIBWoRqc1dl9t
+        [10.1.40.43]:30220 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBITb86buw7tRDsPGAExgSXtMukiTV+CBFipGyniY/8/EONXD2kX9VTe+mZdGBPsH/SNxJxeDDKaaxhV+Q/vmnu4=
+        [10.1.40.43]:30220 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDZr0Kq9mfDatUm4sTSkE401vgy1jYLDAuurmOFAsgJo
+        EOF
+
+    - name: fluxctl
+      image: 10.1.40.43:5000/fluxctl:1.20.1
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace/flux
+      script: |
+        cp /usr/bin/fluxctl /workspace/flux/fluxctl
+
+    - name: openssh
+      image: 10.1.40.43:5000/lgatica/openssh-client:latest
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace/flux
+      script: |
+        host=$(params.git-url)
+        host=${host#*@}
+        host=${host%%/*}
+        port=${host#*:}
+        host=${host%%:*}
+
+        ssh-keyscan ${port:+-p $port} ${host} > /workspace/flux/k/ssh-config.yaml
+
+    - name: flux
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace/flux
+      script: |
+        url=$(params.apiserver-url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl config set-cluster default --server=$url --certificate-authority=$ca
+        kubectl config set-credentials default --token=$token
+        kubectl config set-context default --cluster=default --user=default --namespace=$namespace
+
+        cd /workspace/flux
+
+        function toArrayLength() {
+          local i=0
+          for value in $1; do
+            i=$(expr $i + 1)
+          done
+          echo $i
+        }
+        function toArray() {
+          local key=$1
+          local values=$2
+          local i=0
+          for value in $values; do
+            eval $key$i=$value
+            i=$(expr $i + 1)
+          done
+        }
+        size=$(toArrayLength "$(params.envs)")
+        toArray envs "$(params.envs)"
+        toArray namespaces "$(params.namespaces)"
+        toArray paths "$(params.git-paths)"
+
+
+        i=0
+        while test $i -lt $size; do
+          eval env=\$$envs$i
+          eval ns=\$$namespaces$i
+          eval path=\$\paths$i
+
+          ./install.sh $(params.git-url) $path  $(params.webhook) $env $ns                        $(params.manifest-gen) $(params.http-registry) > .logs
+
+          cat .logs
+          echo $env $(tail -n 1 .logs) >> $(results.ssh-key.path)
+
+          i=$(expr $i + 1)
+        done

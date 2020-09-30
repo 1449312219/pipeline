@@ -1,0 +1,6 @@
+kubectl delete -f git-tag-run.yaml
+kubectl apply -f git-tag-run.yaml
+
+kubectl delete pipelinerun --all
+
+kubectl get pod -w --sort-by=status.startTime

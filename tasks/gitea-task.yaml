@@ -17,17 +17,23 @@ spec:
       description: createDeployKey / createIssue / createComment
     - name: args
       description: |
-        传于gitea相应请求
+        传于gitea相应请求, 可支持循环
         createDeployKey:  repoFullName title key
         createIssue:  repoFullName title body assignees
+        createComment: repoFullName issueId body
 
-  results:
+  volumes:
   - name: output
+    emptyDir: {}
+  results:
   - name: id
 
   steps:
     - name: await
       image: 10.1.40.43:5000/curlimages/curl:7.71.1
+      volumeMounts:
+      - name: output
+        mountPath: /volumes/output
       securityContext:
         runAsUser: 0
 
@@ -61,11 +67,10 @@ spec:
         function createComment() {
           repoFullName=$1
           issue=$2
-          body=$3
+          body=${3//\"/\\\"}
           url=$(url POST /repos/$repoFullName/issues/$issue/comments "{ \"body\": \"$body\" }")
           sh -c "$url"                                
         }
-
  
         function createDeployKey() {
           repoFullName=$1
@@ -75,11 +80,21 @@ spec:
           sh -c "$url"
         }
 
-        $(params.cmd) $(params.args) > $(results.output.path)
+        while read args; do
+          if test -n "$args"; then
+            eval $(params.cmd) $args >> $(mktemp -u -p /volumes/output XXXXXX)
+          else
+            true
+          fi
+        done <<EOF
+        $(params.args)
+        EOF
 
     - name: get-id
       image: 10.1.40.43:5000/stedolan/jq
-      command:
-      - sh
-      - -c
-      - echo -n $(jq <$(results.output.path) '.id' -r) >$(results.id.path)
+      volumeMounts:
+      - name: output
+        mountPath: /volumes/output
+      script: |
+        cd /volumes/output
+        ls | xargs jq -r '.id' | xargs echo -n >> $(results.id.path)

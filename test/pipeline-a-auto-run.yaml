@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+#  generateName: git-clone-checking-out-a-commit-
+  name: tt
+spec:
+  pipelineRef:
+    name: pipeline-a-auto
+  serviceAccountNames:
+  - taskName: fetch-repo
+    serviceAccountName: pipeline-git-ssh
+  - taskName: notify-auto-test-result-git-tag
+    serviceAccountName: pipeline-git-ssh
+  workspaces:
+  - name: all-workspaces
+    persistentVolumeClaim:
+      claimName: pipeline-all-workspaces-pvc
+  - name: workspace
+    persistentVolumeClaim:
+      claimName: pipeline-all-workspaces-pvc
+    subPath: abcdefjhijklmnopqrstuvwsyz
+  - name: mvn-settings
+    configmap:
+      name: mvn-settings
+  - name: mvn-local-repo
+    persistentVolumeClaim:
+      claimName: pipeline-mvn-repo-pvc
+  - name: gitea-user-token
+    secret:
+      SecretName: gitea-user-token
+  params:
+  - name: work-id
+    value: "1111"
+  - name: repo-url
+    value: ssh://git@10.1.40.43:30220/root/test-project.git 
+  - name: repo-full-name
+    value: root/test
+  - name: repo-ref
+    value: master
+  - name: version
+    value: "1.0.0" 
+  - name: src-root
+    value: api-gateway

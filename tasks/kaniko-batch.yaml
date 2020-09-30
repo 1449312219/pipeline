@@ -1,0 +1,58 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kaniko-batch
+spec:
+  workspaces:
+  - name: source
+
+  params:
+  - name: dest-prefix
+    description: 结果镜像 name前缀
+    default: ""
+  - name: dest-suffix
+    description: 结果镜像 name后缀
+    default: ""
+
+  - name: verbosity
+    default: info
+
+  - name: insecure-registry
+    default: 10.1.40.43:5000
+
+  results:
+  - name: image-names
+  - name: image-digests
+    description: Digest of the image just built.
+  
+  steps:
+  - name: build-and-push
+    image: 10.1.40.43:5000/gcr.io/kaniko-project/executor:debug
+    workingDir: $(workspaces.source.path)
+    script: |
+      #!/busybox/sh
+      set -ex
+
+      mkdir /tmp -p
+
+      for i in $(find . -name Dockerfile -type f); do
+        dir=$(dirname $i)
+
+        project=$(basename $dir)
+        if [[ $project == . ]]; then
+          project=
+        fi
+
+        destination=$(params.dest-prefix)${project}$(params.dest-suffix)
+
+        /kaniko/executor \
+        --context=$(workspaces.source.path)/$dir \
+        --dockerfile=Dockerfile \
+        --destination=$destination \
+        --digest-file=/tmp/digest-file \
+        --insecure-registry=$(params.insecure-registry) \
+        --verbosity=$(params.verbosity)
+
+        echo $destination >> $(results.image-names.path)
+        cat /tmp/digest-file | xargs echo >> $(results.image-digests.path)
+      done

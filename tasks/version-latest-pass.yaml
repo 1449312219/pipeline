@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: version-latest-pass
+spec:
+  params:
+  - name: repo-url
+  - name: repo-revision
+  - name: version
+  - name: env
+
+  results:
+  - name: tag
+  - name: sha
+  - name: images
+
+  volumes:
+  - name: source
+    emptyDir: {}
+
+  steps:
+    - name: search
+      image: 10.1.40.43:5000/gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.13.2
+      volumeMounts:
+      - name: source
+        mountPath: /volumes/source
+      workingDir: /volumes/source
+
+      script: |
+        /ko-app/git-init \
+        -url "$(params.repo-url)" \
+        -revision "$(params.repo-revision)" \
+        -path . \
+        -depth 1
+
+        git fetch --tags
+
+        pattern="^$(params.version)-$(params.env)-pass-.*$"
+
+        tag=$(git tag --sort=creatordate | grep $pattern | tail -n 1)
+        echo -n $tag > $(results.tag.path)
+
+        git tag $tag -n 999 --format='%(objectname)' > $(results.sha.path)
+        git tag $tag -n 999 --format='%(contents)' > $(results.images.path)
+
+        sleep 1d

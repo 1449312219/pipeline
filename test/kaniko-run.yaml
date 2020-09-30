@@ -4,7 +4,7 @@ metadata:
   name: kaniko
 spec:
   taskRef:
-    name: kaniko
+    name: kaniko-batch
 
   workspaces:
   - name: source
@@ -12,8 +12,10 @@ spec:
       name: dockerfile
 
   params:
-  - name: destination
-    value: 10.1.40.43:5000/busybox:2.1
+  - name: dest-prefix
+    value: 10.1.40.43:5000/busybox:2.1-
+  - name: dest-suffix
+    value: -aaa
 ---
 
 

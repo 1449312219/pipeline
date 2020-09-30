@@ -9,11 +9,15 @@ spec:
 
   params:
   - name: tag
+  - name: append
+    description: 是否追加随机后缀
+    default: "false"
+  - name: force
+    description: 是否先删除tag (忽略后缀)
+    default: "false"
+
   - name: msg
     default: ""
-
-  - name: branch
-    description: 作为tag后缀
 
   - name: user
     default: none
@@ -27,20 +31,24 @@ spec:
       script: |
         ln -s $HOME/.ssh /root/.ssh
 
-        tag=$(params.tag)-$(params.branch)
-        msg=$(params.msg)
-        check=$tag-check-$(mktemp XXXXXXXXXX -u)
-
         git config --global user.email "$(params.email)"
         git config --global user.name "$(params.user)"
 
-        git tag $check
-        git push origin $check
+        if test '$(params.append)' == 'true'; then
+          tag=$(params.tag)$(mktemp -u XXXXXX)
+        else
+          tag=$(params.tag)
+        fi
 
-        git push origin --delete $tag && git tag -d $tag || true
+        if test '$(params.force)' == 'true'; then
+          git fetch --tags
+          for i in $(git tag | grep '^$(params.tag)'); do
+            git tag -d $i
+            git push origin --delete $i || true
+          done
+        fi
 
-        git tag $tag ${msg:+-m \"$msg\"}
+        msg='$(params.msg)'
+
+        git tag $tag ${msg:+-m "$msg"}
         git push origin $tag
-
-        git push origin --delete $check
-

@@ -4,29 +4,41 @@ metadata:
   name: envsReply
 rules:
 - apiGroups:
-  - ""
+  - "*"
   resources:
-  - configmaps
+  - "*"
   verbs:
-  - create
-  - delete
-  - list
-  - get
-  - patch
+  - "*"
 - apiGroups:
   - ""
   resources:
   - namespaces
+  - services
+  - configmaps
   verbs:
-  - create
-  - delete
   - get
+  - create
+  - patch
 - apiGroups:
-  - "*"
+  - ""
+  - rbac.authorization.k8s.io
   resources:
-  - "*"
+  - serviceaccounts
+  - clusterroles
+  - clusterrolebindings
+  - secrets
   verbs:
-  - "*"
+  - get
+  - create
+  - update
+  - patch
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - get
+  - create
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -40,8 +52,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-- kind: ServiceAccount
-  name: pipeline-git-ssh
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -55,7 +65,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
-- kind: ServiceAccount
-  name: pipeline-git-ssh
   namespace: default
