@@ -1,0 +1,86 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: gitea-chat
+spec:
+  params:
+  - name: issue-id
+  - name: comment
+ 
+  tasks:
+  - name: extract-cmd
+    params:
+    - name: comment
+      value: $(params.comment)
+    taskSpec:
+      params:
+      - name: comment
+      results:
+      - name: cmd
+        description: 保存解析出的cmd
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          cmd=$(echo -e '$(params.comment)' | sed -nr '/^\/.*/ s|(/[^\r]*)(\r)?|\1|p')
+          echo ${cmd:-error}  > $(results.cmd.path)
+
+  - name: deploy-uat
+    conditions:
+    - conditionRef: match
+      params:
+      - name: value
+        value: $(tasks.extract-cmd.results.cmd)
+      - name: pattern
+        value: '/deploy-uat'
+    taskRef:
+      name: reply
+    params:
+    - name: opt
+      value: create
+    - name: name
+      value: uat-reply
+    - name: id
+      value: issue$(params.issue-id)
+    - name: status
+      value: agree
+
+  - name: success-uat
+    conditions:
+    - conditionRef: match
+      params:
+      - name: value
+        value: $(tasks.extract-cmd.results.cmd)
+      - name: pattern
+        value: '/success-uat'
+    taskRef:
+      name: reply
+    params:
+    - name: opt
+      value: change
+    - name: name
+      value: uat-reply
+    - name: id
+      value: issue$(params.issue-id)
+    - name: status
+      value: success
+
+  - name: fail-uat
+    conditions:
+    - conditionRef: match
+      params:
+      - name: value
+        value: $(tasks.extract-cmd.results.cmd)
+      - name: pattern
+        value: '/fail-uat'
+    taskRef:
+      name: reply
+    params:
+    - name: opt
+      value: change
+    - name: name
+      value: uat-reply
+    - name: id
+      value: issue$(params.issue-id)
+    - name: status
+      value: fail
+

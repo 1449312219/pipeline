@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: t
+spec:
+  taskRef:
+    name: maven-t
+  workspaces:
+  - name: maven-settings
+    configmap:
+      name: mvn-settings
+  - name: maven-local-repository
+    persistentVolumeClaim:
+      claimName: pipeline-mvn
+  - name: source
+    persistentVolumeClaim:
+      claimName: pipeline-src
+    subPath: aaa/aaa
+  params:
+  - name: goals
+    value: compile | echo 1111
+  - name: output
+    value: 'true'

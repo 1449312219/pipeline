@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sonar
+spec:
+  workspaces:
+    - name: maven-settings
+    - name: maven-local-repository
+      mountPath: /root/.m2
+    - name: source
+  params:
+    - name: cwd
+      description: 项目pom路径, 相对于source卷
+      default: ""
+  steps:
+    - name: mvn-goals
+      image: 10.1.40.43:5000/gcr.io/cloud-builders/mvn
+      workingDir: $(workspaces.source.path)/$(params.cwd)
+      script: |
+       #! /usr/bin/bash
+       output=target/sonar-output
+       /usr/bin/mvn -s $(workspaces.maven-settings.path)/settings.xml sonar:sonar \
+       | tee $output
+       echo sonar scan finish!
+
+       waitURL=$(grep api/ce/task?id $output|sed -nr 's|.*(http:.*)|\1|p')
+       baseURL=$(echo $waitURL | sed -nr 's|(http://[^/]*)/.*|\1|p')
+       until [[ $id ]]; do
+         response=$(curl $waitURL 2>/dev/null)
+         echo $response 
+         id=$(echo $response \
+              | grep '"status":"SUCCESS"' \
+              | sed -nr 's|.*"analysisId":"([^"]*)".*|\1|p' )
+         echo wait sonar verify finish ...
+         echo 
+         sleep 15
+       done
+       echo sonar verify finish!
+
+       curl $baseURL/api/qualitygates/project_status?analysisId=$id 2>/dev/null \
+       | sed -r '/"status":"ERROR"/q1;'
+
+       echo sonar verify success!
+       exit 0

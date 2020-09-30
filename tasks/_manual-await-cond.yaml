@@ -1,0 +1,73 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: manual-await
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+    - name: envsReply
+      description: ConfigMap name, 用以存储环境使用配置
+    - name: envId
+    - name: occupyId
+    - name: firstAutoAgree
+      default: "true"
+    - name: canWait
+      default: "refuse"
+  check:
+    image: lachlanevenson/k8s-kubectl
+    script:
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+
+
+        envsReply=$(params.envsReply)
+        envId=$(params.envId)
+        occupyId=$(params.occupyId)
+        firstAutoAgree=$(params.firstAutoAgree)
+        canWait=$(params.canWait)
+
+        function await() {
+          echo await; 
+          sleep 30;
+          canPass;
+        }
+
+        function agree() {
+          echo agree;
+          exit;
+        }
+
+        function refuse() {
+          echo refuse;
+          exit 1;
+        }
+
+        function canPass() {
+          content=$($kubectl get configmap $envsReply -o jsonpath="{.data.$envId}");
+          case $content in
+            "" | , ) 
+              if $firstAutoAgree; then
+                agree;
+              else
+                await;
+              fi
+              ;;
+            $occupyId,agree )  agree;;
+            $occupyId,* )  refuse;;
+            *,agree )
+              if [[ $canWait != await ]]; then
+                refuse;
+              else
+                await;
+              fi
+              ;;
+            * ) await;;
+          esac
+        }
+
+        canPass

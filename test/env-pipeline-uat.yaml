@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: env-pipeline-uat
+spec:
+
+  tasks:
+  - name: smoke-testing
+    conditions:
+    - conditionRef: token
+      params:
+      - name: opt
+        value: create
+      - name: exists
+        value: continue
+      - name: name
+        value: a
+      - name: id
+        value: iiiiiiiiiiiiiiii
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - 冒烟测试
+
+  - name: success
+    runAfter: [ smoke-testing ]
+    taskRef:
+      name: result
+    params:
+    - name: name
+      value: a
+    - name: status
+      value: Success  
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+#  generateName: git-clone-checking-out-a-commit-
+  name: tt
+spec:
+  pipelineRef:
+    name: env-pipeline-uat

@@ -1,0 +1,87 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+#  generateName: git-clone-checking-out-a-commit-
+  name: tt
+spec:
+  pipelineRef:
+    name: pipeline
+  workspaces:
+  - name: all-workspaces
+    persistentVolumeClaim:
+      claimName: pipeline-all-workspaces-pvc
+  - name: workspace
+    persistentVolumeClaim:
+      claimName: pipeline-all-workspaces-pvc
+    subPath: test1234567
+  - name: mvn-settings
+    configmap:
+      name: mvn-settings
+  - name: mvn-local-repo
+    persistentVolumeClaim:
+      claimName: pipeline-mvn-repo-pvc
+  params:
+  - name: work-id
+    value: test1234567
+  - name: repo-url
+    value: https://github.com/1449312219/uaa-zuul.git
+  - name: repo-ref
+    value: master
+  - name: src-root
+    value: api-gateway
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pipeline-all-workspaces-pvc
+spec:
+  volumeName: pipeline-all-workspaces-pv
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pipeline-all-workspaces-pv
+spec:
+  hostPath: 
+    path: /tmp/path
+    type: DirectoryOrCreate
+  capacity:
+    storage: 8Gi
+  accessModes:
+  - ReadWriteMany
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pipeline-mvn-repo-pvc
+spec:
+  volumeName: pipeline-mvn-repo-pv
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pipeline-mvn-repo-pv
+spec:
+  hostPath: 
+    path: /home/vagrant/pv/mvn
+    type: DirectoryOrCreate
+  capacity:
+    storage: 8Gi
+  accessModes:
+  - ReadWriteMany

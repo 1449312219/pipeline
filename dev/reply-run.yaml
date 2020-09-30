@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: t1
+spec:
+  params:
+  - name: configMapName
+    value: a
+  - name: envId
+    value: a
+  - name: occupyId
+    value: aaa
+  - name: reply
+    value: agree
+  taskRef:
+    name: reply

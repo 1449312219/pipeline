@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: result
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: name
+    - name: status
+      default: Success
+  steps:
+    - name: result
+      image: 10.1.40.43:5000/lachlanevenson/k8s-kubectl 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+     
+ 
+
+        $kubectl patch configmap $(params.name) -p '{"data":{"status":"$(params.status)"}}'

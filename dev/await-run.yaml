@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: t
+spec:
+  params:
+  - name: envId
+    value: a
+  - name: occupyId
+    value: aaa
+  - name: firstAutoAgree
+    value: "false"
+  workspaces:
+  - name: envsReply
+    configMap:
+      name: a
+  taskRef:
+    name: await

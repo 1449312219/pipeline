@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: kaniko
+spec:
+  taskRef:
+    name: kaniko
+
+  workspaces:
+  - name: source
+    configmap:
+      name: dockerfile
+
+  params:
+  - name: destination
+    value: 10.1.40.43:5000/busybox:2.1
+---
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dockerfile
+data:
+  Dockerfile: |
+    FROM 10.1.40.43:5000/busybox:1.31

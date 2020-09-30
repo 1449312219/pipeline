@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: openssh-client
+spec:
+  params:
+    - name: host
+      value: 10.1.40.43
+    - name: port
+      value: "30220"
+  taskRef:
+    name: openssh-client
+  workspaces:
+  - name: output
+    emptyDir: {}

@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: t
+spec:
+  taskRef:
+    name: reply
+  params:
+  - name: opt
+    value: create
+  - name: name
+    value: uat-token
+  - name: patch
+    value: '{\"data\":{\"status\":\"Success\"}}'
+  - name: ignore
+    value: "false"

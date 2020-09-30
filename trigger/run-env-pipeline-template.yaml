@@ -1,0 +1,17 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: run-env-pipeline
+spec:
+  params:
+  - name: env
+
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: env-pipeline-run-
+    spec:
+      pipelineRef:
+        name: env-pipeline-$(params.env)
+

@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: test
+spec:
+  params:
+    - name: result
+      default: "false"
+  results:
+  - name: output
+  steps:
+    - name: mvn-goals
+      image: 10.1.40.43:5000/busybox
+      script: |
+        #! /bin/sh
+        sleep 1d
+        if [[ $(params.result) == "false"  ]]; then
+          echo 111111
+        else
+          echo 222 > $(results.output.path)
+        fi
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: test
+spec:
+  taskRef:
+    name: test
+  params:
+  - name: result
+    value: 'true'

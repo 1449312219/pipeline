@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: tttt
+spec:
+  check:
+    image: 10.1.40.43:5000/busybox:1.31
+    script: |
+      echo 11111111111111111111111
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tt
+spec:
+
+  tasks:
+  - name: fetch-repo
+    conditions:
+    - conditionRef: tttt
+    retries: 1
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        command:
+        - echo1
+        - aaaaaaaaaaaaaaaaaaaaaaaaa
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+#  generateName: git-clone-checking-out-a-commit-
+  name: tt
+spec:
+  pipelineRef:
+    name: tt
+

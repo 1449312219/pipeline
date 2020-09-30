@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: git-tag
+spec:
+  serviceAccountName: pipeline-git-ssh
+
+  params:
+  - name: tag
+    value: auto-test-success
+  - name: msg
+    value: ttttttttttttttttttttttttttttttttttt
+  - name: user
+    value: aaa
+  - name: email
+    value: aaaaa@aaa.com
+
+  taskRef:
+    name: git-tag

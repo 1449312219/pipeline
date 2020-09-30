@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: await
+spec:
+  params:
+    - name: id
+      default: ""
+  volumes:
+  - name: env-reply
+    configMap:
+      name: a
+  steps:
+    - name: await
+      image: 10.1.40.43:5000/busybox:1.31
+      command:
+      - sleep
+      - "1d"
+      volumeMounts:
+      - name: env-reply
+        mountPath: /tmp

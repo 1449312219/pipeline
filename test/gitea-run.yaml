@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: gitea
+spec:
+  params:
+    - name: cmd
+      value: createIssue
+    - name: args
+      value: root/test-project 4 'Hello Word!'
+  taskRef:
+    name: gitea
+  workspaces:
+  - name: tokena
+    secret:
+      secretName: gitea-user-token
+    subPath: token 

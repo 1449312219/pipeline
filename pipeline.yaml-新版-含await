@@ -1,0 +1,151 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  params:
+  - name: work-id
+    description: all-workspaces-pvc内唯一子目录,作为workspace根目录(伪pvc)
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-ref
+    description: git仓库分支
+  - name: src-root
+    description: 代码根目录
+    default:  
+
+  workspaces:
+  - name: all-workspaces
+    description: |
+      workspace根, 提供独立path,成workspace, 供各PipelineRun执行
+  - name: workspace
+    description: |
+      存储输入资源, 作为后续步骤的数据来源/结果数据
+  - name: mvn-settings
+    description: |
+      maven settings.xml
+  - name: mvn-local-repo
+    description: |
+      maven 本地仓库
+
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: workspace
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.repo-ref)
+    - name: deleteExisting
+      value: 'true'
+
+  - name: compile
+    runAfter: ["fetch-repo"]
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: mvn-settings
+    - name: maven-local-repository
+      workspace: mvn-local-repo
+    - name: source
+      workspace: workspace
+    params:
+    - name: cwd
+      value: $(params.src-root)
+    - name: goals
+      value: 
+      - compile
+
+  - name: test
+    runAfter: ["compile"]
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: mvn-settings
+    - name: maven-local-repository
+      workspace: mvn-local-repo
+    - name: source
+      workspace: workspace
+    params:
+    - name: cwd
+      value: $(params.src-root)
+    - name: goals
+      value: 
+      - test
+
+  - name: package
+    runAfter: ["test"]
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: mvn-settings
+    - name: maven-local-repository
+      workspace: mvn-local-repo
+    - name: source
+      workspace: workspace
+    params:
+    - name: cwd
+      value: $(params.src-root)
+    - name: goals
+      value: 
+      - package
+      - -Dmaven.test.skip=true
+
+  - name: docker-build
+    runAfter: ["package"]
+    conditions:
+    - conditionRef: await
+      params:
+      - name: envsReply
+        value: a
+      - name: envId
+        value: a
+      - name: occupyId
+        value: $(params.work-id)
+      - name: canWait
+        value: await
+    workspaces:
+    - name: all-workspaces
+      workspace: all-workspaces
+    params:
+    - name: work-id
+      value: "111111"
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        - "11111111"
+      workspaces:
+      - name: all-workspaces
+      params:
+      - name: work-id
+
+  - name: clean-src-pvc-path
+    runAfter: ["docker-build"]
+    workspaces:
+    - name: all-workspaces
+      workspace: all-workspaces
+    params:
+    - name: work-id
+      value: $(params.work-id)
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - rm
+        - $(workspaces.all-workspaces.path)/$(params.work-id)
+        - -rf
+      workspaces:
+      - name: all-workspaces
+      params:
+      - name: work-id
+---
+

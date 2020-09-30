@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: gitea
+spec:
+  params:
+    - name: token
+      value: 19142faed2aa780efcdd064d7f8deeab60c92513
+    - name: cmd
+      value: createDeployKey
+    - name: args
+      value: root/test-project 4 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCpI2uUU/2ji35CJeupiIfjY5zxydrj/78/QBrx+5XhhVDXSfM2Vn6REvzHBH+rW2P+LzBqloK1AjPogTI38eMq69Up4cDbh6JvjsQ1K5SlI0S8TrtWh3WjfAMICEroLg5Adw097e00xAPCxMIJALJ1Jxx9GsR8F1FbBiCKA0JUFyJR9VEHmMMr2h+VaC5sT8v1Ann/JyTazQNO1vUje7qRq4QGTccFsqvX5UMdSmcMqWS/jZhgn0N9QFEnRRmja5gcwof5JoDJHXTLwZMURx47YbgFc7+bCGCse0xGYeWK3EftB2Ryz1Cf028JqlfX+7OWN6wSukJUu2GUnsMAQ0a/z4DJha9uH0Y2H6KhjG/B4f4BMmQVM6dKqobo8vzUt0r3/NNBOzsu3NRhCAz9snohVEBYlNU7Y/dA8oeeZ7+Uq1HEVgCx+DRR4ofQraQbu+8gjqAnMDh5lDwjwU393NxWa0VgAKh9+5K8wcAnOodm4ig3aLqSBcLmnIWOtA5HK8s='
+  taskRef:
+    name: gitea

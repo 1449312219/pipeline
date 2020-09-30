@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-tag
+spec:
+  workspaces:
+  - name: workspace
+    description: git项目 (含.git目录)
+
+  params:
+  - name: tag
+  - name: msg
+    default: ""
+
+  - name: branch
+    description: 作为tag后缀
+
+  - name: user
+    default: none
+  - name: email
+    default: none@no.user.com
+
+  steps:
+    - name: tag
+      image: 10.1.40.43:5000/alpine/git:1.0.17
+      workingDir: $(workspaces.workspace.path)
+      script: |
+        ln -s $HOME/.ssh /root/.ssh
+
+        tag=$(params.tag)-$(params.branch)
+        msg=$(params.msg)
+        check=$tag-check-$(mktemp XXXXXXXXXX -u)
+
+        git config --global user.email "$(params.email)"
+        git config --global user.name "$(params.user)"
+
+        git tag $check
+        git push origin $check
+
+        git push origin --delete $tag && git tag -d $tag || true
+
+        git tag $tag ${msg:+-m \"$msg\"}
+        git push origin $tag
+
+        git push origin --delete $check
+

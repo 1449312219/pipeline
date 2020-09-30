@@ -1,0 +1,179 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  description: |
+    CI管道
+  params:
+  - name: repo-url
+    type: string
+    description: The git repository URL to clone from.
+  - name: repo-ref
+    type: string
+    description: git分支
+  - name: src-path
+    description: 当前run存储src的路径
+  - name: src-root
+    description: 代码根目录
+    default:  
+
+  workspaces:
+  - name: src-pvc
+    description: |
+      存储源码, 作为后续步骤的数据来源/结果数据
+  - name: all-src-pvc
+    description: |
+      src-pvc根, 提供独立path供各PipelineRun执行
+  - name: maven-settings
+    description: |
+      maven settings.xml
+  - name: maven-local-repository
+    description: |
+      maven 本地仓库
+
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: src-pvc
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.repo-ref)
+    - name: deleteExisting
+      value: 'true'
+
+  - name: compile
+    runAfter: ["fetch-repo"]
+    workspaces:
+    - name: source
+      workspace: src-pvc
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: maven-local-repository
+      workspace: maven-local-repository
+    - name: source
+      workspace: src-pvc
+    params:
+    - name: goals
+      value: compile
+    - name: cwd
+      value: $(params.src-root)
+
+  - name: sonar-scan
+    runAfter: ["compile"]
+    workspaces:
+    - name: source
+      workspace: src-pvc
+    taskRef:
+      name: sonar
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: maven-local-repository
+      workspace: maven-local-repository
+    - name: source
+      workspace: src-pvc
+    params:
+    - name: cwd
+      value: $(params.src-root)
+
+  - name: test
+    runAfter: ["sonar-scan"]
+    workspaces:
+    - name: source
+      workspace: src-pvc
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: maven-local-repository
+      workspace: maven-local-repository
+    - name: source
+      workspace: src-pvc
+    params:
+    - name: goals
+      value: test
+    - name: cwd
+      value: $(params.src-root)
+
+  - name: package
+    runAfter: ["test"]
+    workspaces:
+    - name: source
+      workspace: src-pvc
+    taskRef:
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: maven-local-repository
+      workspace: maven-local-repository
+    - name: source
+      workspace: src-pvc
+    params:
+    - name: goals
+      value: package -Dmaven.test.skip=true
+    - name: cwd
+      value: $(params.src-root)
+
+  - name: clean-src-pvc-path
+    runAfter: ["package"]
+    workspaces:
+    - name: all-src-pvc
+      workspace: all-src-pvc
+    params:
+    - name: src-path
+      value: $(params.src-path)
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - rm
+        - $(workspaces.all-src-pvc.path)/$(params.src-path)
+        - -rf
+      workspaces:
+      - name: all-src-pvc
+      params:
+      - name: src-path
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+#  generateName: git-clone-checking-out-a-commit-
+  name: tt
+spec:
+  pipelineRef:
+    name: pipeline
+  workspaces:
+  - name: src-pvc
+    persistentVolumeClaim:
+      claimName: pipeline-src
+    subPath: test1234567
+  - name: all-src-pvc
+    persistentVolumeClaim:
+      claimName: pipeline-src
+  - name: maven-settings
+    configmap:
+      name: mvn-settings
+  - name: maven-local-repository
+    persistentVolumeClaim:
+      claimName: pipeline-mvn
+  params:
+  - name: repo-url
+    value: https://github.com/1449312219/uaa-zuul.git
+  - name: repo-ref
+    value: master
+  - name: src-path
+    value: test1234567
+  - name: src-root
+    value: api-gateway
