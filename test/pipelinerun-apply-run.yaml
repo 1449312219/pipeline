@@ -1,43 +1,14 @@
 apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
+kind: TaskRun
 metadata:
-#  generateName: git-clone-checking-out-a-commit-
-  name: tt
+  name: t
 spec:
-  pipelineRef:
-    name: pipeline-wrapper
-  serviceAccountName: pipeline-git-ssh
-  workspaces:
-  - name: all-workspaces
-    persistentVolumeClaim:
-      claimName: pipeline-all-workspaces-pvc
-  - name: workspace
-    persistentVolumeClaim:
-      claimName: pipeline-all-workspaces-pvc
-    subPath: abcdefjhijklmnopqrstuvwsyz
-  - name: gitea-user-token
-    secret:
-      SecretName: gitea-user-token
+  taskRef:
+    name: pipelinerun-apply
   params:
-  - name: work-id
-    value: "1111"
-  - name: repo-url
-    value: ssh://git@10.1.40.43:30220/root/test.git 
-  - name: repo-full-name
-    value: root/test
-  - name: repo-ref
-    value: 7a42dbc0bc0118fcb5346571c9d77b0eee5b02cd 
-  - name: version
-    value: "1.0.0"
-  - name: before-env
-    value: auto-test
-  - name: env
-    value: auto-test
-  - name: src-root
-    value: api-gateway
-  - name: pipelinerun-name
-    value: ddddddddd
-  - name: pipelinerun-spec
+  - name: name
+    value: aaaaaaaa
+  - name: spec
     value: |
       pipelineRef:
         name: pipeline-a-auto
@@ -76,3 +47,9 @@ spec:
         value: "1.0.0" 
       - name: src-root
         value: api-gateway
+
+  - name:  await-finish
+    value: "true"
+
+  - name: return-task
+    value: fetch-repo

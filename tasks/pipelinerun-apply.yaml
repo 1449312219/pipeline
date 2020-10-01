@@ -1,0 +1,76 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: pipelinerun-apply
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: name
+      description: pipelinerun-name
+    - name: spec
+      description: pipelinerun-spec
+
+    - name: await-finish
+      description: 是否等待pipelinerun完成
+      default: "true"
+
+    - name: interval
+      description: 等待pipelinerun完成间隔
+      default: "15"
+    - name: max-count
+      default: "100000"
+
+    - name: return-task
+      description: 等待pipelinerun完成后, 返回指定task的首个result
+      default: ""
+
+  results:
+  - name: output
+    description: 存储return-task.result[0].value
+
+  steps:
+    - name: create
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+
+        kubectl apply --wait -f - <<EOF
+        apiVersion: tekton.dev/v1beta1
+        kind: PipelineRun
+        metadata:
+          name: $(params.name)
+        spec:
+        $(echo '$(params.spec)' | awk '{print "  "$0}')
+        EOF
+
+        if test '$(params.await-finish)' != 'true'; then
+          exit 0
+        fi
+
+        i=0
+        while true; do
+          if test $(kubectl get pipelinerun $(params.name) -o jsonpath={.status.conditions[0].status}) != 'Unknown'; then
+            break
+          fi
+
+          if test $i -ge $(params.max-count); then
+            exit 1
+          fi
+          i=$(expr $i + 1)
+          sleep $(params.interval)
+        done
+
+        if test -n '$(params.return-task)'; then
+          taskrun=$(kubectl get taskrun -l='tekton.dev/pipelineRun=$(params.name), tekton.dev/pipelineTask=$(params.return-task)' -o name)
+          if test -n "$taskrun"; then
+            kubectl get $taskrun -o jsonpath={.status.taskResults[0].value} > $(results.output.path)
+          fi
+        fi

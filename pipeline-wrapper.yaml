@@ -21,6 +21,9 @@ spec:
     description: 代码根目录
     default:  
 
+  - name: pipelinerun-name
+  - name: pipelinerun-spec
+
   workspaces:
   - name: all-workspaces
     description: |
@@ -82,8 +85,24 @@ spec:
         value: $(tasks.has-tags.results.output)
       - name: pattern
         value: $(params.repo-ref)
+    taskRef:
+      name: pipelinerun-apply
+    params:
+    - name: name
+      value: $(params.pipelinerun-name)
+    - name: spec
+      value: $(params.pipelinerun-spec)
+    - name: return-task
+      value: fetch-repo
+
+  - name: create-tag
     taskSpec:
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
-          sleep 1d
+          echo $(params.a)
+      params:
+      - name: a
+    params:
+    - name: a
+      value: $(tasks.trigger.results.output)

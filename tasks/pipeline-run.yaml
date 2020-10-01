@@ -1,0 +1,92 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: reply
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: opt
+      description: create / change / clean
+      default: create
+
+    - name: name
+      description: ConfigMap name
+
+    - name: id
+      description: ConfigMap content, create参数
+      default: ""
+    - name: status
+      description: ConfigMap content, create/change参数
+      default: ""
+
+    - name: jsonpath
+      description: change/clean参数, 验证当前状态, ==expect后继续
+      default: ""
+    - name: expect
+      default: ""
+
+    - name: ignore
+      description: 忽略错误, 成功结束
+      default: "false"
+
+  steps:
+    - name: await
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+
+
+        name=$(params.name)
+        ignore=$(params.ignore)
+
+        function doCreate() {
+          result=$($kubectl create configmap $name \
+                  --from-literal=id=$(params.id) \
+                  --from-literal=status=$(params.status) 2>&1)
+        }
+        function create() {
+          doCreate || [[ $ignore == true ]]
+        }
+
+
+        function getValue() {
+          value=$($kubectl get configmap $name -o jsonpath=$(params.jsonpath) 2>&1)
+        }
+        function isPass() {
+          if [[ -z $(params.jsonpath) ]] || [[ -z $(params.expect) ]]; then
+            echo ∵ not config validate param  ∴ Pass
+            return
+          fi
+
+          if getValue && [[ x$value == x$(params.expect) ]]; then
+            echo Pass
+            return
+          fi
+
+          echo No Pass
+          return 1
+        }
+        function doChange() {
+          $kubectl patch configmap $name -p '{"data":{"status":"$(params.status)"}}'
+        }
+        function change() {
+          ( isPass && doChange ) || [[ $ignore == "true" ]]
+        }
+
+
+        function doClean() {
+          $kubectl delete configmap $name
+        }
+        function clean() {
+          ( isPass && doClean ) || [[ $ignore == "true" ]]
+        }
+
+        $(params.opt)
