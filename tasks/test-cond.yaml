@@ -10,4 +10,4 @@ spec:
     image: 10.1.40.43:5000/busybox:1.31
     imagePullPolicy: IfNotPresent 
     script: |
-        eval test '$(params.arg)'
+      test '$(params.arg)'
