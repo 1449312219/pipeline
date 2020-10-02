@@ -66,7 +66,7 @@ spec:
         script: |
           ln -sb $HOME/.ssh /root
           git fetch --tags
-          git tag -l '$(params.pattern)*' --format='%(object)' \
+          git tag -l '$(params.pattern)' --format='%(object)' \
           | grep $(params.commit) 2>/dev/null | xargs echo -n > $(results.output.path)
     workspaces:
     - name: workspace
@@ -75,16 +75,14 @@ spec:
     - name: commit
       value: $(params.repo-ref)
     - name: pattern
-      value: $(params.version)-$(params.env)-pass-
+      value: $(params.version)_$(params.env)_pass_$(params.repo-ref)
 
   - name: trigger
     conditions:
-    - conditionRef: match
+    - conditionRef: test
       params:
-      - name: value
-        value: $(tasks.has-tags.results.output)
-      - name: pattern
-        value: $(params.repo-ref)
+      - name: arg
+        value: '-z $(tasks.has-tags.results.output)'
     taskRef:
       name: pipelinerun-apply
     params:
@@ -96,13 +94,13 @@ spec:
       value: fetch-repo
 
   - name: create-tag
-    taskSpec:
-      steps:
-      - image: 10.1.40.43:5000/busybox:1.31
-        script: |
-          echo $(params.a)
-      params:
-      - name: a
+    taskRef:
+      name: git-tag
+    workspaces:
+    - name: workspace
+      workspace: workspace
     params:
-    - name: a
+    - name: tag
+      value: $(params.version)_$(params.env)_pass_$(params.repo-ref)
+    - name: msg
       value: $(tasks.trigger.results.output)
