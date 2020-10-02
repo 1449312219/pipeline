@@ -70,7 +70,16 @@ spec:
 
         if test -n '$(params.return-task)'; then
           taskrun=$(kubectl get taskrun -l='tekton.dev/pipelineRun=$(params.name), tekton.dev/pipelineTask=$(params.return-task)' -o name)
-          if test -n "$taskrun"; then
-            kubectl get $taskrun -o jsonpath={.status.taskResults[0].value} > $(results.output.path)
+          if test -z "$taskrun"; then
+            echo no expect task
+            exit 1
           fi
+
+          result=$(kubectl get $taskrun -o jsonpath={.status.taskResults[0].value})
+          if test -z "$result"; then
+            echo no expect task result
+            exit 1
+          fi
+
+          echo -n $result > $(results.output.path)
         fi
