@@ -20,24 +20,34 @@ spec:
         传于gitea相应请求, 可支持循环
         createDeployKey:  repoFullName title key
         createIssue:  repoFullName title body assignees
-        createComment: repoFullName issueId body
+        getIssueId:  repoFullName title
+        createComment:  repoFullName issueId body
+
+  results:
+  - name: id
 
   volumes:
   - name: output
     emptyDir: {}
-  results:
-  - name: id
 
   steps:
+    - name: jq
+      image: 10.1.40.43:5000/stedolan/jq
+      volumeMounts:
+      - name: output
+        mountPath: /volumes/output
+      script: |
+        cd /volumes/output
+        cp /usr/local/bin/jq .
+
     - name: await
       image: 10.1.40.43:5000/curlimages/curl:7.71.1
       volumeMounts:
       - name: output
         mountPath: /volumes/output
-      securityContext:
-        runAsUser: 0
-
       script: |
+        export PATH=$PATH:/volumes/output
+
         function url() {
           method=$1
           path=$2
@@ -63,6 +73,22 @@ spec:
                   \"assignees\": [ $assignees ] }")
           sh -c "$url"
         }
+
+        function getIssueId() {
+          repoFullName=$1
+          title=$2
+          url=$(url GET /repos/$repoFullName/issues?type=issues&q=$title)
+          res=$(sh -c "$url")
+
+          if test $(echo $res | jq length) -eq 1; then
+            res=$(echo $res | jq -r .[0])
+            if test $(echo $res | jq -r .title) == $title; then
+              echo $res
+              return
+            fi
+          fi
+          exit 1
+        }
         
         function createComment() {
           repoFullName=$1
@@ -82,19 +108,10 @@ spec:
 
         while read args; do
           if test -n "$args"; then
-            eval $(params.cmd) $args >> $(mktemp -u -p /volumes/output XXXXXX)
+            eval $(params.cmd) $args | jq -r '.id' | xargs -I {} echo -n {}" " >> $(results.id.path) 
           else
             true
           fi
         done <<EOF
         $(params.args)
         EOF
-
-    - name: get-id
-      image: 10.1.40.43:5000/stedolan/jq
-      volumeMounts:
-      - name: output
-        mountPath: /volumes/output
-      script: |
-        cd /volumes/output
-        ls | xargs jq -r '.id' | xargs echo -n >> $(results.id.path)
