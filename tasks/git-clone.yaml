@@ -64,14 +64,14 @@ spec:
         git config --global user.name "$(params.user)"
 
         # 仅下载指定commit
-        # cd $CHECKOUT_DIR
-        # git init
-        # git remote add origin $(params.url)
-        # git fetch origin $(params.revision)
-        # git reset --hard FETCH_HEAD
+        cd $CHECKOUT_DIR
+        git init
+        git remote add origin $(params.url)
+        git fetch origin $(params.revision)
+        git reset --hard FETCH_HEAD
 
-        git clone $(params.url) $CHECKOUT_DIR \
-         -b $(params.revision) --single-branch --depth $(params.depth)
+        # git clone $(params.url) $CHECKOUT_DIR \
+        #  -b $(params.revision) --single-branch --depth $(params.depth)
 
         cd "$CHECKOUT_DIR"
         RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
@@ -82,5 +82,3 @@ spec:
         fi
         # Make sure we don't add a trailing newline to the result!
         echo -n "$RESULT_SHA" > $(results.commit.path)
-
-        sleep 1d
