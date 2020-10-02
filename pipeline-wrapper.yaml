@@ -12,12 +12,15 @@ spec:
     description: git仓库SHA
   - name: version
     description: 当前项目版本
-    default:
   - name: before-env
   - name: env
 
   - name: pipelinerun-name
   - name: pipelinerun-spec
+
+  - name: notify
+    description: 通知内容 (将指定内容写入gitea-comment)
+    default: ""
 
   workspaces:
   - name: project 
@@ -94,3 +97,42 @@ spec:
       value: $(params.version)_$(params.env)_pass_$(params.repo-ref)
     - name: msg
       value: $(tasks.trigger.results.output)
+
+  - name: version-context
+    runAfter:
+    - create-tag 
+    conditions:
+    - conditionRef: test
+      params:
+      - name: arg
+        value: $(params.notify)
+    taskSpec:
+      volumes:
+      - name: context
+        configmap:
+          name: pipeline-context
+      steps:
+      - image: busybox:1.31
+        volumeMounts:
+        - name: context
+          mountPath: /volumes/context
+        script: |
+          cd /volumes/context
+          echo -n $(cat id) > $(results.issue-id.path)
+      results:
+      - name: issue-id
+
+  - name: notify
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: createComment
+    - name: args
+      value: |
+        $(params.repo-full-name) $(tasks.version-context.results.issue-id) \
+        '$(params.notify)'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      subPath: token
