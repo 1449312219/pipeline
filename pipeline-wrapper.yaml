@@ -116,8 +116,6 @@ spec:
       value: getIssueId
     - name: args
       value: root/test dddd
-    - name: result-path
-      value: .number
     workspaces:
     - name: token
       workspace: gitea-user-token

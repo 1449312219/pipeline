@@ -22,9 +22,6 @@ spec:
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
         createComment:  repoFullName issueId body
-    - name: result-path
-      description: jsonpath,处理响应到result
-      default: .id
 
   results:
   - name: output
@@ -74,7 +71,7 @@ spec:
                   \"title\": \"$title\",
                   \"body\": \"$body\", 
                   \"assignees\": [ $assignees ] }")
-          sh -c "$url"
+          sh -c "$url" | jq -r .id
         }
 
         function getIssueId() {
@@ -86,7 +83,7 @@ spec:
           if test $(echo $res | jq length) -eq 1; then
             res=$(echo $res | jq -r .[0])
             if test $(echo $res | jq -r .title) == $title; then
-              echo $res
+              echo $res | jq -r .number
               return
             fi
           fi
@@ -98,7 +95,7 @@ spec:
           issue=$2
           body=${3//\"/\\\"}
           url=$(url POST /repos/$repoFullName/issues/$issue/comments "{ \"body\": \"$body\" }")
-          sh -c "$url"                                
+          sh -c "$url" | jq -r .id
         }
  
         function createDeployKey() {
@@ -106,13 +103,12 @@ spec:
           title=$2
           key=$3
           url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": true }")
-          sh -c "$url"
+          sh -c "$url" | jq -r .id
         }
 
         while read args; do
           if test -n "$args"; then
-            eval $(params.cmd) $args | jq -r '$(params.result-path)' \
-            | xargs -I {} echo -n {}" " >> $(results.output.path) 
+            eval $(params.cmd) $args | xargs -I {} echo -n {}" " >> $(results.output.path) 
           else
             true
           fi
