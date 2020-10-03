@@ -24,6 +24,8 @@ spec:
     default: ""
   - name: pipeline-params
     default: ""
+  - name: pipeline-workspace-subpath-for-proejct
+    description: 适配当前workspace pvc分配形式
 
   - name: notify
     description: 通知内容 (将指定内容写入gitea-comment)
@@ -105,6 +107,7 @@ spec:
         - name: workspace
           persistentVolumeClaim:
             claimName: $(tasks.params.results.project-claim)
+          subPath: $(params.pipeline-workspace-subpath-for-proejct)
         $(params.pipeline-workspaces)
         params:
         - name: repo-url

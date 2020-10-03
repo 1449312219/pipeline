@@ -8,10 +8,7 @@ spec:
     name: pipeline-wrapper
   serviceAccountName: pipeline-git-ssh
   workspaces:
-  - name: all-workspaces
-    persistentVolumeClaim:
-      claimName: pipeline-all-workspaces-pvc
-  - name: workspace
+  - name: project 
     persistentVolumeClaim:
       claimName: pipeline-all-workspaces-pvc
     subPath: abcdefjhijklmnopqrstuvwsyz
@@ -19,41 +16,35 @@ spec:
     secret:
       SecretName: gitea-user-token
   params:
-  - name: work-id
-    value: "1111"
+  - name: pipeline-workspace-subpath-for-proejct
+    value: abcdefjhijklmnopqrstuvwsyz
   - name: repo-url
     value: ssh://git@10.1.40.43:30220/root/test.git 
   - name: repo-full-name
     value: root/test
   - name: repo-ref
-    value: 7a42dbc0bc0118fcb5346571c9d77b0eee5b02cd 
+    value: a6c800be597a92864b1179f329edf977b99be454 
+  - name: notify
+    value: ddddddddddddddddddddddddddd "dddd" dddd
   - name: version
     value: "1.0.0"
   - name: before-env
     value: auto-test
   - name: env
     value: auto-test
-  - name: src-root
-    value: api-gateway
-  - name: pipelinerun-name
-    value: ddddddddd
-  - name: pipelinerun-spec
+  - name: pipeline-name
+    value: pipeline-a-auto
+  - name: pipeline-serviceaccountnames
     value: |
-      pipelineRef:
-        name: pipeline-a-auto
-      serviceAccountNames:
       - taskName: fetch-repo
         serviceAccountName: pipeline-git-ssh
       - taskName: notify-auto-test-result-git-tag
         serviceAccountName: pipeline-git-ssh
-      workspaces:
+  - name: pipeline-workspaces
+    value: |
       - name: all-workspaces
         persistentVolumeClaim:
           claimName: pipeline-all-workspaces-pvc
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: pipeline-all-workspaces-pvc
-        subPath: abcdefjhijklmnopqrstuvwsyz
       - name: mvn-settings
         configmap:
           name: mvn-settings
@@ -63,16 +54,9 @@ spec:
       - name: gitea-user-token
         secret:
           SecretName: gitea-user-token
-      params:
+  - name: pipeline-params
+    value: |
       - name: work-id
         value: "1111"
-      - name: repo-url
-        value: ssh://git@10.1.40.43:30220/root/test-project.git 
-      - name: repo-full-name
-        value: root/test
-      - name: repo-ref
-        value: master
-      - name: version
-        value: "1.0.0" 
       - name: src-root
         value: api-gateway
