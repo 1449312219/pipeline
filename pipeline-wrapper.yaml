@@ -109,21 +109,19 @@ spec:
       - name: args
         value:
         - $(params.notify)
-    taskSpec:
-      volumes:
-      - name: context
-        configmap:
-          name: pipeline-context
-      steps:
-      - image: busybox:1.31
-        volumeMounts:
-        - name: context
-          mountPath: /volumes/context
-        script: |
-          cd /volumes/context
-          echo -n $(cat id) > $(results.issue-id.path)
-      results:
-      - name: issue-id
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: getIssueId
+    - name: args
+      value: root/test dddd
+    - name: result-path
+      value: .number
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      subPath: token
 
   - name: notify
     taskRef:
