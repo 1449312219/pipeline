@@ -4,10 +4,12 @@ metadata:
   name: test
 spec:
   params:
-    - name: arg
+    - name: args
+      type: array
 
   check:
     image: 10.1.40.43:5000/busybox:1.31
     imagePullPolicy: IfNotPresent 
-    script: |
-      test $(params.arg)
+    command:
+    - test
+    - "$(params.args)"

@@ -134,8 +134,9 @@ spec:
     conditions:
     - conditionRef: test
       params:
-      - name: arg
-        value: $(params.version)
+      - name: args
+        value: 
+        - $(params.version)
     taskSpec:
       volumes:
       - name: context

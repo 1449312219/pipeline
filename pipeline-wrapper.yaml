@@ -74,8 +74,10 @@ spec:
     conditions:
     - conditionRef: test
       params:
-      - name: arg
-        value: '-z $(tasks.has-tags.results.output)'
+      - name: args
+        value:
+        - -z
+        - $(tasks.has-tags.results.output)
     taskRef:
       name: pipelinerun-apply
     params:
@@ -104,8 +106,9 @@ spec:
     conditions:
     - conditionRef: test
       params:
-      - name: arg
-        value: $(params.notify)
+      - name: args
+        value:
+        - $(params.notify)
     taskSpec:
       volumes:
       - name: context
