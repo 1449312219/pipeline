@@ -22,9 +22,12 @@ spec:
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
         createComment:  repoFullName issueId body
+    - name: result-path
+      description: jsonpath,处理响应到result
+      default: .id
 
   results:
-  - name: id
+  - name: output
 
   volumes:
   - name: output
@@ -108,7 +111,8 @@ spec:
 
         while read args; do
           if test -n "$args"; then
-            eval $(params.cmd) $args | jq -r '.id' | xargs -I {} echo -n {}" " >> $(results.id.path) 
+            eval $(params.cmd) $args | jq -r '$(params.result-path)' \
+            | xargs -I {} echo -n {}" " >> $(results.output.path) 
           else
             true
           fi

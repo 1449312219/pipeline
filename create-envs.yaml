@@ -134,7 +134,7 @@ spec:
       - name: name
         value: uat-reply
       - name: id
-        value: issue$(tasks.notify-auto-test-result-gitea.results.id)
+        value: issue$(tasks.notify-auto-test-result-gitea.results.output)
       - name: expect
         value: agree
     taskSpec:
@@ -185,7 +185,7 @@ spec:
     - name: cmd
       value: createComment
     - name: args
-      value: $(params.repo-full-name) $(tasks.notify-auto-test-result-gitea.results.id) '已部署到UAT环境\n在您测试完成后 需以 /success-uat or /fail-uat 通知部署结果'
+      value: $(params.repo-full-name) $(tasks.notify-auto-test-result-gitea.results.output) '已部署到UAT环境\n在您测试完成后 需以 /success-uat or /fail-uat 通知部署结果'
     workspaces:
     - name: token
       workspace: gitea-user-token
@@ -201,7 +201,7 @@ spec:
       - name: name
         value: uat-reply
       - name: id
-        value: issue$(tasks.notify-auto-test-result-gitea.results.id)
+        value: issue$(tasks.notify-auto-test-result-gitea.results.output)
       - name: expect
         value: success
       - name: waitKeys

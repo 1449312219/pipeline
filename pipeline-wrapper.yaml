@@ -133,7 +133,7 @@ spec:
       value: createComment
     - name: args
       value: |
-        $(params.repo-full-name) $(tasks.version-context.results.issue-id) \
+        $(params.repo-full-name) $(tasks.version-context.results.output) \
         '$(params.notify)'
     workspaces:
     - name: token
