@@ -15,8 +15,15 @@ spec:
   - name: before-env
   - name: env
 
-  - name: pipelinerun-name
-  - name: pipelinerun-spec
+  - name: pipeline-name
+  - name: pipeline-serviceaccountname
+    default: ""
+  - name: pipeline-serviceaccountnames
+    default: "" 
+  - name: pipeline-workspaces
+    default: ""
+  - name: pipeline-params
+    default: ""
 
   - name: notify
     description: 通知内容 (将指定内容写入gitea-comment)
@@ -42,7 +49,7 @@ spec:
     - name: deleteExisting
       value: 'true'
 
-  - name: has-tags
+  - name: params
     runAfter:
     - fetch-repo
     taskSpec:
@@ -52,7 +59,8 @@ spec:
       - name: commit
       - name: pattern
       results:
-      - name: output
+      - name: tag-commit
+      - name: project-claim
       steps:
       - image: 10.1.40.43:5000/alpine/git:1.0.17
         workingDir: $(workspaces.project.path)
@@ -60,7 +68,10 @@ spec:
           ln -sb $HOME/.ssh /root
           git fetch --tags
           git tag -l '$(params.pattern)' --format='%(object)' \
-          | grep $(params.commit) 2>/dev/null | xargs echo -n > $(results.output.path)
+          | grep $(params.commit) 2>/dev/null | xargs echo -n > $(results.tag-commit.path)
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(workspaces.project.claim) > $(results.project-claim.path)
     workspaces:
     - name: project 
       workspace: project 
@@ -77,14 +88,38 @@ spec:
       - name: args
         value:
         - -z
-        - $(tasks.has-tags.results.output)
+        - $(tasks.params.results.tag-commit)
     taskRef:
       name: pipelinerun-apply
     params:
     - name: name
-      value: $(params.pipelinerun-name)
+      value: $(context.pipelineRun.name)-trigger-$(params.pipeline-name)
     - name: spec
-      value: $(params.pipelinerun-spec)
+      value: |
+        pipelineRef:
+          name: $(params.pipeline-name)
+        serviceAccountName: $(params.pipeline-serviceaccountname)
+        serviceAccountNames:
+        $(params.pipeline-serviceaccountnames)
+        workspaces:
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: $(tasks.params.results.project-claim)
+        $(params.pipeline-workspaces)
+        params:
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: repo-full-name
+          value: $(params.repo-full-name)
+        - name: repo-ref
+          value: $(params.repo-ref)
+        - name: version
+          value: $(params.version)
+        - name: before-env
+          value: $(params.before-env)
+        - name: env
+          value: $(params.env)
+        $(params.pipeline-params)
     - name: return-task
       value: fetch-repo
 
