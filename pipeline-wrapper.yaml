@@ -24,16 +24,17 @@ spec:
     default: ""
   - name: pipeline-params
     default: ""
-  - name: pipeline-workspace-subpath-for-proejct
-    description: 适配当前workspace pvc分配形式
 
   - name: notify
     description: 通知内容 (将指定内容写入gitea-comment)
     default: ""
 
+  - name: job-id
+    description: 任务ID,串联起所有子流水线
+
   workspaces:
-  - name: project 
-    description: 项目git根目录, 全局pipelinerun传递, 作为后续步骤的数据来源
+  - name: pipelines
+    description: 由job-id分离各流水线数据目录
   - name: gitea-user-token
 
   tasks:
@@ -42,30 +43,33 @@ spec:
       name: git-clone
     workspaces:
     - name: output
-      workspace: project 
+      workspace: pipelines
     params:
     - name: url
       value: $(params.repo-url)
     - name: revision
       value: $(params.repo-ref)
+    - name: subdirectory
+      value: $(params.job-id)
     - name: deleteExisting
-      value: 'true'
+      value: 'false'
 
   - name: params
     runAfter:
     - fetch-repo
     taskSpec:
-      workspaces:
-      - name: project
       params:
       - name: commit
       - name: pattern
+      - name: project-path
+      workspaces:
+      - name: pipelines
       results:
       - name: tag-commit
-      - name: project-claim
+      - name: pipelines-claim
       steps:
       - image: 10.1.40.43:5000/alpine/git:1.0.17
-        workingDir: $(workspaces.project.path)
+        workingDir: $(workspaces.pipelines.path)/$(params.project-path)
         script: |
           ln -sb $HOME/.ssh /root
           git fetch --tags
@@ -73,15 +77,17 @@ spec:
           | grep $(params.commit) 2>/dev/null | xargs echo -n > $(results.tag-commit.path)
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
-          echo -n $(workspaces.project.claim) > $(results.project-claim.path)
-    workspaces:
-    - name: project 
-      workspace: project 
+          echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
     params:
     - name: commit
       value: $(params.repo-ref)
     - name: pattern
       value: $(params.version)_$(params.env)_pass_$(params.repo-ref)
+    - name: project-path
+      value: $(params.job-id)
+    workspaces:
+    - name: pipelines
+      workspace: pipelines
 
   - name: trigger
     conditions:
@@ -104,10 +110,10 @@ spec:
         serviceAccountNames:
         $(params.pipeline-serviceaccountnames)
         workspaces:
-        - name: workspace
+        - name: project 
           persistentVolumeClaim:
-            claimName: $(tasks.params.results.project-claim)
-          subPath: $(params.pipeline-workspace-subpath-for-proejct)
+            claimName: $(tasks.params.results.pipelines-claim)
+          subPath: $(params.job-id)
         $(params.pipeline-workspaces)
         params:
         - name: repo-url
@@ -124,15 +130,17 @@ spec:
           value: $(params.env)
         $(params.pipeline-params)
     - name: return-task
-      value: fetch-repo
+      value: return
 
   - name: create-tag
     taskRef:
       name: git-tag
     workspaces:
     - name: workspace
-      workspace: project
+      workspace: pipelines
     params:
+    - name: sub-directory
+      value: $(params.job-id)
     - name: tag
       value: $(params.version)_$(params.env)_pass_$(params.repo-ref)
     - name: msg
@@ -157,7 +165,6 @@ spec:
     workspaces:
     - name: token
       workspace: gitea-user-token
-      subPath: token
 
   - name: notify
     taskRef:
@@ -172,4 +179,3 @@ spec:
     workspaces:
     - name: token
       workspace: gitea-user-token
-      subPath: token
