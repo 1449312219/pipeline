@@ -38,6 +38,8 @@ spec:
       image: 10.1.40.43:5000/alpine/git:1.0.17
       script: |
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
+        mkdir -p $CHECKOUT_DIR
+        cd $CHECKOUT_DIR
 
         cleandir() {
           # Delete any existing contents of the repo directory if it exists.
@@ -54,9 +56,20 @@ spec:
           fi
         }
 
+        reuse() {
+          if test -d .git; then
+            commit=$(git show --format=%H | head -n 1)
+            if test $commit == $(params.revision); then
+              exit 0
+            fi
+          fi
+        }
+
         if [[ "$(params.deleteExisting)" == "true" ]] ; then
           cleandir
         fi
+
+        reuse
 
         test -d $HOME/.ssh && ln -s $HOME/.ssh /root/.ssh
 
@@ -64,7 +77,6 @@ spec:
         git config --global user.name "$(params.user)"
 
         # 仅下载指定commit
-        cd $CHECKOUT_DIR
         git init
         git remote add origin $(params.url)
         git fetch origin $(params.revision)
