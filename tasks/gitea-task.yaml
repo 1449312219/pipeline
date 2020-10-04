@@ -5,6 +5,7 @@ metadata:
 spec:
   workspaces:
   - name: token
+    description: 需存在名为token文件, 存储gitea-user-token
     readOnly: true
 
   params:
@@ -53,7 +54,7 @@ spec:
           path=$2
           host=$(params.gitea)
           port=$(params.port)
-          token=$(cat $(workspaces.token.path))
+          token=$(cat $(workspaces.token.path)/token)
           data=$3
         
           echo "curl -X $method http://$host:$port/api/v1$path?access_token=$token" \
