@@ -5,9 +5,13 @@ metadata:
 spec:
   workspaces:
   - name: workspace
-    description: git项目 (含.git目录)
+    description: git项目
 
   params:
+  - name: sub-directory
+    description: 子目录, 含.git目录
+    default: ""
+
   - name: tag
   - name: append
     description: 是否追加随机后缀
@@ -27,7 +31,7 @@ spec:
   steps:
     - name: tag
       image: 10.1.40.43:5000/alpine/git:1.0.17
-      workingDir: $(workspaces.workspace.path)
+      workingDir: $(workspaces.workspace.path)/$(params.sub-directory)
       script: |
         ln -s $HOME/.ssh /root/.ssh
 
