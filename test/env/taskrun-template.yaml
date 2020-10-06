@@ -19,13 +19,13 @@
       params:
       - name: job-id 
         value: $(tasks.params.results.job-id)
-      - name: repo-url
-        value: $(params.repo-url)
       - name: repo-full-name
         value: $(params.repo-full-name)
+      - name: repo-url
+        value: $(params.repo-url)
+      - name: repo-branch
+        value: $(params.repo-branch)
       - name: repo-ref
         value: $(params.repo-ref) 
-      - name: version
-        value: $(params.version)
       - name: env
         value: ${ENV}

@@ -4,10 +4,10 @@ metadata:
   name: ${BRANCH-TYPE}pipeline
 spec:
   params:
-  - name: repo-url
-    description: git仓库URL
   - name: repo-full-name
     description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-url
+    description: git仓库URL
   - name: repo-branch
     description: git仓库分支
   - name: repo-ref
@@ -15,8 +15,6 @@ spec:
   - name: src-root
     description: 代码根目录
     default: 
-  - name: version
-    description: 当前项目版本
 
   tasks:
   - name: params
