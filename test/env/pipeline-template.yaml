@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ${BRANCH-TYPE}pipeline
+spec:
+  params:
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+  - name: src-root
+    description: 代码根目录
+    default: 
+  - name: version
+    description: 当前项目版本
+
+  tasks:
+  - name: params
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(params.job-id) > $(results.job-id.path)
+      params:
+      - name: job-id
+        description: |
+          pipelines内唯一子目录,作为project根目录(伪pvc),为后续步骤的数据来源/结果数据
+      results:
+      - name: job-id
+    params:
+    - name: job-id
+      value: $(context.pipelineRun.name)-$(params.repo-ref)
