@@ -17,3 +17,5 @@ params
       value: "1111"
     - name: src-root
       value: api-gateway
+
+deploy: true

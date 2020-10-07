@@ -18,5 +18,3 @@ params:
     - name: src-root
       value: api-gateway
 
-deploy: true
-deploy: true
