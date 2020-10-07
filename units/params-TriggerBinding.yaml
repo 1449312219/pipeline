@@ -1,0 +1,15 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: params-binding
+spec:
+  params:
+  - name: repo-full-name
+    value: $(body.repository.full_name)
+  - name: repo-url
+    value: $(body.repository.ssh_url)
+  - name: repo-branch
+    value: $(body.branch)
+  - name: repo-ref
+    value: $(body.sha)
+

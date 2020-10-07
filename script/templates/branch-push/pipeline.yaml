@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: ${BRANCH-TYPE}pipeline
+  name: ${BRANCH_TYPE}branch-push
 spec:
   params:
   - name: repo-full-name

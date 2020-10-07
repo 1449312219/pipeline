@@ -1,0 +1,51 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: ${BRANCH_TYPE}branch-push
+spec:
+  serviceAccountName: trigger
+  triggers:
+  - name: pipeline
+    interceptors:
+    - cel:
+        filter: "body.ref.indexOf('refs/heads/') == 0 && body.before != '0000000000000000000000000000000000000000'"
+        overlays:
+        - key: branch
+          expression: "body.ref.replace('refs/heads/','')"
+        - key: sha
+          expression: "body.after"
+    bindings:
+    - ref: params-binding
+    template:
+      name: ${BRANCH_TYPE}branch-push
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: ${BRANCH_TYPE}branch-push
+spec:
+  params:
+  - name: repo-full-name
+  - name: repo-url
+  - name: repo-branch
+  - name: repo-ref
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: ${BRANCH_TYPE}pipeline-$(uid)
+    spec:
+      pipelineRef:
+        name: ${BRANCH_TYPE}branch-push
+      params:
+      - name: repo-full-name
+        value: $(params.repo-full-name)
+      - name: repo-url
+        value: $(params.repo-url)
+      - name: repo-branch
+        value: $(params.repo-branch)
+      - name: repo-ref
+        value: $(params.repo-ref)
+      - name: src-root
+        value: api-gateway

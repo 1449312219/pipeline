@@ -1,15 +1,18 @@
 set -e
 
+TEMP_DIR=templates/branch-push
+ENV_DIR=env
+
 function showTaskRun() {
   local beforeEnv=$before
   local env=$now
   local nextEnv=$next
 
   sed -e 's/${ENV}/'${env}/ \
-      -e 's/${BEFORE-ENV}/'${beforeEnv:-'""'}/ \
-  env/taskrun-template.yaml | awk '{print "  "$0}'
+      -e 's/${BEFORE_ENV}/'${beforeEnv:-'""'}/ \
+  $TEMP_DIR/env-taskrun.yaml | awk '{print "  "$0}'
 
-  cat env/$env/taskrun.yaml | awk 'NR!=1{print "        "$0}'
+  cat $ENV_DIR/$env/taskrun.yaml | awk 'NR!=1{print "        "$0}'
 
   if test -n "${beforeEnv}"; then
     echo "        - name: before-env"
@@ -29,7 +32,8 @@ function showTaskRun() {
 branchType=$1
 shift
 
-cat env/pipeline-template.yaml | sed -e 's/${BRANCH-TYPE}/'${branchType}/
+# pipeline
+cat $TEMP_DIR/pipeline.yaml | sed -e 's/${BRANCH_TYPE}/'${branchType,,**}/
 
 before=
 while test $# -gt 0; do
@@ -43,5 +47,10 @@ while test $# -gt 0; do
 done
 
 echo ---
+echo
 
+# trigger
+cat $TEMP_DIR/trigger.yaml | sed -e 's/${BRANCH_TYPE}/'${branchType,,**}/
 
+echo ---
+echo

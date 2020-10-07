@@ -1,0 +1,119 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: flux-init
+spec:
+  params:
+  - name: repo-url
+    description: 资源项目仓库URL
+  - name: repo-full-name
+    description: 资源项目ID (用以部署deploy-key)
+
+  - name: paths
+    description: 需在资源项目仓库内创建的目录 (用以存放环境配置)
+  - name: namespaces
+    description: 需创建的命名空间 (用以由flux部署环境资源)
+  - name: webhook
+    description: 回调地址 (用以flux部署环境资源成功后回调)
+
+  workspaces:
+  - name: workspace
+    description: 存储yaml仓库内容
+  - name: add
+    description: 存储待修改内容
+  - name: token
+    description: 存储gitea user token (于/token文件)
+
+  tasks:
+  - name: fetch-flux-config-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: workspace
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: master
+    - name: deleteExisting
+      value: 'true'
+
+  - name: create-env-config
+    runAfter:
+    - fetch-flux-config-repo
+    taskRef:
+      name: git-add
+    workspaces:
+    - name: workspace
+      workspace: workspace
+    - name: add
+      workspace: add
+    params:
+    - name: script-params
+      value: $(params.paths)
+    - name: message
+      value: create env configs
+
+  - name: create-ns
+    runAfter:
+    - create-env-config
+    taskRef:
+      name: ns-opt
+    params:
+    - name: opt
+      value: create
+    - name: names
+      value: $(params.namespaces)
+
+  - name: init-flux-env
+    runAfter:
+    - create-ns
+    taskRef:
+      name: flux
+    params:
+    - name: git-url
+      value: $(params.repo-url)
+    - name: webhook
+      value: $(params.webhook)
+    - name: envs
+      value: $(params.namespaces)
+    - name: namespaces
+      value: $(params.namespaces)
+    - name: git-paths
+      value: $(params.paths)
+    - name: http-registry
+      value: 10.1.40.43:5000 
+
+  - name: prepare-deploy-key-args
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          while read env key; do
+            test -n "$env" && echo $(params.project) $env \"$key\" >> $(results.args.path) || true
+          done <<EOF
+          $(params.keys)
+          EOF
+      params:
+      - name: keys
+      - name: project
+      results:
+      - name: args
+    params:
+    - name: keys
+      value: $(tasks.init-flux-env.results.ssh-key) 
+    - name: project
+      value: $(params.repo-full-name)
+
+  - name: init-deploy-key
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: createDeployKey
+    - name: args
+      value: $(tasks.prepare-deploy-key-args.results.args)
+    workspaces:
+    - name: token
+      workspace: token

@@ -1,0 +1,75 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ${BRANCH_TYPE}flux-init
+spec:
+  params:
+  - name: repo-full-name
+    description: git仓库名称
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+
+  tasks:
+  - name: params
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n '$(params.repo-url)' | sed 's/.git$/${MANIFEST_SUFFIX}.git/' \
+          > $(results.repo-url.path)
+
+          function parse() {
+            value=$1
+            echo -n $value | tr /[A-Z]. -[a-z]-
+          }
+
+          parse $(params.repo-full-name)${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
+          parse $(params.repo-branch) > $(results.repo-branch.path)
+      params:
+      - name: repo-url
+      - name: repo-full-name
+      - name: repo-branch
+      results:
+      - name: repo-url
+      - name: repo-full-name
+      - name: repo-branch
+
+  - name: flux-init-apply
+    taskRef:
+      name: pipelinerun-apply
+    params:
+    - name: name
+      value: $(context.pipelineRun.name)-${BRANCH_TYPE}flux-init
+    - name: spec
+      value: |
+        pipelineRef:
+          name: flux-init
+        serviceAccountName: pipeline-git-ssh
+        workspaces:
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: pipeline-all-workspaces-pvc
+          subPath: $(context.pipelineRun.name)-$(params.repo-ref)
+        - name: add
+          configmap:
+            name: release
+        - name: token
+          secret:
+            SecretName: gitea-user-token
+        params:
+        - name: repo-url
+          value: $(tasks.params.results.repo-url)
+        - name: repo-full-name
+          value: $(tasks.params.results.repo-full-name)
+        - name: paths
+          value: |
+            $(tasks.params.results.repo-branch)-${ENV}
+        - name: namespaces
+          value: |
+            $(tasks.params.results.repo-full-name)-$(tasks.params.results.repo-branch)-${ENV}
+        - name: webhook
+          value: ${WEBHOOK}

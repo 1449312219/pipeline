@@ -1,0 +1,47 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: ${BRANCH_TYPE}flux-init
+spec:
+  serviceAccountName: trigger
+  triggers:
+  - name: release-init
+    interceptors:
+    - cel:
+        overlays:
+        - key: branch
+          expression: "body.ref"
+    bindings:
+    - ref: params-binding
+    template:
+      name: ${BRANCH_TYPE}flux-init
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: ${BRANCH_TYPE}flux-init
+spec:
+  params:
+  - name: repo-full-name
+  - name: repo-url
+  - name: repo-branch
+  - name: repo-ref
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: flux-init-$(uid)
+    spec:
+      serviceAccountName: pipeline-git-ssh
+      pipelineRef:
+        name: flux-init
+      params:
+      - name: repo-full-name
+        value: $(params.repo-full-name)
+      - name: repo-url
+        value: $(params.repo-url)
+      - name: repo-branch
+        value: $(params.repo-branch)
+      - name: repo-ref
+        value: $(params.repo-ref)
