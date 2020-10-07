@@ -3,20 +3,25 @@
 #./pipeline-build.sh Release- ci
 
 projectName=test
-
 namespace=${projectName,,*}-pipeline
+
+manifestSuffix="-manifest"
+
+# webhook
+cat templates/deployed-notify/trigger.yaml | addNamespace
+webhook="http://deployed-notify.${namespace}:8080"
+
 function addNamespace() {
   sed -e "/^metadata:/a\  namespace: ${namespace}" -e "/namespace/d"
 }
 
-# branchType env1 env2 env3 (流水线内的环境)
-./branch-push-build.sh | addNamespace
+function branchTypeEnvs() {
+  branchType=$1
+  shift
 
-# webhook
-cat templates/deployed-notify/trigger.yaml | addNamespace
+  # branchType env1 env2 env3 (流水线内的环境)
+  ./branch-push-build.sh $branchType $@ | addNamespace
 
-manifestSuffix="-manifest"
-webhook="http://deployed-notify.${namespace}:8080"
-
-# branchType manifestSuffix webhook env1 env2 env3 (需创建flux的环境)
-./flux-init-build.sh | addNamespace
+  # branchType manifestSuffix webhook env1 env2 env3
+  ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace
+}
