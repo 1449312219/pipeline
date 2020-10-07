@@ -6,15 +6,26 @@ spec:
   serviceAccountName: trigger
   triggers:
   - name: release-init
-    interceptors:
-    - cel:
-        overlays:
-        - key: branch
-          expression: "body.ref"
     bindings:
-    - ref: params-binding
+    - ref: flux-init-params-binding
     template:
       name: ${BRANCH_TYPE}flux-init
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: flux-init-params-binding
+spec:
+  params:
+  - name: repo-full-name
+    value: $(body.repository.full_name)
+  - name: repo-url
+    value: $(body.repository.ssh_url)
+  - name: repo-branch
+    value: $(body.ref)
+  - name: repo-ref
+    value: $(body.sha)
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1

@@ -12,12 +12,26 @@ spec:
         overlays:
         - key: branch
           expression: "body.ref.replace('refs/heads/','')"
-        - key: sha
-          expression: "body.after"
     bindings:
-    - ref: params-binding
+    - ref: branch-push-params-binding
     template:
       name: ${BRANCH_TYPE}branch-push
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: branch-push-params-binding
+spec:
+  params:
+  - name: repo-full-name
+    value: $(body.repository.full_name)
+  - name: repo-url
+    value: $(body.repository.ssh_url)
+  - name: repo-branch
+    value: $(body.branch)
+  - name: repo-ref
+    value: $(body.after)
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
