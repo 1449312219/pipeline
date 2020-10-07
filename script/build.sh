@@ -2,7 +2,9 @@
 #./init-build.sh $@
 #./pipeline-build.sh Release- ci
 
-projectName=test
+projectName=$1
+shift
+
 namespace=${projectName,,*}-pipeline
 
 manifestSuffix="-manifest"
@@ -25,3 +27,12 @@ function branchTypeEnvs() {
   # branchType manifestSuffix webhook env1 env2 env3
   ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace
 }
+
+
+_IFS=$IFS
+for config in $@; do
+  branchType=${config%%:*}
+
+  IFS=,; envs=(${config#*:}); IFS=${_IFS}
+  branchTypeEnvs $branchType ${envs[@]}
+done
