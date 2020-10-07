@@ -9,13 +9,13 @@ namespace=${projectName,,*}-pipeline
 
 manifestSuffix="-manifest"
 
-# webhook
-cat templates/deployed-notify/trigger.yaml | addNamespace
-webhook="http://deployed-notify.${namespace}:8080"
-
 function addNamespace() {
   sed -e "/^metadata:/a\  namespace: ${namespace}" -e "/namespace/d"
 }
+
+# webhook
+cat templates/deployed-notify/trigger.yaml | addNamespace
+webhook="http://deployed-notify.${namespace}:8080"
 
 function branchTypeEnvs() {
   branchType=$1

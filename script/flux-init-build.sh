@@ -22,7 +22,7 @@ function parse() {
 
 # -------------------------------------------------------------------- #
 
-export BRANCH_TYPE=$1
+export BRANCH_TYPE=${1,,*}
 shift
 
 export MANIFEST_SUFFIX=$1
