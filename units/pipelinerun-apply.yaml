@@ -57,10 +57,17 @@ spec:
 
         i=0
         while true; do
-          if test $(kubectl get pipelinerun $(params.name) -o jsonpath={.status.conditions[0].status}) != 'Unknown'; then
+          status=$(kubectl get pipelinerun $(params.name) -o jsonpath={.status.conditions[0].status})
+
+          if test ${status} == 'True'; then
             break
           fi
 
+          if test ${status} == 'False'; then
+            exit 1
+          fi
+
+          # Unknown
           if test $i -ge $(params.max-count); then
             exit 1
           fi
