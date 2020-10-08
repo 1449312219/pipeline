@@ -1,5 +1,6 @@
 - name: ${ENV}
   taskRef:
+    kind: ClusterTask
     name: pipelinerun-apply
   params:
   - name: name
