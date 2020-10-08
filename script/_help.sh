@@ -22,3 +22,8 @@ function addNamespace() {
   local namespace=${1,,*}
   sed -e "/^metadata:/a\  namespace: ${namespace}" -e "/namespace/d"
 }
+
+function printSplit() {
+  echo ---
+  echo
+}

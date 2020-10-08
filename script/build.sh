@@ -50,4 +50,7 @@ done
 
 # pipeline-wrapper
 cat ./pipeline-wrapper.yaml | addNamespace ${namespace}
+printSplit
 
+# conditions
+cat ./test-cond.yaml | addNamespace ${namespace} 
