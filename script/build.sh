@@ -42,3 +42,8 @@ for config in $@; do
   IFS=,; envs=(${config#*:}); IFS=${_IFS}
   branchTypeEnvs $branchType ${envs[@]}
 done
+
+
+# security
+./security-build.sh | addNamespace ${namespace}
+
