@@ -21,6 +21,7 @@ manifestSuffix="-manifest"
 
 # webhook
 cat templates/deployed-notify/trigger.yaml | addNamespace ${namespace}
+printSplit
 webhook="http://deployed-notify.${namespace}:8080"
 
 function branchTypeEnvs() {

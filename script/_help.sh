@@ -20,7 +20,8 @@ function parsePlaceHolder() {
 
 function addNamespace() {
   local namespace=${1,,*}
-  sed -e "/^metadata:/a\  namespace: ${namespace}" -e "/namespace/d"
+  sed -e "/^metadata:/ a\  namespace: ${namespace}" \
+      -e "/^metadata:/,/^[^ ]*/ {/namespace/ d}"
 }
 
 function printSplit() {
