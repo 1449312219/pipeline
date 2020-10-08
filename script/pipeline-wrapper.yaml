@@ -101,6 +101,7 @@ spec:
         - -z
         - $(tasks.params.results.tag-commit)
     taskRef:
+      kind: ClusterTask
       name: pipelinerun-apply
     params:
     - name: name
@@ -137,6 +138,7 @@ spec:
 
   - name: create-tag
     taskRef:
+      kind: ClusterTask
       name: git-tag
     workspaces:
     - name: workspace
