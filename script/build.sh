@@ -2,6 +2,8 @@
 #./init-build.sh $@
 #./pipeline-build.sh Release- ci
 
+. _help.sh
+
 projectName=$1
 shift
 
@@ -9,12 +11,8 @@ namespace=${projectName,,*}-pipeline
 
 manifestSuffix="-manifest"
 
-function addNamespace() {
-  sed -e "/^metadata:/a\  namespace: ${namespace}" -e "/namespace/d"
-}
-
 # webhook
-cat templates/deployed-notify/trigger.yaml | addNamespace
+cat templates/deployed-notify/trigger.yaml | addNamespace ${namespace}
 webhook="http://deployed-notify.${namespace}:8080"
 
 function branchTypeEnvs() {
@@ -22,10 +20,10 @@ function branchTypeEnvs() {
   shift
 
   # branchType env1 env2 env3 (流水线内的环境)
-  ./branch-push-build.sh $branchType $@ | addNamespace
+  ./branch-push-build.sh $branchType $@ | addNamespace ${namespace}
 
   # branchType manifestSuffix webhook env1 env2 env3
-  ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace
+  ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
 }
 
 

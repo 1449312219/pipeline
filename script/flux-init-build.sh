@@ -1,26 +1,6 @@
 set -e
 
-# 替换数组元素
-# 1.数组元素内容为单行字符串
-# 2.模板内,一行仅可指定一数组变量
-function a(){
-  line=$1
-
-  key=$(echo "'$line'" | sed -r 's/.*\$\{([A-Z_]+)}.*/\1/')
-
-  for v in $(eval echo \${$key}); do
-    echo "$line" | sed -r "s/\\$\{[^}]+}/$v/"
-  done
-}
-export -f a
-
-function parse() {
-  file=$1
-  awk '/\$\{[A-Z_]+}/{gsub("'"'"'","'"'\\\''"'"); L="'\''"$0"'\''"; system("a "L); next} {print}' \
-  $file
-}
-
-# -------------------------------------------------------------------- #
+. _help.sh
 
 export BRANCH_TYPE=${1,,*}
 shift
@@ -48,13 +28,13 @@ export ENV="${envs[@]}"
 TEMP_DIR=templates/flux-init
 
 # init
-parse $TEMP_DIR/pipeline.yaml
+parsePlaceHolder $TEMP_DIR/pipeline.yaml
 
 echo ---
 echo
 
 # trigger
-parse $TEMP_DIR/trigger.yaml
+parsePlaceHolder $TEMP_DIR/trigger.yaml
 
 echo ---
 echo
