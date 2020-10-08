@@ -8,6 +8,14 @@ projectName=$1
 shift
 
 namespace=${projectName,,*}-pipeline
+cat <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${namespace}
+---
+
+EOF
 
 manifestSuffix="-manifest"
 
