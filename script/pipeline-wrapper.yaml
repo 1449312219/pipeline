@@ -1,0 +1,183 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-wrapper
+spec:
+  params:
+  - name: job-id
+    description: 任务ID,串联起所有子流水线
+
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+
+  - name: env
+  - name: before-env
+    default: ""
+
+  - name: pipeline-name
+  - name: pipeline-serviceaccountname
+    default: ""
+  - name: pipeline-serviceaccountnames
+    default: "" 
+  - name: pipeline-workspaces
+    default: ""
+  - name: pipeline-params
+    default: ""
+
+  - name: notify
+    description: 通知内容 (将指定内容写入gitea-comment)
+    default: ""
+
+  workspaces:
+  - name: pipelines
+    description: 由job-id分离各流水线数据目录
+  - name: gitea-user-token
+
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: pipelines
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.repo-ref)
+    - name: subdirectory
+      value: $(params.job-id)
+    - name: deleteExisting
+      value: 'false'
+
+  - name: params
+    runAfter:
+    - fetch-repo
+    taskSpec:
+      params:
+      - name: commit
+      - name: pattern
+      - name: project-path
+      workspaces:
+      - name: pipelines
+      results:
+      - name: tag-commit
+      - name: pipelines-claim
+      steps:
+      - image: 10.1.40.43:5000/alpine/git:1.0.17
+        workingDir: $(workspaces.pipelines.path)/$(params.project-path)
+        script: |
+          ln -sb $HOME/.ssh /root
+          git fetch --tags
+          git tag -l '$(params.pattern)' --format='%(object)' \
+          | grep $(params.commit) 2>/dev/null | xargs echo -n > $(results.tag-commit.path)
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
+    params:
+    - name: commit
+      value: $(params.repo-ref)
+    - name: pattern
+      value: $(params.repo-branch)_$(params.env)_pass_$(params.repo-ref)
+    - name: project-path
+      value: $(params.job-id)
+    workspaces:
+    - name: pipelines
+      workspace: pipelines
+
+  - name: trigger
+    conditions:
+    - conditionRef: test
+      params:
+      - name: args
+        value:
+        - -z
+        - $(tasks.params.results.tag-commit)
+    taskRef:
+      name: pipelinerun-apply
+    params:
+    - name: name
+      value: $(context.pipelineRun.name)-trigger-$(params.pipeline-name)
+    - name: spec
+      value: |
+        pipelineRef:
+          name: $(params.pipeline-name)
+        serviceAccountName: $(params.pipeline-serviceaccountname)
+        serviceAccountNames:
+        $(params.pipeline-serviceaccountnames)
+        workspaces:
+        - name: project 
+          persistentVolumeClaim:
+            claimName: $(tasks.params.results.pipelines-claim)
+          subPath: $(params.job-id)
+        $(params.pipeline-workspaces)
+        params:
+        - name: repo-full-name
+          value: $(params.repo-full-name)
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: repo-branch
+          value: $(params.repo-branch)
+        - name: repo-ref
+          value: $(params.repo-ref)
+        - name: env
+          value: $(params.env)
+        - name: before-env
+          value: $(params.before-env)
+        $(params.pipeline-params)
+    - name: return-task
+      value: return
+
+  - name: create-tag
+    taskRef:
+      name: git-tag
+    workspaces:
+    - name: workspace
+      workspace: pipelines
+    params:
+    - name: sub-directory
+      value: $(params.job-id)
+    - name: tag
+      value: $(params.repo-branch)_$(params.env)_pass_$(params.repo-ref)
+    - name: msg
+      value: $(tasks.trigger.results.output)
+
+  - name: version-context
+    runAfter:
+    - create-tag 
+    conditions:
+    - conditionRef: test
+      params:
+      - name: args
+        value:
+        - $(params.notify)
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: getIssueId
+    - name: args
+      value: root/test dddd
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+
+  - name: notify
+    taskRef:
+      name: gitea
+    params:
+    - name: cmd
+      value: createComment
+    - name: args
+      value: |
+        $(params.repo-full-name) $(tasks.version-context.results.output) \
+        '$(params.notify)'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token

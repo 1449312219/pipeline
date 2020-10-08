@@ -47,3 +47,7 @@ done
 # security
 ./security-build.sh | addNamespace ${namespace}
 
+
+# pipeline-wrapper
+cat ./pipeline-wrapper.yaml | addNamespace ${namespace}
+
