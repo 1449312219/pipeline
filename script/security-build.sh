@@ -1,4 +1,8 @@
-cat templates/security/trigger.yaml
+. _help.sh
 
-echo ---
-echo 
+TEMP_DIR=templates/security
+
+cd $TEMP_DIR
+
+cat ./trigger.yaml
+printSplit

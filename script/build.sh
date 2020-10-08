@@ -44,13 +44,16 @@ for config in $@; do
 done
 
 
+# basics
+for file in $(find basics/ -name '[^_]*.yaml'); do
+  cat $file | addNamespace ${namespace}
+  printSplit
+done
+
+
 # security
 ./security-build.sh | addNamespace ${namespace}
 
-
-# pipeline-wrapper
-cat ./pipeline-wrapper.yaml | addNamespace ${namespace}
-printSplit
 
 # conditions
 cat ./test-cond.yaml | addNamespace ${namespace} 

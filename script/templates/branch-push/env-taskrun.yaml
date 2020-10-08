@@ -9,7 +9,7 @@
     value: |
       pipelineRef:
         name: pipeline-wrapper
-      serviceAccountName: pipeline-git-ssh
+      serviceAccountName: pipeline
       workspaces:
       - name: pipelines
         persistentVolumeClaim:
