@@ -48,7 +48,7 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: ${BRANCH_TYPE}branch-push-$(uid)
+      name: ${BRANCH_TYPE}bp-$(uid)
     spec:
       pipelineRef:
         name: ${BRANCH_TYPE}branch-push

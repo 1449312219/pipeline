@@ -4,7 +4,7 @@
     name: pipelinerun-apply
   params:
   - name: name
-    value: $(context.pipelineRun.name)-pipeline-wrapper-${ENV}
+    value: $(context.pipelineRun.name)-pw-${ENV}
   - name: spec
     value: |
       pipelineRef:
