@@ -7,7 +7,7 @@
 projectName=$1
 shift
 
-namespace=${projectName,,*}-pipeline
+namespace=$(formatToDNS ${projectName})-pipeline
 cat <<EOF
 apiVersion: v1
 kind: Namespace
@@ -57,7 +57,7 @@ done
 
 
 # pv
-cat templates/pv.yaml | addNamespace ${namespace} 
+cat templates/pv.yaml | PV_SUFFIX=${namespace} parsePlaceHolder 
 printSplit
 
 

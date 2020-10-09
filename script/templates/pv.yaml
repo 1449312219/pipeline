@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pipeline-all-workspaces-pv-${PROJECT_NAME}
+  name: pipeline-all-workspaces-pv-${PV_SUFFIX}
   labels:
     purpose: pipeline-all-workspaces
 spec:
   hostPath: 
-    path: /tmp/path/${PROJECT_NAME}
+    path: /tmp/path/${PV_SUFFIX}
     type: DirectoryOrCreate
   capacity:
     storage: 8Gi
@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pipeline-mvn-repo-pv-${PROJECT_NAME}
+  name: pipeline-mvn-repo-pv-${PV_SUFFIX}
   labels:
     purpose: pipeline-mvn-repo
 spec:

@@ -24,6 +24,11 @@ function addNamespace() {
       -e "/^metadata:/,/^[^ ]{2}.+$/ {/  namespace:/ d}"
 }
 
+function formatToDNS() {
+  local value=$1
+  echo $value | tr /[A-Z] .[a-z]
+}
+
 function printSplit() {
   echo ---
   echo
