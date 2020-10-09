@@ -56,5 +56,10 @@ done
 ./security-build.sh | addNamespace ${namespace}
 
 
+# pv
+cat templates/pv.yaml | addNamespace ${namespace} 
+printSplit
+
+
 # conditions
 cat ./test-cond.yaml | addNamespace ${namespace} 

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pipeline-all-workspaces-pvc
+spec:
+  selector:
+    matchLabels:
+      purpose: pipeline-all-workspaces
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pipeline-mvn-repo-pvc
+spec:
+  selector:
+    matchLabels:
+      purpose: pipeline-mvn-repo
+  volumeName: pipeline-mvn-repo-pv
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  volumeMode: Filesystem
