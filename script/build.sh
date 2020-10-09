@@ -33,6 +33,9 @@ function branchTypeEnvs() {
 
   # branchType manifestSuffix webhook env1 env2 env3
   ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
+
+  # env1 env2 env3
+  ./env-build.sh $@ | addNamespace ${namespace}
 }
 
 
