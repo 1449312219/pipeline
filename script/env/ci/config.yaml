@@ -2,7 +2,7 @@ params:
 - name: notify
   value: ddddddddddddddddddddddddddd "dddd" dddd
 - name: pipeline-name
-  value: pipeline-ci
+  value: ci
 - name: pipeline-workspaces
   value: |
     - name: mvn-settings

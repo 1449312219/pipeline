@@ -18,7 +18,7 @@ export ENV="$@"
 ENV_DIR=env
 declare -a envs
 for i in $ENV; do
-  if grep "^deploy: true$" 1>/dev/null 2>&1 $ENV_DIR/$i/taskrun.yaml; then
+  if grep "^deploy: true$" 1>/dev/null 2>&1 $ENV_DIR/$i/config.yaml; then
     envs+=($i)
   fi
 done
