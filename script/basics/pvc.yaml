@@ -22,7 +22,6 @@ spec:
   selector:
     matchLabels:
       purpose: pipeline-mvn-repo
-  volumeName: pipeline-mvn-repo-pv
   accessModes:
   - ReadWriteMany
   resources:
