@@ -33,19 +33,25 @@ function branchTypeEnvs() {
 
   # branchType manifestSuffix webhook env1 env2 env3
   ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
-
-  # env1 env2 env3
-  ./env-build.sh $@ | addNamespace ${namespace}
 }
 
 
+declare -A allEnvs
 _IFS=$IFS
 for config in $@; do
   branchType=${config%%:*}
 
   IFS=,; envs=(${config#*:}); IFS=${_IFS}
   branchTypeEnvs $branchType ${envs[@]}
+  
+  for env in ${envs[@]}; do
+    allEnvs[$env]=$env
+  done
 done
+
+
+# env1 env2 env3
+./env-build.sh ${allEnvs[@]} | addNamespace ${namespace}
 
 
 # basics
