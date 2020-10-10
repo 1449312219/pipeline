@@ -35,7 +35,14 @@ spec:
 
       mkdir /tmp -p
 
-      for i in $(find . -name Dockerfile -type f); do
+      files=$(find . -name Dockerfile -type f)
+
+      if test -z "$files"; then
+        echo no Dockerfile
+        exit 1
+      fi
+
+      for i in $files; do
         dir=$(dirname $i)
 
         project=$(basename $dir)
