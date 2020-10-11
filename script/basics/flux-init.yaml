@@ -27,6 +27,7 @@ spec:
   tasks:
   - name: fetch-flux-config-repo
     taskRef:
+      kind: ClusterTask
       name: git-clone
     workspaces:
     - name: output
@@ -43,6 +44,7 @@ spec:
     runAfter:
     - fetch-flux-config-repo
     taskRef:
+      kind: ClusterTask
       name: git-add
     workspaces:
     - name: workspace
@@ -59,6 +61,7 @@ spec:
     runAfter:
     - create-env-config
     taskRef:
+      kind: ClusterTask
       name: ns-opt
     params:
     - name: opt
@@ -70,6 +73,7 @@ spec:
     runAfter:
     - create-ns
     taskRef:
+      kind: ClusterTask
       name: flux
     params:
     - name: git-url
@@ -108,6 +112,7 @@ spec:
 
   - name: init-deploy-key
     taskRef:
+      kind: ClusterTask
       name: gitea
     params:
     - name: cmd

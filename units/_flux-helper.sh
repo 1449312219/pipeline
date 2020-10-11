@@ -4,7 +4,7 @@ cd /home/vagrant/share/k8s/flux
 
 cat > ${pwd}/flux.yaml <<EOF
 apiVersion: tekton.dev/v1beta1
-kind: Task
+kind: ClusterTask
 metadata:
   name: flux
 spec:
