@@ -25,9 +25,9 @@ done
 export ENV="${envs[@]}"
 
 
-TEMP_DIR=templates/flux-init
+TEMP_DIR=templates/branch-created
 
-# init
+# pipeline
 parsePlaceHolder $TEMP_DIR/pipeline.yaml
 printSplit
 

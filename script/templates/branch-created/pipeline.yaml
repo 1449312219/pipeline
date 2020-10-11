@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: ${BRANCH_TYPE}flux-init
+  name: ${BRANCH_TYPE}branch-created
 spec:
   params:
   - name: repo-full-name
@@ -24,7 +24,7 @@ spec:
 
           function parse() {
             value=$1
-            echo -n $value | tr /[A-Z]. -[a-z]-
+            echo -n $value | tr /[A-Z] .[a-z]
           }
 
           parse $(params.repo-full-name)${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
@@ -49,7 +49,7 @@ spec:
       value: |
         pipelineRef:
           name: flux-init
-        serviceAccountName: pipeline-git-ssh
+        serviceAccountName: ${SERVICE_ACCOUNT_NAME}
         workspaces:
         - name: workspace
           persistentVolumeClaim:

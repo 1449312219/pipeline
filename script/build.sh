@@ -1,7 +1,3 @@
-#./pipeline-build.sh $@
-#./init-build.sh $@
-#./pipeline-build.sh Release- ci
-
 . _help.sh
 
 projectName=$1
@@ -32,7 +28,7 @@ function branchTypeEnvs() {
   ./branch-push-build.sh $branchType $@ | addNamespace ${namespace}
 
   # branchType manifestSuffix webhook env1 env2 env3
-  ./flux-init-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
+  ./branch-created-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
 }
 
 

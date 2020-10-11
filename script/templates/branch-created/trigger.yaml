@@ -1,21 +1,21 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: ${BRANCH_TYPE}flux-init
+  name: ${BRANCH_TYPE}branch-created
 spec:
   serviceAccountName: trigger
   triggers:
-  - name: release-init
+  - name: branch-created
     bindings:
-    - ref: flux-init-params-binding
+    - ref: branch-created-params-binding
     template:
-      name: ${BRANCH_TYPE}flux-init
+      name: ${BRANCH_TYPE}branch-created
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: flux-init-params-binding
+  name: branch-created-params-binding
 spec:
   params:
   - name: repo-full-name
@@ -31,7 +31,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: ${BRANCH_TYPE}flux-init
+  name: ${BRANCH_TYPE}branch-created
 spec:
   params:
   - name: repo-full-name
@@ -42,11 +42,11 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: flux-init-$(uid)
+      name: ${BRANCH_TYPE}branch-created-$(uid)
     spec:
-      serviceAccountName: pipeline-git-ssh
       pipelineRef:
-        name: flux-init
+        name: ${BRANCH_TYPE}branch-created
+      serviceAccountName: pipeline
       params:
       - name: repo-full-name
         value: $(params.repo-full-name)
