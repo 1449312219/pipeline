@@ -47,6 +47,8 @@ spec:
       - name: output
         mountPath: /volumes/output
       script: |
+        set -o pipefail
+
         export PATH=$PATH:/volumes/output
 
         function url() {
