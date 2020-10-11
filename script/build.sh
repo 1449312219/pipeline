@@ -28,7 +28,7 @@ function branchTypeEnvs() {
   ./branch-push-build.sh $branchType $@ | addNamespace ${namespace}
 
   # branchType manifestSuffix webhook env1 env2 env3
-  ./branch-created-build.sh $branchType manifestSuffix webhook $@ | addNamespace ${namespace}
+  ./branch-created-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
 }
 
 

@@ -1,5 +1,5 @@
 # 替换数组元素
-# 1.数组元素内容为单行字符串
+# 1.数组元素内容为单行字符串, 值不可含'|'
 # 2.模板内,一行仅可指定一数组变量
 function __replace(){
   line=$1
@@ -7,7 +7,7 @@ function __replace(){
   key=$(echo "'$line'" | sed -r 's/.*\$\{([A-Z_]+)}.*/\1/')
 
   for v in $(eval echo \${$key}); do
-    echo "$line" | sed -r "s/\\$\{[^}]+}/$v/"
+    echo "$line" | sed -r "s|\\$\{[^}]+}|$v|"
   done
 }
 export -f __replace
