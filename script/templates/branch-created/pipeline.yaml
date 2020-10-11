@@ -37,6 +37,13 @@ spec:
       - name: repo-url
       - name: repo-full-name
       - name: repo-branch
+    params:
+    - name: repo-url
+      value: $(params.repo-url)
+    - name: repo-full-name
+      value: $(params.repo-full-name)
+    - name: repo-branch
+      value: $(params.repo-branch)
 
   - name: flux-init-apply
     taskRef:
