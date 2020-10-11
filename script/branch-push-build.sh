@@ -1,3 +1,5 @@
+. _help.sh
+
 set -e
 
 TEMP_DIR=templates/branch-push
@@ -12,7 +14,7 @@ function showTaskRun() {
       -e 's/${BEFORE_ENV}/'${beforeEnv:-'""'}/ \
   $TEMP_DIR/env-taskrun.yaml | awk '{print "  "$0}'
 
-  cat $ENV_DIR/$env/config.yaml | awk 'NR!=1{print "        "$0}'
+  cat $ENV_DIR/$env/config.yaml | printYamlContent params | awk '{print "        "$0}'
 
   if test -n "${beforeEnv}"; then
     echo "        - name: before-env"

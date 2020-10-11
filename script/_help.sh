@@ -33,3 +33,11 @@ function printSplit() {
   echo ---
   echo
 }
+
+function printYamlContent() {
+  key=$1
+  sed -nr "/^${key}:/,/^[^- ].*$/ {  \
+    /^${key}: *[^| ]+ *$/{  s/.*: *([^ ]*) */\1/p;q };  \
+    /^[- ]/p;  \
+  }"
+}

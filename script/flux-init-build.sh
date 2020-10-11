@@ -18,7 +18,7 @@ export ENV="$@"
 ENV_DIR=env
 declare -a envs
 for i in $ENV; do
-  if grep "^deploy: true$" 1>/dev/null 2>&1 $ENV_DIR/$i/config.yaml; then
+  if test "$(cat $ENV_DIR/$i/config.yaml | printYamlContent deploy)" == "true"; then
     envs+=($i)
   fi
 done
@@ -29,12 +29,9 @@ TEMP_DIR=templates/flux-init
 
 # init
 parsePlaceHolder $TEMP_DIR/pipeline.yaml
+printSplit
 
-echo ---
-echo
 
 # trigger
 parsePlaceHolder $TEMP_DIR/trigger.yaml
-
-echo ---
-echo
+printSplit
