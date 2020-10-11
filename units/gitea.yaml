@@ -9,10 +9,9 @@ spec:
     readOnly: true
 
   params:
-    - name: host
-      default: gitea-gitea-http
-    - name: port
-      default: "3000"
+    - name: git-server
+      description: git server host
+      default: "http://gitea-gitea-http:3000"
 
     - name: cmd
       description: createDeployKey / createIssue / createComment
@@ -54,12 +53,11 @@ spec:
         function url() {
           method=$1
           path=$2
-          host=$(params.host)
-          port=$(params.port)
+          server=$(params.git-server)
           token=$(cat $(workspaces.token.path)/token)
           data=$3
         
-          echo "curl -X $method http://$host:$port/api/v1$path?access_token=$token" \
+          echo "curl -X $method $server/api/v1$path?access_token=$token" \
                 -H \"accept: application/json\" -H \"Content-Type: application/json\" \
                 -d \'$data\' \
                 -f

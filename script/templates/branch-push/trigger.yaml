@@ -12,6 +12,9 @@ spec:
         overlays:
         - key: branch
           expression: "body.ref.replace('refs/heads/','')"
+        - key: git-server
+          # http://localhost:30280/root/test -> http://localhost:30280
+          expression: "body.repository.html_url.substring(0, body.repository.html_url.indexOf('/',8))"
     bindings:
     - ref: branch-push-params-binding
     template:
@@ -32,6 +35,8 @@ spec:
     value: $(body.branch)
   - name: repo-ref
     value: $(body.after)
+  - name: git-server
+    value: $(body.git-server)
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
@@ -44,6 +49,7 @@ spec:
   - name: repo-url
   - name: repo-branch
   - name: repo-ref
+  - name: git-server
   resourcetemplates:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
@@ -64,3 +70,5 @@ spec:
         value: $(params.repo-ref)
       - name: src-root
         value: api-gateway
+      - name: git-server
+        value: $(params.git-server)

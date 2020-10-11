@@ -12,6 +12,8 @@ spec:
     description: git仓库分支
   - name: repo-ref
     description: git仓库SHA
+  - name: git-server
+    description: git server host (如:http://localhost:30280)
   - name: src-root
     description: 代码根目录
     default: 
