@@ -9,7 +9,7 @@ spec:
     readOnly: true
 
   params:
-    - name: gitea
+    - name: host
       default: gitea-gitea-http
     - name: port
       default: "3000"
@@ -54,7 +54,7 @@ spec:
         function url() {
           method=$1
           path=$2
-          host=$(params.gitea)
+          host=$(params.host)
           port=$(params.port)
           token=$(cat $(workspaces.token.path)/token)
           data=$3
