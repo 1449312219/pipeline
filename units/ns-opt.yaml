@@ -25,6 +25,8 @@ spec:
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
 
 
-        for name in $(params.names); do
+        names='$(params.names)'
+
+        for name in $names; do
           $kubectl $(params.opt) ns $name
         done
