@@ -39,8 +39,8 @@ function parsePlaceHolder() {
 
 function addNamespace() {
   local namespace=${1,,*}
-  sed -e "/^metadata:/ a\  namespace: ${namespace}" \
-      -e "/^metadata:/,/^[^ ]{2}.+$/ {/  namespace:/ d}"
+  sed -r -e "/^metadata:/ a\  namespace: ${namespace}" \
+         -e "/^metadata:/,/^[^ ]{2}.+$/ {/  namespace:/ d}"
 }
 
 function formatToDNS() {
