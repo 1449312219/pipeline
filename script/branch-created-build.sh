@@ -3,6 +3,9 @@
 export BRANCH_TYPE=${1,,*}
 shift
 
+export NAMESPACE_PREFIX=$1
+shift
+
 export MANIFEST_SUFFIX=$1
 shift
 

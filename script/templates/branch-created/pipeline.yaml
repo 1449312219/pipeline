@@ -56,7 +56,7 @@ spec:
       value: |
         pipelineRef:
           name: flux-init
-        serviceAccountName: ${SERVICE_ACCOUNT_NAME}
+        serviceAccountName: pipeline
         workspaces:
         - name: workspace
           persistentVolumeClaim:
@@ -78,6 +78,6 @@ spec:
             $(tasks.params.results.repo-branch)-${ENV}
         - name: namespaces
           value: |
-            $(tasks.params.results.repo-full-name)-$(tasks.params.results.repo-branch)-${ENV}
+            ${NAMESPACE_PREFIX}$(tasks.params.results.repo-branch)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
