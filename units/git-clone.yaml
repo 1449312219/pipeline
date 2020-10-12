@@ -82,6 +82,12 @@ spec:
         git fetch origin $(params.revision)
         git reset --hard FETCH_HEAD
 
+        # 设置upstream
+        git fetch --tag
+        set +e
+        git branch --set-upstream-to=origin/$(params.revision) master
+        set -e       
+
         # git clone $(params.url) $CHECKOUT_DIR \
         #  -b $(params.revision) --single-branch --depth $(params.depth)
 

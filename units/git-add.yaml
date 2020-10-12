@@ -47,4 +47,4 @@ spec:
         git add -A .
         git commit -m "$(params.message)"
 
-        git push
+        git push origin
