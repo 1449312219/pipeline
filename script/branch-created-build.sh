@@ -1,5 +1,3 @@
-set -e
-
 . _help.sh
 
 export BRANCH_TYPE=${1,,*}

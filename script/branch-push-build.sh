@@ -1,7 +1,5 @@
 . _help.sh
 
-set -e
-
 TEMP_DIR=templates/branch-push
 ENV_DIR=env
 
