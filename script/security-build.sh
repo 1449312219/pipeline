@@ -1,8 +1,5 @@
 . _help.sh
 
-export NAMESPACE_PREFIX=$1
-shift
-
 export NAMESPACE=$1
 
 

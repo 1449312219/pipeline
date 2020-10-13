@@ -78,6 +78,6 @@ spec:
             $(tasks.params.results.repo-branch)-${ENV}
         - name: namespaces
           value: |
-            ${NAMESPACE_PREFIX}$(tasks.params.results.repo-branch)-${ENV}
+            $(tasks.params.results.repo-full-name)-$(tasks.params.results.repo-branch)-${ENV}
         - name: webhook
           value: ${WEBHOOK}

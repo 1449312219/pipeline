@@ -27,8 +27,8 @@ function branchTypeEnvs() {
   # branchType env1 env2 env3 (流水线内的环境)
   ./branch-push-build.sh $branchType $@ | addNamespace ${namespace}
 
-  # branchType namespacePrefix manifestSuffix webhook env1 env2 env3
-  ./branch-created-build.sh $branchType "${namespace}-" $manifestSuffix $webhook $@ | addNamespace ${namespace}
+  # branchType manifestSuffix webhook env1 env2 env3
+  ./branch-created-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
 }
 
 
@@ -58,8 +58,8 @@ done
 
 
 # security
-# namespacePrefix namespace
-./security-build.sh "${namespace}-" ${namespace} | addNamespace ${namespace}
+# namespace
+./security-build.sh ${namespace} | addNamespace ${namespace}
 
 
 # pv

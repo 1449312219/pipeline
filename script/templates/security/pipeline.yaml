@@ -36,8 +36,6 @@ rules:
   - ''
   resources:
   - namespaces
-  resourceNames:
-  - ${NAMESPACE_PREFIX}*
   verbs:
   - create
 ---
@@ -52,5 +50,5 @@ roleRef:
   name: branch-created
 subjects:
 - kind: ServiceAccount
-  name: tekton-triggers-controller
+  name: pipeline
   namespace: ${NAMESPACE}
