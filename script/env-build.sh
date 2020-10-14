@@ -5,7 +5,7 @@ ENV_DIR=env
 function printEnvYamls() {
   local env=$1
 
-  for file in $(find ${ENV_DIR}/${env} -name '[^_]*.yaml' -! -name 'config.yaml' -type f); do
+  for file in $(findManifestPaths ${ENV_DIR}/${env} "-! -name config.yaml"); do
     cat $file
     printSplit
   done

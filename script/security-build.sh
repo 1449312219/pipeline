@@ -5,7 +5,7 @@ export NAMESPACE=$1
 
 TEMP_DIR=templates/security
 
-for file in $(find ${TEMP_DIR} -name '[^_]*.yaml' -type f); do
+for file in $(findManifestPaths ${TEMP_DIR}); do
   parsePlaceHolder $file
   printSplit 
 done

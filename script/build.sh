@@ -51,7 +51,7 @@ done
 
 
 # basics
-for file in $(find basics/ -name '[^_]*.yaml'); do
+for file in $(findManifestPaths basics/); do
   cat $file | addNamespace ${namespace}
   printSplit
 done

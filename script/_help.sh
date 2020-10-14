@@ -54,9 +54,15 @@ function printSplit() {
 }
 
 function printYamlContent() {
-  key=$1
+  local key=$1
   sed -nr "/^${key}:/,/^[^- ].*$/ {  \
     /^${key}: *[^| ]+ *$/{  s/.*: *([^ ]*) */\1/p;q };  \
     /^[- ]/p;  \
   }"
+}
+
+function findManifestPaths() {
+  local dir=$1
+  local ext=$2
+  find $dir -! -regex '.*/_.*' -name '*.yaml' -type f $ext 
 }
