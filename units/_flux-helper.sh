@@ -1,6 +1,6 @@
 pwd=$(pwd)
 
-cd /home/vagrant/share/k8s/flux
+cd _flux
 
 cat > ${pwd}/flux.yaml <<EOF
 apiVersion: tekton.dev/v1beta1

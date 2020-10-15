@@ -1,0 +1,20 @@
+
+- op: add
+  path: /spec/template/spec/containers/1/args/-
+  value: --connect=ws://127.0.0.1:3032
+
+- op: add
+  path: /spec/template/spec/containers/1/args/-
+  value: --registry-insecure-host=HTTP_REGISTRYS_PLACEHOLDER
+
+- op: add
+  path: /spec/template/spec/containers/1/args/-
+  value: --k8s-allow-namespace=NAMESPACE_PLACEHOLDER
+
+- op: add
+  path: /spec/template/spec/containers/1/args/-
+  value: --k8s-default-namespace=NAMESPACE_PLACEHOLDER
+
+- op: add
+  path: /spec/template/spec/containers/1/args/-
+  value: --git-label=ENV_PLACEHOLDER-flux
