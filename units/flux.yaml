@@ -16,6 +16,8 @@ spec:
       default: default
     - name: manifest-gen
       default: "true"
+    - name: cluster-role
+      default: flux
     - name: http-registry
 
   results:
@@ -44,7 +46,8 @@ spec:
         env=\$4
         ns=\${5:-default}
         manifestGen=\${6:-true}
-        httpRegistry=\${7:-\$MASTER_IP:\$DOCKER_REGISTRY_PORT}
+        clusterRole=\${7:-flux}
+        httpRegistry=\${8:-\$MASTER_IP:\$DOCKER_REGISTRY_PORT}
         
         
         # 创建命名空间
@@ -77,6 +80,7 @@ spec:
                  -e "s|ENV_PLACEHOLDER|\${env}|" \\
                  -e "s|GITHUB_URL_PLACEHOLDER|\${gitUrl}|" \\
                  -e "s|NAMESPACE_PLACEHOLDER|\${ns}|" \\
+                 -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|\${clusterRole}|" \\
                  -e "s|HTTP_REGISTRYS_PLACEHOLDER|\${httpRegistry}|" \\
         | kubectl apply -f - -n \${ns}
         
@@ -150,7 +154,7 @@ spec:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: ClusterRole
-          name: edit
+          name: FLUX_CLUSTERROLE_PLACEHOLDER
         subjects:
           - kind: ServiceAccount
             name: flux
@@ -273,7 +277,7 @@ spec:
           eval ns=\$$namespaces$i
           eval path=\$\paths$i
 
-          ./install.sh $(params.git-url) $path  $(params.webhook) $env $ns                        $(params.manifest-gen) $(params.http-registry) > .logs
+          ./install.sh $(params.git-url) $path  $(params.webhook) $env $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
 
           cat .logs
           echo $env $(tail -n 1 .logs) >> $(results.ssh-key.path)

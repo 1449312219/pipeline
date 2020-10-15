@@ -6,7 +6,8 @@ webhook=$3
 env=$4
 ns=${5:-default}
 manifestGen=${6:-true}
-httpRegistry=${7:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
+clusterRole=${7:-flux}
+httpRegistry=${8:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
 
 
 # 创建命名空间
@@ -39,6 +40,7 @@ kubectl apply -k k --dry-run=client -o yaml \
          -e "s|ENV_PLACEHOLDER|${env}|" \
          -e "s|GITHUB_URL_PLACEHOLDER|${gitUrl}|" \
          -e "s|NAMESPACE_PLACEHOLDER|${ns}|" \
+         -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|${clusterRole}|" \
          -e "s|HTTP_REGISTRYS_PLACEHOLDER|${httpRegistry}|" \
 | kubectl apply -f - -n ${ns}
 

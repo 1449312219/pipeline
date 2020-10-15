@@ -21,6 +21,8 @@ spec:
       default: default
     - name: manifest-gen
       default: "true"
+    - name: cluster-role
+      default: flux
     - name: http-registry
 
   results:
@@ -122,7 +124,7 @@ done)
           eval path=\\$\paths\$i
 
           ./install.sh \$(params.git-url) \$path  \$(params.webhook) \$env \$ns \
-                       \$(params.manifest-gen) \$(params.http-registry) > .logs
+                       \$(params.manifest-gen) \$(params.cluster-role) \$(params.http-registry) > .logs
 
           cat .logs
           echo \$env \$(tail -n 1 .logs) >> \$(results.ssh-key.path)
