@@ -43,9 +43,15 @@ function addNamespace() {
          -e "/^metadata:/,/^[^ ]{2}.+$/ {/  namespace:/ d}"
 }
 
-function formatToDNS() {
+function formatToNamespace() {
   local value=$1
-  echo $value | tr /[A-Z] .[a-z]
+  # [a-z0-9]([-a-z0-9]*[a-z0-9])?
+  echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o
+}
+function formatManifestName() {
+  local value=$1
+  # [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
+  echo $value | tr /[A-Z] .[a-z] | sed -r 's/\.+/./g; s/^\.?(.*)\.?$/\1/'
 }
 
 function printSplit() {

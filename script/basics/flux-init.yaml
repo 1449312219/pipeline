@@ -18,6 +18,9 @@ spec:
   - name: webhook
     description: 回调地址 (用以flux部署环境资源成功后回调)
 
+  - name: cluster-role
+    description: ClusterRole name, 将绑定到flux
+
   workspaces:
   - name: workspace
     description: 存储yaml仓库内容
@@ -88,6 +91,8 @@ spec:
       value: $(params.namespaces)
     - name: git-paths
       value: $(params.paths)
+    - name: cluster-role
+      value: $(params.cluster-role)
     - name: http-registry
       value: 10.1.40.43:5000 
 

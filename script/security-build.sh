@@ -1,5 +1,8 @@
 . _help.sh
 
+export PROJECT_NAME=$1
+shift
+
 export NAMESPACE=$1
 
 

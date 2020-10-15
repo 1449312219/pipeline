@@ -26,11 +26,12 @@ spec:
           echo -n '$(params.repo-full-name)'${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
 
           function parse() {
-            value=$1
-            echo -n $value | tr /[A-Z] .[a-z]
+            local value=$1
+            # [a-z0-9]([-a-z0-9]*[a-z0-9])?
+            echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
 
-          parse $(params.repo-full-name)${MANIFEST_SUFFIX} > $(results.repo-full-name-ns.path)
+          parse $(params.repo-full-name) > $(results.repo-full-name-ns.path)
           parse $(params.repo-branch) > $(results.repo-branch-ns.path)
       params:
       - name: repo-url
@@ -90,3 +91,5 @@ spec:
             $(tasks.params.results.repo-full-name-ns)-$(tasks.params.results.repo-branch-ns)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
+        - name: cluster-role
+          value: pipeline:init-flux-env:$(tasks.params.results.repo-full-name-ns)-flux

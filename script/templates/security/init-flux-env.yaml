@@ -1,11 +1,49 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pipeline:init-flux-env:binding
+rules:
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - rolebindings
+  verbs:
+  - get
+  - create
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: init-flux-env-admin
+  name: pipeline:init-flux-env:binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: admin
+  name: pipeline:init-flux-env:binding
+subjects:
+- kind: ServiceAccount
+  name: init-flux-env
+  namespace: ${NAMESPACE}
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pipeline:init-flux-env:${PROJECT_NAME}-flux
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      rbac.authorization.k8s.io/aggregate-to-edit: "true"
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pipeline:init-flux-env:${PROJECT_NAME}-flux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pipeline:init-flux-env:${PROJECT_NAME}-flux
 subjects:
 - kind: ServiceAccount
   name: init-flux-env
