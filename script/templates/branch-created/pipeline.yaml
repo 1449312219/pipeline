@@ -23,14 +23,15 @@ spec:
         script: |
           echo -n '$(params.repo-url)' | sed 's/.git$/${MANIFEST_SUFFIX}.git/' \
           > $(results.repo-url.path)
+          echo -n '$(params.repo-full-name)'${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
 
           function parse() {
             value=$1
             echo -n $value | tr /[A-Z] .[a-z]
           }
 
-          parse $(params.repo-full-name)${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
-          parse $(params.repo-branch) > $(results.repo-branch.path)
+          parse $(params.repo-full-name)${MANIFEST_SUFFIX} > $(results.repo-full-name-ns.path)
+          parse $(params.repo-branch) > $(results.repo-branch-ns.path)
       params:
       - name: repo-url
       - name: repo-full-name
@@ -38,7 +39,8 @@ spec:
       results:
       - name: repo-url
       - name: repo-full-name
-      - name: repo-branch
+      - name: repo-full-name-ns
+      - name: repo-branch-ns
     params:
     - name: repo-url
       value: $(params.repo-url)
@@ -82,9 +84,9 @@ spec:
           value: $(params.git-server)
         - name: paths
           value: |
-            $(tasks.params.results.repo-branch)-${ENV}
+            $(tasks.params.results.repo-branch-ns)-${ENV}
         - name: namespaces
           value: |
-            $(tasks.params.results.repo-full-name)-$(tasks.params.results.repo-branch)-${ENV}
+            $(tasks.params.results.repo-full-name-ns)-$(tasks.params.results.repo-branch-ns)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
