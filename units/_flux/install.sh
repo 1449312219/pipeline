@@ -21,6 +21,7 @@ kubectl get ns ${ns} >/dev/null 2>&1 || kubectl create ns ${ns}
 --namespace=${ns} \
 --git-user=robot \
 --git-email=robot@users.noreply.github.com \
+| sed -r '/^apiVersion: rbac\.authorization\.k8s\.io\/v1beta1$/,/^---$/d' \
 > k/flux.yaml
 
 

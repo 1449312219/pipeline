@@ -9,4 +9,10 @@ secrets:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: init-flux-env
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
   name: trigger

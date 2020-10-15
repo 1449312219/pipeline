@@ -59,6 +59,7 @@ spec:
         --namespace=\${ns} \\
         --git-user=robot \\
         --git-email=robot@users.noreply.github.com \\
+        | sed -r '/^apiVersion: rbac\.authorization\.k8s\.io\/v1beta1\$/,/^---\$/d' \\
         > k/flux.yaml
         
         
@@ -139,12 +140,20 @@ spec:
                 - name: LISTEN_ADDRESS
                   value: :3032
         EOF
-        cat > flux-role-patch.yaml <<EOF
-        
-        - op: replace
-          path: /metadata/name
-          value:  flux-NAMESPACE_PLACEHOLDER
-        
+        cat > flux-role.yaml <<EOF
+        apiVersion: rbac.authorization.k8s.io/v1beta1
+        kind: RoleBinding
+        metadata:
+          labels:
+            name: flux
+          name: flux
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: edit
+        subjects:
+          - kind: ServiceAccount
+            name: flux
         EOF
         cat > flux-ssh-config-patch.yaml <<EOF
         apiVersion: apps/v1
@@ -171,6 +180,7 @@ spec:
         kind: Kustomization
         resources:
         - flux.yaml
+        - flux-role.yaml
         
         patchesStrategicMerge:
         - flux-ssh-config-patch.yaml
@@ -182,13 +192,6 @@ spec:
             kind: Deployment
             name: flux
           path: flux-args-patch.yaml
-        - target:
-            group: rbac.authorization.k8s.io
-            version: v1beta1
-            kind: ClusterRoleBinding
-            name: flux
-          path: flux-role-patch.yaml
-         
         
         configMapGenerator:
         - name: flux-ssh-config
