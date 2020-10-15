@@ -8,6 +8,8 @@ spec:
     description: 资源项目仓库URL
   - name: repo-full-name
     description: 资源项目ID (用以部署deploy-key)
+  - name: git-server
+    description: git server host (如:http://localhost:30280)
 
   - name: paths
     description: 需在资源项目仓库内创建的目录 (用以存放环境配置)
@@ -115,6 +117,8 @@ spec:
       kind: ClusterTask
       name: gitea
     params:
+    - name: git-server
+      value: $(params.git-server)
     - name: cmd
       value: createDeployKey
     - name: args

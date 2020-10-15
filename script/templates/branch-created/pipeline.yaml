@@ -12,6 +12,8 @@ spec:
     description: git仓库分支
   - name: repo-ref
     description: git仓库SHA
+  - name: git-server
+    description: git server host (如:http://localhost:30280)
 
   tasks:
   - name: params
@@ -76,6 +78,8 @@ spec:
           value: $(tasks.params.results.repo-url)
         - name: repo-full-name
           value: $(tasks.params.results.repo-full-name)
+        - name: git-server
+          value: $(params.git-server)
         - name: paths
           value: |
             $(tasks.params.results.repo-branch)-${ENV}
