@@ -72,7 +72,7 @@ spec:
           subPath: $(context.pipelineRun.name)-$(params.repo-ref)
         - name: add
           configmap:
-            name: release
+            name: env-manifest
         - name: token
           secret:
             SecretName: gitea-user-token

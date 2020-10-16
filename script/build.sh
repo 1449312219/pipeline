@@ -63,6 +63,11 @@ done
 ./security-build.sh ${projectNameForNs} ${namespace} | addNamespace ${namespace}
 
 
+
+# configmap
+./resources.sh | addNamespace ${namespace}
+
+
 # pv
 cat templates/pv.yaml | PV_SUFFIX=${namespace} parsePlaceHolder 
 printSplit
