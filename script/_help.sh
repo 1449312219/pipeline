@@ -46,8 +46,18 @@ function addNamespace() {
 
 function formatToNamespace() {
   local value=$1
+  local keepEnd=$2
   # [a-z0-9]([-a-z0-9]*[a-z0-9])?
-  echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o
+  value=$(echo $value | sed -r -e 's/.*/\L&\E/;' \
+                               -e 's/\*//g; y|/.|--|;' \
+                               -e 's/^-+//;')
+  if test "$keepEnd" != "false"; then
+    value=$(echo $value | sed -r 's/-+$//')
+  fi
+  echo -n $value
+}
+function formatBranchType() {
+  formatToNamespace "$1" false
 }
 function formatManifestName() {
   local value=$1

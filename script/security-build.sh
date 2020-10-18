@@ -1,6 +1,6 @@
 . _help.sh
 
-export PROJECT_NAME=$1
+export PROJECT_NAME=$(formatToNamespace $1)
 shift
 
 export NAMESPACE=$1

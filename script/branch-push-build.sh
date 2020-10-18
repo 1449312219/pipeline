@@ -30,10 +30,11 @@ function showTaskRun() {
 
 
 branchType=$1
+branchTypeForNs=$(formatBranchType $branchType)
 shift
 
 # pipeline
-cat $TEMP_DIR/pipeline.yaml | sed -e 's/${BRANCH_TYPE}/'${branchType,,**}/
+cat $TEMP_DIR/pipeline.yaml | sed -e 's/${BRANCH_TYPE}/'${branchTypeForNs}/
 
 before=
 while test $# -gt 0; do
@@ -45,12 +46,8 @@ while test $# -gt 0; do
 
   before=$now
 done
-
-echo ---
-echo
+printSplit
 
 # trigger
-cat $TEMP_DIR/trigger.yaml | sed -e 's/${BRANCH_TYPE}/'${branchType,,**}/
-
-echo ---
-echo
+cat $TEMP_DIR/trigger.yaml | sed -e 's/${BRANCH_TYPE}/'${branchTypeForNs}/
+printSplit

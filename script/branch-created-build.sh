@@ -1,6 +1,6 @@
 . _help.sh
 
-export BRANCH_TYPE=${1,,*}
+export BRANCH_TYPE=$(formatBranchType $1)
 shift
 
 export MANIFEST_SUFFIX=$1

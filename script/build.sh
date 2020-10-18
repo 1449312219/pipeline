@@ -1,10 +1,9 @@
 . _help.sh
 
 projectName=$1
-projectNameForNs=$(formatToNamespace ${projectName})
 shift
 
-namespace=${projectNameForNs}-pipeline
+namespace=$(formatToNamespace ${projectName})-pipeline
 cat <<EOF
 apiVersion: v1
 kind: Namespace
@@ -60,7 +59,7 @@ done
 
 # security
 # namespace
-./security-build.sh ${projectNameForNs} ${namespace} | addNamespace ${namespace}
+./security-build.sh ${projectName} ${namespace} | addNamespace ${namespace}
 
 
 
