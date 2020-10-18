@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: owner-config
+data:
+  git-server-http: http://10.1.40.43:30280
+  git-server-ssh: 10.1.40.43:30220
+  owner: root
