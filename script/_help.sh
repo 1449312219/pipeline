@@ -2,7 +2,7 @@ set -e
 set -o pipefail
 
 # 替换给定内容的占位符, 以IFS拆分占位值,解析成多条内容
-# 1. 以export KEY="V1 V2 V3 ..."暴露占位值
+# 1. 以export KEY="V1 V2 V3 ..."暴露占位值, 占位值含空格时,可由"包裹(同bash处理)
 # 2. 占位符模式 ${[A-Z_]+}
 # 3. 占位值内容为单行字符串, 值不可含'|'
 # 4. 一行内容支持多个占位符, 从右到左解析替换
@@ -25,8 +25,9 @@ function __replace(){
     return 1
   fi
 
-  for v in $(eval echo \${$key}); do
-    __replace "$(echo "$line" | sed -r "s|\\$\{$key}|$v|g")"
+  eval local values=($(eval echo \${${key}}))
+  for i in ${!values[@]}; do
+    __replace "$(echo "$line" | sed -r "s|\\$\{$key}|${values[$i]}|g")"
   done
 }
 export -f __replace
