@@ -83,3 +83,16 @@ function findManifestPaths() {
   local ext=$2
   find $dir -! -regex '.*/_.*' -name '*.yaml' -type f $ext 
 }
+
+function addWebHook() {
+  local url=$1
+  local branchType=$2
+  local envs=$3
+
+  echo -n "\"${url} \'${branchType}\' ${envs}\" " >> .build-webhooks
+}
+function getWebHooks() {
+  export NAMESPACE=$1
+  parsePlaceHolder .build-webhooks
+  rm .build-webhooks -f
+}

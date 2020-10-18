@@ -51,3 +51,5 @@ printSplit
 # trigger
 cat $TEMP_DIR/trigger.yaml | sed -e 's/${BRANCH_TYPE}/'${branchTypeForNs}/
 printSplit
+
+addWebHook http://${branchTypeForNs}branch-push.'${NAMESPACE}':8080 ${branchType} push

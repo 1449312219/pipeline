@@ -1,6 +1,7 @@
 . _help.sh
 
 projectName=$1
+projectName=$(kubectl get configmap owner-config -o jsonpath={.data.owner})/${projectName}
 shift
 
 namespace=$(formatToNamespace ${projectName})-pipeline
@@ -57,10 +58,12 @@ for file in $(findManifestPaths basics/); do
 done
 
 
-# security
-# namespace
-./security-build.sh ${projectName} ${namespace} | addNamespace ${namespace}
+# gitea
+./gitea-settings-build.sh ${projectName} ${namespace} 
 
+
+# security
+./security-build.sh ${projectName} ${namespace} | addNamespace ${namespace}
 
 
 # configmap

@@ -1,6 +1,8 @@
 . _help.sh
 
-export BRANCH_TYPE=$(formatBranchType $1)
+branchType=$1
+branchTypeForNs=$(formatBranchType $branchType)
+export BRANCH_TYPE=$branchTypeForNs
 shift
 
 export MANIFEST_SUFFIX=$1
@@ -36,3 +38,6 @@ printSplit
 # trigger
 parsePlaceHolder $TEMP_DIR/trigger.yaml
 printSplit
+
+# webhook
+addWebHook http://${branchTypeForNs}branch-created.'${NAMESPACE}':8080 ${branchType} create
