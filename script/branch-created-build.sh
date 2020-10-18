@@ -22,13 +22,16 @@ for i in $ENV; do
 done
 export ENV="${envs[@]}"
 
+if test ${#envs[@]} -le 0; then
+  exit
+fi
+
 
 TEMP_DIR=templates/branch-created
 
 # pipeline
 parsePlaceHolder $TEMP_DIR/pipeline.yaml
 printSplit
-
 
 # trigger
 parsePlaceHolder $TEMP_DIR/trigger.yaml
