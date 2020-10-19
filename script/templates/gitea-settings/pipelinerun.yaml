@@ -26,4 +26,4 @@ spec:
   workspaces:
   - name: token
     secret:
-      secretName: gitea-user-token
+      secretName: owner-token
