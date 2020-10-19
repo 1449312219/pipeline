@@ -1,10 +1,10 @@
 . _help.sh
 
 projectName=$1
-projectName=$(kubectl get configmap owner-config -o jsonpath={.data.owner})/${projectName}
+fullRepoName=$(kubectl get configmap owner-config -o jsonpath={.data.owner})/${projectName}
 shift
 
-namespace=$(formatToNamespace ${projectName})-pipeline
+namespace=$(formatToNamespace ${fullRepoName})-pipeline
 cat <<EOF
 apiVersion: v1
 kind: Namespace
@@ -63,7 +63,7 @@ done
 
 
 # security
-./security-build.sh ${projectName} ${namespace} | addNamespace ${namespace}
+./security-build.sh ${fullRepoName} ${namespace} | addNamespace ${namespace}
 
 
 # configmap
