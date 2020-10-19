@@ -18,6 +18,7 @@ spec:
     - name: args
       description: |
         传于gitea相应请求, 可支持循环
+        createRepo:  owner type(user/org) repoName repoDescription
         createDeployKey:  repoFullName title key
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
@@ -63,6 +64,28 @@ spec:
                 -H \"accept: application/json\" -H \"Content-Type: application/json\" \
                 -d \'$data\' \
                 -f
+        }
+
+        function createRepo() {
+          local owner=$1
+          local type=$2
+          local name=$3
+          local description=$4
+
+          local path
+          if test "$type" == "user"; then
+            path=/admin/users/${owner}/repos
+          else
+            path=/orgs/${owner}/repos
+          fi
+
+          url=$(url POST $path "{
+                  \"name\": \"$name\",
+                  \"default_branch\": \"master\",
+                  \"private\": false,
+                  \"auto_init\": true,
+                  \"description\": \"$description\" }")
+          sh -c "$url" | jq -r .id
         }
         
         function createIssue() {
