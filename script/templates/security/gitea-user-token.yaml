@@ -4,5 +4,5 @@ metadata:
   name: gitea-user-token
 type: Opaque
 data:
-  token: MTkxNDJmYWVkMmFhNzgwZWZjZGQwNjRkN2Y4ZGVlYWI2MGM5MjUxMw==
+  token: ${GITEA_USER_TOKEN}
 
