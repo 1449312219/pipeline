@@ -9,9 +9,12 @@ shift
 
 export GIT_SERVER=$(kubectl get configmap owner-config -o jsonpath={.data.git-server-http})
 
-export PIPELINERUN_ID=$(mktemp -u XXXXXX)
+export PIPELINERUN_ID=$(formatToNamespace $(mktemp -u XXXXXX))
 
-TEMP_DIR=templates
 
-parsePlaceHolder $TEMP_DIR/gitea-settings.yaml
-printSplit
+TEMP_DIR=templates/gitea-settings
+
+for file in $(findManifestPaths $TEMP_DIR); do
+  parsePlaceHolder $file
+  printSplit
+done
