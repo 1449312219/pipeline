@@ -59,7 +59,7 @@ done
 
 
 # gitea
-./gitea-settings-build.sh ${projectName} ${namespace} 
+./gitea-settings-build.sh ${projectName} ${manifestSuffix} ${namespace} 
 
 
 # security

@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: gitea-settings-${PIPELINERUN_ID}
+spec:
+  pipelineRef:
+    name: gitea-settings
+  params:
+  - name: owner
+    value: ${REPO_OWNER}
+  - name: type
+    value: ${REPO_OWNER_TYPE}
+
+  - name: repo-name
+    value: ${REPO_NAME}
+  - name: repo-manifest-suffix
+    value: ${REPO_MANIFEST_SUFFIX}
+
+  - name: webhooks
+    value: |
+      ${WEBHOOKS}
+
+  - name: git-server
+    value: ${GIT_SERVER}
+
+  workspaces:
+  - name: token
+    secret:
+      secretName: gitea-user-token
