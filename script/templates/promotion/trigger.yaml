@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: ${BRANCH_TYPE}branch-push
+  name: ${PURPOSE}branch-push
 spec:
   serviceAccountName: trigger
   triggers:
@@ -18,7 +18,7 @@ spec:
     bindings:
     - ref: branch-push-params-binding
     template:
-      name: ${BRANCH_TYPE}branch-push
+      name: ${PURPOSE}promotion
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
@@ -42,7 +42,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: ${BRANCH_TYPE}branch-push
+  name: ${PURPOSE}promotion
 spec:
   params:
   - name: repo-full-name
@@ -54,10 +54,10 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: ${BRANCH_TYPE}bp-$(uid)
+      name: ${PURPOSE}pr-$(uid)
     spec:
       pipelineRef:
-        name: ${BRANCH_TYPE}branch-push
+        name: ${PURPOSE}promotion
       serviceAccountName: pipeline
       params:
       - name: repo-full-name

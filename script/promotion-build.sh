@@ -29,12 +29,18 @@ function showTaskRun() {
 }
 
 
+purpose=$1
+purposeForNs=$(formatToNamespace $purpose false)
+shift
+
 branchType=$1
-branchTypeForNs=$(formatBranchType $branchType)
+shift
+
+events=$1
 shift
 
 # pipeline
-cat $TEMP_DIR/pipeline.yaml | sed -e 's/${BRANCH_TYPE}/'${branchTypeForNs}/
+cat $TEMP_DIR/pipeline.yaml | sed -e 's/${PURPOSE}/'${purposeForNs}/
 
 before=
 while test $# -gt 0; do
@@ -49,7 +55,7 @@ done
 printSplit
 
 # trigger
-cat $TEMP_DIR/trigger.yaml | sed -e 's/${BRANCH_TYPE}/'${branchTypeForNs}/
+cat $TEMP_DIR/trigger.yaml | sed -e 's/${PURPOSE}/'${purposeForNs}/
 printSplit
 
-addWebHook http://${branchTypeForNs}branch-push.'${NAMESPACE}':8080 ${branchType} push
+addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} ${events}

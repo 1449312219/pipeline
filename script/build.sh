@@ -24,11 +24,17 @@ printSplit
 webhook="http://deployed-notify.${namespace}:8080"
 
 function branchTypeEnvs() {
+  purpose=$1
+  shift
+
   branchType=$1
   shift
 
-  # branchType env1 env2 env3 (流水线内的环境)
-  ./promotion-build.sh $branchType $@ | addNamespace ${namespace}
+  events=$1
+  shift
+
+  # purpose branchType events env1 env2 env3 (流水线内的环境)
+  ./promotion-build.sh $purpose $branchType $events $@ | addNamespace ${namespace}
 
   # branchType manifestSuffix webhook env1 env2 env3
   ./branch-created-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
@@ -38,9 +44,9 @@ function branchTypeEnvs() {
 declare -A allEnvs
 _IFS=$IFS
 for config in $@; do
-  eval $(echo $config| awk -F : '{gsub(","," ",$3); gsub(","," ",$4); print "purpose="$1" branchType="$2" events=("$3") envs=("$4")"}')
+  eval $(echo $config| awk -F : '{gsub(","," ",$4); print "purpose="$1" branchType="$2" events="$3" envs=("$4")"}')
 
-  branchTypeEnvs $branchType ${envs[@]}
+  branchTypeEnvs $purpose $branchType $events ${envs[@]}
   
   for env in ${envs[@]}; do
     allEnvs[$env]=$env
