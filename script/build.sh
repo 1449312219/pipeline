@@ -1,3 +1,5 @@
+# projectName purpose:branchType:events:envs ...
+
 . _help.sh
 
 projectName=$1
@@ -36,9 +38,8 @@ function branchTypeEnvs() {
 declare -A allEnvs
 _IFS=$IFS
 for config in $@; do
-  branchType=${config%%:*}
+  eval $(echo $config| awk -F : '{gsub(","," ",$3); gsub(","," ",$4); print "purpose="$1" branchType="$2" events=("$3") envs=("$4")"}')
 
-  IFS=,; envs=(${config#*:}); IFS=${_IFS}
   branchTypeEnvs $branchType ${envs[@]}
   
   for env in ${envs[@]}; do
