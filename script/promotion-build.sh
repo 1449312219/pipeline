@@ -31,16 +31,18 @@ function showTaskRun() {
 
 purpose=$1
 purposeForNs=$(formatToNamespace $purpose false)
+export PURPOSE=${purposeForNs}
 shift
 
-branchType=$1
+promotionType=$1
 shift
 
-events=$1
+args=$1
+branchType=$args
 shift
 
 # pipeline
-cat $TEMP_DIR/pipeline.yaml | sed -e 's/${PURPOSE}/'${purposeForNs}/
+parsePlaceHolder $TEMP_DIR/pipeline.yaml
 
 before=
 while test $# -gt 0; do
@@ -58,4 +60,4 @@ printSplit
 cat $TEMP_DIR/trigger.yaml | sed -e 's/${PURPOSE}/'${purposeForNs}/
 printSplit
 
-addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} ${events}
+addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} push

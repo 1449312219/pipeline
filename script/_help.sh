@@ -96,3 +96,11 @@ function getWebHooks() {
   parsePlaceHolder .build-webhooks
   rm .build-webhooks -f
 }
+
+function parseArg() {
+  local arg=$1
+  local _IFS=$IFS
+  IFS=: read purpose envs promotionType args <<<$arg
+  envs=($(echo $envs | tr , " "))
+  IFS=${_IFS}
+}

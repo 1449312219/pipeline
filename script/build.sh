@@ -1,4 +1,4 @@
-# projectName purpose:branchType:events:envs ...
+# projectName purpose:envs:promotionType:args ...
 
 . _help.sh
 
@@ -27,26 +27,27 @@ function branchTypeEnvs() {
   purpose=$1
   shift
 
-  branchType=$1
+  promotionType=$1
   shift
 
-  events=$1
+  args=$1
   shift
 
-  # purpose branchType events env1 env2 env3 (流水线内的环境)
-  ./promotion-build.sh $purpose $branchType $events $@ | addNamespace ${namespace}
+  # purpose promotionType args(branchType) env1 env2 env3 (流水线内的环境)
+  ./promotion-build.sh $purpose $promotionType $args $events $@ | addNamespace ${namespace}
 
+  local branchType=$args
   # branchType manifestSuffix webhook env1 env2 env3
   ./branch-created-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
 }
 
 
 declare -A allEnvs
-_IFS=$IFS
 for config in $@; do
-  eval $(echo $config| awk -F : '{gsub(","," ",$4); print "purpose="$1" branchType="$2" events="$3" envs=("$4")"}')
+  parseArg $config
+  # purpose:envs:promotionType:args
 
-  branchTypeEnvs $purpose $branchType $events ${envs[@]}
+  branchTypeEnvs $purpose $promotionType $args ${envs[@]}
   
   for env in ${envs[@]}; do
     allEnvs[$env]=$env
