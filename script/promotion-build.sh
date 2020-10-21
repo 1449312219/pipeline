@@ -28,36 +28,44 @@ function showTaskRun() {
   fi
 }
 
+function branchPushPromotion() {
+  export PURPOSE=${purposeForNs}
+  local branchType=$args
+
+  # pipeline
+  parsePlaceHolder $TEMP_DIR/pipeline.yaml
+
+  before=
+  while test $# -gt 0; do
+    now=$1
+    shift
+    next=$1
+
+    showTaskRun
+
+    before=$now
+  done
+  printSplit
+
+  # trigger
+  parsePlaceHolder $TEMP_DIR/trigger.yaml
+  printSplit
+
+  addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} push
+}
+
 
 purpose=$1
 purposeForNs=$(formatToNamespace $purpose false)
-export PURPOSE=${purposeForNs}
 shift
 
 promotionType=$1
 shift
 
 args=$1
-branchType=$args
 shift
 
-# pipeline
-parsePlaceHolder $TEMP_DIR/pipeline.yaml
 
-before=
-while test $# -gt 0; do
-  now=$1
-  shift
-  next=$1
-
-  showTaskRun
-
-  before=$now
-done
-printSplit
-
-# trigger
-cat $TEMP_DIR/trigger.yaml | sed -e 's/${PURPOSE}/'${purposeForNs}/
-printSplit
-
-addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} push
+case $promotionType in
+  branch-push) branchPushPromotion $@;
+esac
