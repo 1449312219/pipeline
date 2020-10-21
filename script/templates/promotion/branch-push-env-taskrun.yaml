@@ -18,6 +18,8 @@
         secret:
           SecretName: gitea-user-token
       params:
+      - name: purpose
+        value: ${PURPOSE}
       - name: job-id 
         value: $(tasks.params.results.job-id)
       - name: repo-full-name

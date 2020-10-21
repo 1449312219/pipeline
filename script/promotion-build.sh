@@ -8,9 +8,8 @@ function showTaskRun() {
   local env=$now
   local nextEnv=$next
 
-  sed -e 's/${ENV}/'${env}/ \
-      -e 's/${BEFORE_ENV}/'${beforeEnv:-'""'}/ \
-  $TEMP_DIR/branch-push-env-taskrun.yaml | awk '{print "  "$0}'
+  export ENV=${env}
+  parsePlaceHolder $TEMP_DIR/branch-push-env-taskrun.yaml | awk '{print "  "$0}'
 
   cat $ENV_DIR/$env/config.yaml | printYamlContent params | awk '{print "        "$0}'
 

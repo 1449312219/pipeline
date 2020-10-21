@@ -4,6 +4,8 @@ metadata:
   name: branch-push-pipeline-wrapper
 spec:
   params:
+  - name: purpose
+    description: 意图 (此处用于创建tag)
   - name: job-id
     description: 任务ID,串联起所有子流水线
 
@@ -87,7 +89,7 @@ spec:
     - name: commit
       value: $(params.repo-ref)
     - name: pattern
-      value: $(params.repo-branch)_$(params.env)_pass_$(params.repo-ref)
+      value: $(params.purpose)_$(params.env)_pass_$(params.repo-ref)
     - name: project-path
       value: $(params.job-id)
     workspaces:
@@ -149,7 +151,7 @@ spec:
     - name: sub-directory
       value: $(params.job-id)
     - name: tag
-      value: $(params.repo-branch)_$(params.env)_pass_$(params.repo-ref)
+      value: $(params.purpose)_$(params.env)_pass_$(params.repo-ref)
     - name: msg
       value: $(tasks.trigger.results.output)
 
