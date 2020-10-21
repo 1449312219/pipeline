@@ -10,7 +10,7 @@ function showTaskRun() {
 
   sed -e 's/${ENV}/'${env}/ \
       -e 's/${BEFORE_ENV}/'${beforeEnv:-'""'}/ \
-  $TEMP_DIR/env-taskrun.yaml | awk '{print "  "$0}'
+  $TEMP_DIR/branch-push-env-taskrun.yaml | awk '{print "  "$0}'
 
   cat $ENV_DIR/$env/config.yaml | printYamlContent params | awk '{print "        "$0}'
 
@@ -33,7 +33,7 @@ function branchPushPromotion() {
   local branchType=$args
 
   # pipeline
-  parsePlaceHolder $TEMP_DIR/pipeline.yaml
+  parsePlaceHolder $TEMP_DIR/branch-push-pipeline.yaml
 
   before=
   while test $# -gt 0; do
@@ -48,7 +48,7 @@ function branchPushPromotion() {
   printSplit
 
   # trigger
-  parsePlaceHolder $TEMP_DIR/trigger.yaml
+  parsePlaceHolder $TEMP_DIR/branch-push-trigger.yaml
   printSplit
 
   addWebHook http://${purpose}branch-push.'${NAMESPACE}':8080 ${branchType} push

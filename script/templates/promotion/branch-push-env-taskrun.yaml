@@ -8,7 +8,7 @@
   - name: spec
     value: |
       pipelineRef:
-        name: pipeline-wrapper
+        name: branch-push-pipeline-wrapper
       serviceAccountName: pipeline
       workspaces:
       - name: pipelines
