@@ -1,6 +1,6 @@
 . _help.sh
 
-TEMP_DIR=templates/branch-push
+TEMP_DIR=templates/promotion
 ENV_DIR=env
 
 function showTaskRun() {
