@@ -38,7 +38,7 @@ function branchTypeEnvs() {
 
   local branchType=$args
   # branchType manifestSuffix webhook env1 env2 env3
-  ./branch-created-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
+  ./env-alloc-build.sh $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
 }
 
 

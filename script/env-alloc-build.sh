@@ -29,7 +29,7 @@ if test ${#envs[@]} -le 0; then
 fi
 
 
-TEMP_DIR=templates/branch-created
+TEMP_DIR=templates/env-alloc
 
 # pipeline
 parsePlaceHolder $TEMP_DIR/pipeline.yaml
