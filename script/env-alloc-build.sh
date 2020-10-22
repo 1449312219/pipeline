@@ -43,4 +43,4 @@ parsePlaceHolder $TEMP_DIR/trigger.yaml
 printSplit
 
 # webhook
-addWebHook http://${PURPOSE}-branch-created.'${NAMESPACE}':8080 ${branchType} create
+addWebHook http://el-${PURPOSE}-branch-created.'${NAMESPACE}':8080 ${branchType} create

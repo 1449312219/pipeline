@@ -50,7 +50,7 @@ function branchPushPromotion() {
   parsePlaceHolder $TEMP_DIR/branch-push-trigger.yaml
   printSplit
 
-  addWebHook http://${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
+  addWebHook http://el-${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
 }
 
 
