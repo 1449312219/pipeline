@@ -27,12 +27,13 @@ function showTaskRun() {
   fi
 }
 
-function branchPushPromotion() {
+function branchPushPromotion() { 
   export PURPOSE=${purposeForNs}
 
   # pipeline
   parsePlaceHolder $TEMP_DIR/branch-push-pipeline.yaml
 
+  local envs=($@)
   before=
   while test $# -gt 0; do
     now=$1
@@ -50,6 +51,9 @@ function branchPushPromotion() {
   printSplit
 
   addWebHook http://el-${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
+  
+  # purpose branchType manifestSuffix webhook env1 env2 env3
+  ./env-alloc-build.sh $purpose $branchType $manifestSuffix $webhook ${envs[@]}
 }
 
 
@@ -60,6 +64,7 @@ shift
 promotionType=$1
 shift
 
+#branchType=...;manifestSuffix=...;webhook=...;
 args=$1
 eval $args
 shift

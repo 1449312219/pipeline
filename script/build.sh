@@ -24,21 +24,17 @@ printSplit
 webhook="http://deployed-notify.${namespace}:8080"
 
 function branchTypeEnvs() {
-  purpose=$1
+  local purpose=$1
   shift
 
-  promotionType=$1
+  local promotionType=$1
   shift
 
-  args=$1
+  local args=$1
   shift
 
   # purpose promotionType args(branchType=...) env1 env2 env3 (流水线内的环境)
-  ./promotion-build.sh $purpose $promotionType $args $events $@ | addNamespace ${namespace}
-
-  eval local $args
-  # purpose branchType manifestSuffix webhook env1 env2 env3
-  ./env-alloc-build.sh $purpose $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
+  ./promotion-build.sh $purpose $promotionType "manifestSuffix=$manifestSuffix;webhook=$webhook;$args" $events $@ | addNamespace ${namespace}
 }
 
 
