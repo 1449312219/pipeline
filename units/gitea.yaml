@@ -59,8 +59,15 @@ spec:
           server=$(params.git-server)
           token=$(cat $(workspaces.token.path)/token)
           data=$3
+
+          if echo $path | grep ? 2>&1 >/dev/null; then
+            path="$path&access_token=$token"
+          else
+            path=$path?access_token=$token
+          fi
         
-          echo "curl -X $method $server/api/v1$path?access_token=$token" \
+          echo "curl -X $method" \
+                \"$server/api/v1$path\" \
                 -H \"accept: application/json\" -H \"Content-Type: application/json\" \
                 -d \'$data\' \
                 -f
@@ -103,7 +110,7 @@ spec:
         function getIssueId() {
           repoFullName=$1
           title=$2
-          url=$(url GET /repos/$repoFullName/issues?type=issues'&'q=$title)
+          url=$(url GET /repos/$repoFullName/issues?type=issues\&q=$title)
           res=$(sh -c "$url")
 
           if test $(echo $res | jq length) -eq 1; then
