@@ -4,6 +4,9 @@ purposeForNs=$1
 export PURPOSE=$purposeForNs
 shift
 
+namespace=$1
+shift
+
 branchType=$1
 shift
 
@@ -42,4 +45,4 @@ parsePlaceHolder $TEMP_DIR/trigger.yaml
 printSplit
 
 # webhook
-addWebHook http://el-${PURPOSE}-branch-created.'${NAMESPACE}':8080 ${branchType} create
+addWebHook http://el-${PURPOSE}-branch-created.${namespace}:8080 ${branchType} create

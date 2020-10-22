@@ -92,8 +92,7 @@ function addWebHook() {
   echo -n "\"${url} \'${branchType}\' ${envs}\" " >> .build-webhooks
 }
 function getWebHooks() {
-  export NAMESPACE=$1
-  parsePlaceHolder .build-webhooks
+  cat .build-webhooks
   rm .build-webhooks -f
 }
 

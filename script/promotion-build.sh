@@ -50,7 +50,7 @@ function branchPushPromotion() {
   parsePlaceHolder $TEMP_DIR/branch-push-trigger.yaml
   printSplit
 
-  addWebHook http://el-${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
+  addWebHook http://el-${PURPOSE}-branch-push.${namespace}:8080 ${branchType} push
   
   # notify
   cat $TEMP_DIR/deployed-notify-trigger.yaml
@@ -58,8 +58,8 @@ function branchPushPromotion() {
   local webhook="http://deployed-notify.${namespace}:8080"
   
   # env-alloc
-  # purposeForNs branchType manifestSuffix webhook env1 env2 env3
-  ./env-alloc-helper.sh ${PURPOSE} $branchType $manifestSuffix $webhook ${envs[@]}
+  # purposeForNs namespace branchType manifestSuffix webhook env1 env2 env3
+  ./env-alloc-helper.sh ${PURPOSE} $namespace $branchType $manifestSuffix $webhook ${envs[@]}
 }
 
 

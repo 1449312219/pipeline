@@ -6,9 +6,7 @@ shift
 export REPO_MANIFEST_SUFFIX=$1
 shift
 
-namespace=$1
-export WEBHOOKS=$(getWebHooks $namespace)
-shift
+export WEBHOOKS=$(getWebHooks)
 
 ownerConfig=($(kubectl get configmap owner-config --no-headers -o custom-columns=http:data.git-server-http,owner:data.owner,type:data.type))
 
