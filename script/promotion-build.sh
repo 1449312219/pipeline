@@ -29,7 +29,6 @@ function showTaskRun() {
 
 function branchPushPromotion() {
   export PURPOSE=${purposeForNs}
-  local branchType=$args
 
   # pipeline
   parsePlaceHolder $TEMP_DIR/branch-push-pipeline.yaml
@@ -62,6 +61,7 @@ promotionType=$1
 shift
 
 args=$1
+eval $args
 shift
 
 

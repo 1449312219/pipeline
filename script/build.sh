@@ -33,10 +33,10 @@ function branchTypeEnvs() {
   args=$1
   shift
 
-  # purpose promotionType args(branchType) env1 env2 env3 (流水线内的环境)
+  # purpose promotionType args(branchType=...) env1 env2 env3 (流水线内的环境)
   ./promotion-build.sh $purpose $promotionType $args $events $@ | addNamespace ${namespace}
 
-  local branchType=$args
+  eval local $args
   # purpose branchType manifestSuffix webhook env1 env2 env3
   ./env-alloc-build.sh $purpose $branchType $manifestSuffix $webhook $@ | addNamespace ${namespace}
 }
