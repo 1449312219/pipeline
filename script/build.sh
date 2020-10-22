@@ -2,50 +2,42 @@
 
 . _help.sh
 
+
 projectName=$1
 fullRepoName=$(kubectl get configmap owner-config -o jsonpath={.data.owner})/${projectName}
 shift
 
+
+# namespace
 namespace=$(formatToNamespace ${fullRepoName})-pipeline
-cat <<EOF
-apiVersion: v1
+echo "apiVersion: v1
 kind: Namespace
 metadata:
   name: ${namespace}
----
+"
+printSplit
 
-EOF
 
 manifestSuffix="-manifest"
 
-function purposeBuild() {
-  local purpose=$1
-  shift
 
-  local promotionType=$1
-  shift
-
-  local args=$1
-  shift
-
-  # purpose promotionType args(branchType=...) env1 env2 env3 (流水线内的环境)
-  ./promotion-build.sh $purpose $promotionType "namespace=${namespace};manifestSuffix=$manifestSuffix;$args" $events $@ | addNamespace ${namespace}
-}
-
-
+# promotions
 declare -A allEnvs
 for config in $@; do
-  parseArg $config
   # purpose:envs:promotionType:args
+  parseArg $config
 
-  purposeBuild $purpose $promotionType $args ${envs[@]}
-  
+  # purpose promotionType args(branchType=...) env1 env2 env3 (流水线内的环境)
+  ./promotion-build.sh $purpose $promotionType \
+  "namespace=${namespace};manifestSuffix=$manifestSuffix;$args" ${envs[@]} \
+  | addNamespace ${namespace}
+
   for env in ${envs[@]}; do
     allEnvs[$env]=$env
   done
 done
 
-
+# envs
 # env1 env2 env3
 ./env-build.sh ${allEnvs[@]} | addNamespace ${namespace}
 
@@ -70,7 +62,7 @@ done
 
 
 # pv
-cat templates/pv.yaml | PV_SUFFIX=${namespace} parsePlaceHolder 
+PV_SUFFIX=${namespace} parsePlaceHolder templates/pv.yaml
 printSplit
 
 
