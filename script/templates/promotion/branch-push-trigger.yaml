@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: ${PURPOSE}branch-push
+  name: ${PURPOSE}-branch-push
 spec:
   serviceAccountName: trigger
   triggers:
