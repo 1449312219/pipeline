@@ -52,6 +52,13 @@ function branchPushPromotion() {
 
   addWebHook http://el-${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
   
+  
+  # notify
+  cat $TEMP_DIR/deployed-notify-trigger.yaml
+  printSplit
+  local webhook="http://deployed-notify.${namespace}:8080"
+  
+  # env-alloc
   # purpose branchType manifestSuffix webhook env1 env2 env3
   ./env-alloc-helper.sh $purpose $branchType $manifestSuffix $webhook ${envs[@]}
 }

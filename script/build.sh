@@ -18,11 +18,6 @@ EOF
 
 manifestSuffix="-manifest"
 
-# webhook
-cat templates/deployed-notify/trigger.yaml | addNamespace ${namespace}
-printSplit
-webhook="http://deployed-notify.${namespace}:8080"
-
 function purposeBuild() {
   local purpose=$1
   shift
@@ -34,7 +29,7 @@ function purposeBuild() {
   shift
 
   # purpose promotionType args(branchType=...) env1 env2 env3 (流水线内的环境)
-  ./promotion-build.sh $purpose $promotionType "manifestSuffix=$manifestSuffix;webhook=$webhook;$args" $events $@ | addNamespace ${namespace}
+  ./promotion-build.sh $purpose $promotionType "namespace=${namespace};manifestSuffix=$manifestSuffix;$args" $events $@ | addNamespace ${namespace}
 }
 
 
