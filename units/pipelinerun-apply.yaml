@@ -57,7 +57,9 @@ spec:
 
         i=0
         while true; do
+          set +e
           status=$(kubectl get pipelinerun $(params.name) -o jsonpath={.status.conditions[0].status})
+          set -e
 
           if test ${status} == 'True'; then
             break
@@ -67,7 +69,7 @@ spec:
             exit 1
           fi
 
-          # Unknown
+          # Unknown or exec-err
           if test $i -ge $(params.max-count); then
             exit 1
           fi
