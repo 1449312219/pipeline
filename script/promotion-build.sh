@@ -53,7 +53,7 @@ function branchPushPromotion() {
   addWebHook http://el-${PURPOSE}-branch-push.'${NAMESPACE}':8080 ${branchType} push
   
   # purpose branchType manifestSuffix webhook env1 env2 env3
-  ./env-alloc-build.sh $purpose $branchType $manifestSuffix $webhook ${envs[@]}
+  ./env-alloc-helper.sh $purpose $branchType $manifestSuffix $webhook ${envs[@]}
 }
 
 

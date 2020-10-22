@@ -23,7 +23,7 @@ cat templates/deployed-notify/trigger.yaml | addNamespace ${namespace}
 printSplit
 webhook="http://deployed-notify.${namespace}:8080"
 
-function branchTypeEnvs() {
+function purposeBuild() {
   local purpose=$1
   shift
 
@@ -43,7 +43,7 @@ for config in $@; do
   parseArg $config
   # purpose:envs:promotionType:args
 
-  branchTypeEnvs $purpose $promotionType $args ${envs[@]}
+  purposeBuild $purpose $promotionType $args ${envs[@]}
   
   for env in ${envs[@]}; do
     allEnvs[$env]=$env
