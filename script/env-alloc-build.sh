@@ -6,8 +6,6 @@ export PURPOSE=$purposeForNs
 shift
 
 branchType=$1
-branchTypeForNs=$(formatBranchType $branchType)
-export BRANCH_TYPE=$branchTypeForNs
 shift
 
 export MANIFEST_SUFFIX=$1

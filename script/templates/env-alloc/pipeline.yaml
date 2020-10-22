@@ -56,7 +56,7 @@ spec:
       name: pipelinerun-apply
     params:
     - name: name
-      value: $(context.pipelineRun.name)-${BRANCH_TYPE}flux-init
+      value: $(context.pipelineRun.name)-flux-init
     - name: spec
       value: |
         pipelineRef:
@@ -85,10 +85,10 @@ spec:
           value: $(params.git-server)
         - name: paths
           value: |
-            $(tasks.params.results.repo-branch-ns)-${ENV}
+            ${PURPOSE}-$(params.repo-branch)-${ENV}
         - name: namespaces
           value: |
-            $(tasks.params.results.repo-full-name-ns)-$(tasks.params.results.repo-branch-ns)-${ENV}
+            $(tasks.params.results.repo-full-name-ns)-${PURPOSE}-$(tasks.params.results.repo-branch-ns)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
         - name: cluster-role
