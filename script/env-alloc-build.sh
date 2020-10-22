@@ -1,5 +1,10 @@
 . _help.sh
 
+purpose=$1
+purposeForNs=$(formatToNamespace $purpose false)
+export PURPOSE=$purposeForNs
+shift
+
 branchType=$1
 branchTypeForNs=$(formatBranchType $branchType)
 export BRANCH_TYPE=$branchTypeForNs
@@ -40,4 +45,4 @@ parsePlaceHolder $TEMP_DIR/trigger.yaml
 printSplit
 
 # webhook
-addWebHook http://${branchTypeForNs}branch-created.'${NAMESPACE}':8080 ${branchType} create
+addWebHook http://${PURPOSE}-branch-created.'${NAMESPACE}':8080 ${branchType} create
