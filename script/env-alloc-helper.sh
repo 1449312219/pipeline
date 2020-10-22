@@ -1,7 +1,6 @@
 . _help.sh
 
-purpose=$1
-purposeForNs=$(formatToNamespace $purpose false)
+purposeForNs=$1
 export PURPOSE=$purposeForNs
 shift
 
