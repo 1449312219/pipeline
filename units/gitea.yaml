@@ -103,7 +103,7 @@ spec:
         function getIssueId() {
           repoFullName=$1
           title=$2
-          url=$(url GET /repos/$repoFullName/issues?type=issues&q=$title)
+          url=$(url GET /repos/$repoFullName/issues?type=issues'&'q=$title)
           res=$(sh -c "$url")
 
           if test $(echo $res | jq length) -eq 1; then
