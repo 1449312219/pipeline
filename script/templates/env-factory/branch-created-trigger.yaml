@@ -15,7 +15,7 @@ spec:
     bindings:
     - ref: branch-created-params-binding
     template:
-      name: ${PURPOSE}-env-alloc
+      name: ${PURPOSE}-env-factory
 ---
 
 apiVersion: triggers.tekton.dev/v1alpha1
@@ -39,7 +39,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: ${PURPOSE}-env-alloc
+  name: ${PURPOSE}-env-factory
 spec:
   params:
   - name: repo-full-name
@@ -51,10 +51,10 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: ${PURPOSE}-env-alloc-$(uid)
+      name: ${PURPOSE}-env-factory-$(uid)
     spec:
       pipelineRef:
-        name: ${PURPOSE}-env-alloc
+        name: ${PURPOSE}-env-factory
       serviceAccountName: pipeline
       params:
       - name: repo-full-name

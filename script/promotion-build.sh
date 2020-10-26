@@ -57,9 +57,9 @@ function branchPushPromotion() {
   printSplit
   local webhook="http://deployed-notify.${namespace}:8080"
   
-  # env-alloc
+  # env-factory
   # purposeForNs namespace branchType manifestSuffix webhook env1 env2 env3
-  ./env-alloc-helper.sh ${PURPOSE} $namespace $branchType $manifestSuffix $webhook ${envs[@]}
+  ./branch-push-env-factory.sh ${PURPOSE} $namespace $branchType $manifestSuffix $webhook ${envs[@]}
 }
 
 

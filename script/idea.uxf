@@ -1192,7 +1192,7 @@ fontsize=18
     <coordinates>
       <x>400</x>
       <y>2770</y>
-      <w>180</w>
+      <w>200</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -1201,7 +1201,7 @@ lw=.8
 valign=center
 halign=center
 fontsize=18
-/&lt;purpose&gt;-env-alloc/</panel_attributes>
+/&lt;purpose&gt;-env-factory/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2519,7 +2519,7 @@ fontsize=14
     <coordinates>
       <x>400</x>
       <y>2740</y>
-      <w>190</w>
+      <w>210</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2528,7 +2528,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/&lt;purpose&gt;-env-alloc-&lt;uid&gt;/</panel_attributes>
+/&lt;purpose&gt;-env-factory-&lt;uid&gt;/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

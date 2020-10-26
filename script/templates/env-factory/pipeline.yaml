@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: ${PURPOSE}-env-alloc
+  name: ${PURPOSE}-env-factory
 spec:
   params:
   - name: repo-full-name

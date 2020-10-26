@@ -34,7 +34,7 @@ if test ${#envs[@]} -le 0; then
 fi
 
 
-TEMP_DIR=templates/env-alloc
+TEMP_DIR=templates/env-factory
 
 # pipeline
 parsePlaceHolder $TEMP_DIR/pipeline.yaml
