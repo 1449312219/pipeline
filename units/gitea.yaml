@@ -97,7 +97,7 @@ spec:
                   \"description\": \"$description\" }")
           local content=$(sh -c "$url")
 
-          echo $name $(echo $content | jq -r .ssh_url) > $(results.repo-url.path)
+          echo $name $(echo $content | jq -r .ssh_url) >> $(results.repo-url.path)
           echo $content | jq -r .id
         }
         
