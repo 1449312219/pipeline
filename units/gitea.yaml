@@ -28,6 +28,9 @@ spec:
 
   results:
   - name: output
+  - name: repo-url
+    description: |
+      仅createRepo时返回, 格式为: repo-name ssh-url
 
   volumes:
   - name: output
@@ -92,7 +95,10 @@ spec:
                   \"private\": false,
                   \"auto_init\": true,
                   \"description\": \"$description\" }")
-          sh -c "$url" | jq -r .id
+          local content=$(sh -c "$url")
+
+          echo $name $(echo $content | jq -r .ssh_url) > $(results.repo-url.path)
+          echo $content | jq -r .id
         }
         
         function createIssue() {
