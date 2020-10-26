@@ -61,7 +61,7 @@ spec:
         value: $(params.repo-full-name)
       - name: repo-url
         value: $(params.repo-url)
-      - name: repo-branch
+      - name: env-version
         value: $(params.repo-branch)
       - name: repo-ref
         value: $(params.repo-ref)

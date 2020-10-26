@@ -8,12 +8,13 @@ spec:
     description: git仓库名称
   - name: repo-url
     description: git仓库URL
-  - name: repo-branch
-    description: git仓库分支
   - name: repo-ref
     description: git仓库SHA
   - name: git-server
     description: git server host (如:http://localhost:30280)
+    
+  - name: env-version
+    description: 环境版本
 
   tasks:
   - name: params
@@ -32,23 +33,23 @@ spec:
           }
 
           parse $(params.repo-full-name) > $(results.repo-full-name-ns.path)
-          parse $(params.repo-branch) > $(results.repo-branch-ns.path)
+          parse $(params.env-version) > $(results.env-version-ns.path)
       params:
       - name: repo-url
       - name: repo-full-name
-      - name: repo-branch
+      - name: env-version
       results:
       - name: repo-url
       - name: repo-full-name
       - name: repo-full-name-ns
-      - name: repo-branch-ns
+      - name: env-version-ns
     params:
     - name: repo-url
       value: $(params.repo-url)
     - name: repo-full-name
       value: $(params.repo-full-name)
-    - name: repo-branch
-      value: $(params.repo-branch)
+    - name: env-version
+      value: $(params.env-version)
 
   - name: flux-init-apply
     taskRef:
@@ -85,10 +86,10 @@ spec:
           value: $(params.git-server)
         - name: paths
           value: |
-            ${PURPOSE}-$(params.repo-branch)-${ENV}
+            ${PURPOSE}-$(params.env-version)/${ENV}
         - name: namespaces
           value: |
-            $(tasks.params.results.repo-full-name-ns)-${PURPOSE}-$(tasks.params.results.repo-branch-ns)-${ENV}
+            $(tasks.params.results.repo-full-name-ns)-${PURPOSE}-$(tasks.params.results.env-version-ns)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
         - name: cluster-role

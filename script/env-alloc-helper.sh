@@ -41,7 +41,7 @@ parsePlaceHolder $TEMP_DIR/pipeline.yaml
 printSplit
 
 # trigger
-parsePlaceHolder $TEMP_DIR/trigger.yaml
+parsePlaceHolder $TEMP_DIR/branch-created-trigger.yaml
 printSplit
 
 # webhook
