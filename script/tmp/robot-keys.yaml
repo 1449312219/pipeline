@@ -1,4 +1,12 @@
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: robot-keys
+secrets:
+- name: robot-keys
+---
+
+apiVersion: v1
 kind: Secret
 metadata:
   annotations:
@@ -11,7 +19,7 @@ stringData:
     [10.1.40.43]:30220 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDZr0Kq9mfDatUm4sTSkE401vgy1jYLDAuurmOFAsgJo
     [10.1.40.43]:30220 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHa3IilGRusTooHdnn7QD8nl34C+GAw4l+j8XNDg8xlEFa7qU5KwRCi7So7wO5YbNpCYmtBGs9WymUX/GE9zJPYIe4M8sP/emsU7eAqsaxm9FrUSBPWrDnQkx1oU8lbHZLsF8eSbfv1+bjcDZW+KSbCwnhVJXB+m+ETQr/PqXyujBRf/M6Nm6Iyu+sj9LVqE6/upwq3lLbhlHisZjU0t1A3CqXoIlGq54gOoc8GRYzsKkD3jgIfB8PuLKeui28s+qVH4CUT53Xdd38P3efDIibME+Qg41BdcZJ1v405/qa2oUzuT9fd7ieUC06uLc2x+m2NbNYlRgbIBWoRqc1dl9t
     [10.1.40.43]:30220 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBITb86buw7tRDsPGAExgSXtMukiTV+CBFipGyniY/8/EONXD2kX9VTe+mZdGBPsH/SNxJxeDDKaaxhV+Q/vmnu4=
-  ssh-private-key: |
+  ssh-privatekey: |
     -----BEGIN RSA PRIVATE KEY-----
     MIIEpAIBAAKCAQEA3en6Iuj4iMIKDWsvlBn0fNuyjJN3p6zZiIZaydBIeZhLHJ4F
     TqpmgwpXR0re7jjlDd22k4MQToSYN0VVeKE8ogTWMTwiGSOJBDqk5/A6Bg8uoqZl

@@ -1332,7 +1332,7 @@ fontsize=15
       <x>830</x>
       <y>1230</y>
       <w>260</w>
-      <h>290</h>
+      <h>370</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.6
@@ -2793,6 +2793,40 @@ valign=center
 halign=center
 fontsize=18
 /factory/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>870</x>
+      <y>1530</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=18
+/robot-keys/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>850</x>
+      <y>1550</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+_/serviceaccount/_</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
