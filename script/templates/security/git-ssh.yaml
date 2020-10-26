@@ -5,8 +5,6 @@ metadata:
   annotations:
     tekton.dev/git-0: ${GIT_SERVER_SSH}
 type: kubernetes.io/ssh-auth
-stringData:
-  known_hosts: |
-    ${KNOWN_HOSTS}
 data:
+  known_hosts: ${KNOWN_HOSTS}
   ssh-privatekey: ${SSH_PRIVATE_KEY}
