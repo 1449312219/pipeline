@@ -7,6 +7,9 @@ spec:
     - name: url
       default: https://kubernetes.default
 
+    - name: namespace
+      description: pipelinerun-namespace
+      default: ""
     - name: name
       description: pipelinerun-name
     - name: spec
@@ -42,11 +45,14 @@ spec:
 
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
 
+        pipelinerunNs="$(params.namespace)"
+
         kubectl apply --wait -f - <<EOF
         apiVersion: tekton.dev/v1beta1
         kind: PipelineRun
         metadata:
           name: $(params.name)
+          $(echo ${pipelinerunNs:+namespace: ${pipelinerunNs}})
         spec:
         $(echo '$(params.spec)' | awk '{print "  "$0}')
         EOF
