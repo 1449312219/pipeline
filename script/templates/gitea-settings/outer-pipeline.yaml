@@ -89,12 +89,12 @@ spec:
           $(params.webhooks)
           EOF
           
-          while read name ssh-url; do
+          while read name ssh; do
             if test -z "$name"; then
               continue
             fi
             if test "$name" == $(params.manifest-repo-name); then
-              echo -n ${ssh-url} > $(results.manifest-repo-ssh-url.path)
+              echo -n ${ssh} > $(results.manifest-repo-ssh-url.path)
               break
             fi
           done <<EOF
