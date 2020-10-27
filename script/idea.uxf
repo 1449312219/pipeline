@@ -1332,7 +1332,7 @@ fontsize=15
       <x>830</x>
       <y>1230</y>
       <w>260</w>
-      <h>370</h>
+      <h>270</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.6
@@ -1483,10 +1483,10 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>830</x>
+      <x>880</x>
       <y>1460</y>
-      <w>170</w>
-      <h>60</h>
+      <w>70</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
@@ -1494,17 +1494,16 @@ style=autoresize
 valign=center
 halign=center
 fontsize=15
-_/secret/_
-/kubernetes.io/ssh-auth/</panel_attributes>
+_/secret/_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>960</x>
-      <y>1410</y>
-      <w>110</w>
-      <h>70</h>
+      <y>1420</y>
+      <w>120</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
@@ -1513,8 +1512,7 @@ valign=center
 halign=left
 fontsize=15
 /token/
-/known_hosts/
-/ssh-privatekey/</panel_attributes>
+/ssh-private-key/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2793,40 +2791,6 @@ valign=center
 halign=center
 fontsize=18
 /factory/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>870</x>
-      <y>1530</y>
-      <w>100</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-//style=autoresize
-valign=center
-halign=center
-fontsize=18
-/robot-keys/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>850</x>
-      <y>1550</y>
-      <w>130</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=center
-fontsize=15
-_/serviceaccount/_</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
