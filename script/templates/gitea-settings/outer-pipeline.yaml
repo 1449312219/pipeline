@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: gitea-settings 
+  name: gitea-settings-outer
 spec:
   params:
   - name: owner
@@ -26,6 +26,9 @@ spec:
 
   - name: git-server
     description: git server host (如:http://localhost:30280)
+    
+  - name: inner-namespace
+    description: 用于创建inner-pipelinerun
 
 
   workspaces:
@@ -34,30 +37,6 @@ spec:
 
 
   tasks:
-  - name: params
-    taskSpec:
-      steps:
-      - image: 10.1.40.43:5000/busybox:1.31
-        script: |
-          while read line; do
-            if test -z "$line"; then
-              continue
-            fi
-            echo '$(params.repo-full-name)' $line >> $(results.webhook-args.path)
-          done <<EOF
-          $(params.webhooks)
-          EOF
-      params:
-      - name: repo-full-name
-      - name: webhooks
-      results:
-      - name: webhook-args
-    params:
-    - name: repo-full-name
-      value: $(params.owner)/$(params.repo-name)
-    - name: webhooks
-      value: $(params.webhooks)
-
   - name: create-repo
     taskRef:
       kind: ClusterTask
@@ -75,9 +54,50 @@ spec:
     - name: token
       workspace: token
 
+  - name: params
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          while read line; do
+            if test -z "$line"; then
+              continue
+            fi
+            echo '$(params.repo-full-name)' $line >> $(results.webhook-args.path)
+          done <<EOF
+          $(params.webhooks)
+          EOF
+          
+          while read name ssh-url; do
+            if test -z "$name"; then
+              continue
+            fi
+            if test "$name" == $(params.manifest-repo-name); then
+              echo -n ${ssh-url} > $(results.manifest-repo-ssh-url.path)
+              break
+            fi
+          done <<EOF
+          $(params.repo-urls)
+          EOF
+      params:
+      - name: repo-full-name
+      - name: webhooks
+      - name: manifest-repo-name
+      - name: repo-urls
+      results:
+      - name: webhook-args
+      - name: manifest-repo-ssh-url
+    params:
+    - name: repo-full-name
+      value: $(params.owner)/$(params.repo-name)
+    - name: webhooks
+      value: $(params.webhooks)
+    - name: manifest-repo-name
+      value: $(params.repo-name)$(params.repo-manifest-suffix)
+    - name: repo-urls
+      value: $(tasks.create-repo.results.repo-url)
+
   - name: create-webhook
-    runAfter:
-    - create-repo
     taskRef:
       kind: ClusterTask
       name: gitea
@@ -91,3 +111,29 @@ spec:
     workspaces:
     - name: token
       workspace: token
+      
+  - name: inner-apply
+    taskRef:
+      kind: ClusterTask
+      name: pipelinerun-apply
+    params:
+    - name: namespace
+      value: $(params.inner-namespace)
+    - name: name
+      value: $(context.pipelineRun.name)-inner
+    - name: spec
+      value: |
+        pipelineRef:
+          name: gitea-settings-inner
+        serviceAccountName: pipeline
+        workspaces:
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: pipeline-all-workspaces-pvc
+          subPath: $(context.pipelineRun.name)-inner
+        - name: manifest-repo-init
+          configmap:
+            name: manifest-repo-init
+        params:
+        - name: manifest-repo-url
+          value: $(tasks.params.results.manifest-repo-ssh-url)

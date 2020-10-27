@@ -1,10 +1,10 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: gitea-settings-${PIPELINERUN_ID}
+  name: gitea-settings-outer-${PIPELINERUN_ID}
 spec:
   pipelineRef:
-    name: gitea-settings
+    name: gitea-settings-outer
   params:
   - name: owner
     value: ${REPO_OWNER}
@@ -22,6 +22,9 @@ spec:
 
   - name: git-server
     value: ${GIT_SERVER}
+    
+  - name: inner-namespace
+    value: ${NAMESPACE}
 
   workspaces:
   - name: token
