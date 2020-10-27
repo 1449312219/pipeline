@@ -11,4 +11,6 @@ function printConfigMap() {
 
 
 cd $DIR
-printConfigMap env-manifest
+for name in $(find . -type d -! -name . | xargs -I {} basename {}); do
+  printConfigMap $name
+done
