@@ -80,8 +80,8 @@ function printYamlContent() {
 
 function findManifestPaths() {
   local dir=$1
-  local ext=$2
-  find $dir -! -regex '.*/_.*' -name '*.yaml' -type f $ext 
+  shift
+  find $dir -! -regex '.*/_.*' -name '*.yaml' -type f "$@"
 }
 
 function addWebHook() {
