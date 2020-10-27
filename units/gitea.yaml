@@ -19,6 +19,7 @@ spec:
       description: |
         传于gitea相应请求, 可支持循环
         createRepo:  owner type(user/org) repoName repoDescription
+        addCollaborator: repoFullName userName permission
         createDeployKey:  repoFullName title key
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
@@ -99,6 +100,16 @@ spec:
 
           echo $name $(echo $content | jq -r .ssh_url) >> $(results.repo-url.path)
           echo $content | jq -r .id
+        }
+
+        function addCollaborator() {
+          repoFullName=$1
+          name=$2
+          permission=${3-write}
+          assignees=$4  #(echo $3|sed 's|"|\\"|g')
+          url=$(url PUT /repos/$repoFullName/collaborators/$name "{
+                  \"permission\": \"$permission\" }")
+          sh -c "$url" | jq -r .id
         }
         
         function createIssue() {
