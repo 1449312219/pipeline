@@ -1293,9 +1293,9 @@ _/secret/_</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>980</x>
-      <y>1240</y>
+      <y>1230</y>
       <w>110</w>
-      <h>90</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
@@ -1306,7 +1306,8 @@ fontsize=15
 /git-server-http/
 /git-server-ssh/
 /owner/
-/type/</panel_attributes>
+/type (user/org)/
+/robot/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

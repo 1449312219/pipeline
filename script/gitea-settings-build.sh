@@ -11,11 +11,12 @@ shift
 
 export WEBHOOKS=$(getWebHooks)
 
-ownerConfig=($(kubectl get configmap owner-config --no-headers -o custom-columns=http:data.git-server-http,owner:data.owner,type:data.type))
+ownerConfig=($(kubectl get configmap owner-config --no-headers -o custom-columns=http:data.git-server-http,owner:data.owner,type:data.type,robot:data.robot))
 
 export GIT_SERVER=${ownerConfig[0]}
 export REPO_OWNER=${ownerConfig[1]}
 export REPO_OWNER_TYPE=${ownerConfig[2]}
+export REPO_ROBOT=${ownerConfig[3]}
 
 export PIPELINERUN_ID=$(formatToNamespace $(mktemp -u XXXXXX))
 

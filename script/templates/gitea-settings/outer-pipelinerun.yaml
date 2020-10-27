@@ -10,6 +10,8 @@ spec:
     value: ${REPO_OWNER}
   - name: type
     value: ${REPO_OWNER_TYPE}
+  - name: robot
+    value: ${REPO_ROBOT}
 
   - name: repo-name
     value: ${REPO_NAME}

@@ -7,3 +7,4 @@ data:
   git-server-ssh: 10.1.40.43:30220
   owner: root
   type: user
+  robot: robot

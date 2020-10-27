@@ -9,6 +9,8 @@ spec:
   - name: type
     description: 所有者类型 (user/org)
     default: org
+  - name: robot
+    description: 项目robot名称
 
   - name: repo-name
     description: 项目仓库名称
@@ -50,6 +52,25 @@ spec:
       value: |
         $(params.owner) $(params.type) $(params.repo-name) '$(params.repo-description)'
         $(params.owner) $(params.type) $(params.repo-name)$(params.repo-manifest-suffix) 'manifests'
+    workspaces:
+    - name: token
+      workspace: token
+      
+  - name: add-collaborator
+    runAfter:
+    - create-repo
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server)
+    - name: cmd
+      value: addCollaborator
+    - name: args
+      value: |
+        $(params.owner)/$(params.repo-name) $(params.robot)
+        $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(params.robot)
     workspaces:
     - name: token
       workspace: token
