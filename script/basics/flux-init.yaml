@@ -125,7 +125,7 @@ spec:
     - name: git-server
       value: $(params.git-server)
     - name: cmd
-      value: createDeployKey
+      value: addDeployKey
     - name: args
       value: $(tasks.prepare-deploy-key-args.results.args)
     workspaces:

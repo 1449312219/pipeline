@@ -14,13 +14,13 @@ spec:
       default: "http://gitea-gitea-http:3000"
 
     - name: cmd
-      description: createDeployKey / createIssue / createComment
+      description: addDeployKey / createIssue / createComment
     - name: args
       description: |
         传于gitea相应请求, 可支持循环
         createRepo:  owner type(user/org) repoName repoDescription
         addCollaborator: repoFullName userName permission
-        createDeployKey:  repoFullName title key
+        addDeployKey:  repoFullName title key
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
         createComment:  repoFullName issueId body
@@ -148,7 +148,7 @@ spec:
           sh -c "$url" | jq -r .id
         }
  
-        function createDeployKey() {
+        function addDeployKey() {
           repoFullName=$1
           title=$2
           key=$3
