@@ -21,7 +21,7 @@
       - name: purpose
         value: ${PURPOSE}
       - name: job-id 
-        value: $(tasks.params.results.job-id)
+        value: $(context.pipelineRun.name)-$(params.repo-ref)
       - name: repo-full-name
         value: $(params.repo-full-name)
       - name: repo-url

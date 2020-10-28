@@ -19,18 +19,3 @@ spec:
     default: 
 
   tasks:
-  - name: params
-    taskSpec:
-      steps:
-      - image: 10.1.40.43:5000/busybox:1.31
-        script: |
-          echo -n $(params.job-id) > $(results.job-id.path)
-      params:
-      - name: job-id
-        description: |
-          pipelines内唯一子目录,作为project根目录(伪pvc),为后续步骤的数据来源/结果数据
-      results:
-      - name: job-id
-    params:
-    - name: job-id
-      value: $(context.pipelineRun.name)-$(params.repo-ref)
