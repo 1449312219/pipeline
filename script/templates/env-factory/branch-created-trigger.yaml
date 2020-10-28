@@ -67,3 +67,7 @@ spec:
         value: $(params.repo-ref)
       - name: git-server
         value: $(params.git-server)
+      workspaces:
+      - name: token
+        secret:
+          SecretName: gitea-user-token

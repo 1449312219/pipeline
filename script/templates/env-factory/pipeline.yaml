@@ -12,9 +12,12 @@ spec:
     description: git仓库SHA
   - name: git-server
     description: git server host (如:http://localhost:30280)
-    
   - name: env-version
     description: 环境版本
+    
+  workspaces:
+  - name: token
+    description: 存储gitea user token (于/token文件)  
 
   tasks:
   - name: params
@@ -66,6 +69,9 @@ spec:
     - name: args
       value: |
         $(params.repo-full-name) ${PURPOSE}-$(params.env-version)-pipeline
+    workspaces:
+    - name: token
+      workspace: token
 
   - name: flux-init-apply
     taskRef:
