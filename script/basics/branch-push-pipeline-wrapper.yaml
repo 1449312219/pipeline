@@ -175,7 +175,8 @@ spec:
     - name: cmd
       value: getIssueId
     - name: args
-      value: root/test dddd
+      value: |
+        $(params.repo-full-name) $(params.purpose)-$(params.env-version)-pipeline
     workspaces:
     - name: token
       workspace: gitea-user-token
