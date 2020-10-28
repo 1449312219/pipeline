@@ -20,8 +20,9 @@ function manifest() {
   export ENV="$@"
   
   
-  # 选取需部署的环境
   ENV_DIR=env
+  
+  # 选取需部署的环境
   declare -a envs
   for i in $ENV; do
     if test "$(cat $ENV_DIR/$i/config.yaml | printYamlContent deploy)" == "true"; then
@@ -29,10 +30,18 @@ function manifest() {
     fi
   done
   export ENV="${envs[@]}"
-  
   if test ${#envs[@]} -le 0; then
     exit
   fi
+    
+  # 是否需要交互
+  export NEED_INTERACTION=false
+  for i in $ENV; do
+    if test "$(cat $ENV_DIR/$i/config.yaml | printYamlContent interaction)" == "true"; then
+      export NEED_INTERACTION=true
+      break
+    fi
+  done
   
   
   TEMP_DIR=templates/env-factory

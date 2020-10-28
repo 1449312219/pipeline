@@ -58,6 +58,14 @@ spec:
       value: $(params.env-version)
       
   - name: create-issue
+    conditions:
+    - conditionRef: test
+      params:
+      - name: args
+        value:
+        - "${NEED_INTERACTION}"
+        - ==
+        - "true"
     taskRef:
       kind: ClusterTask
       name: gitea
