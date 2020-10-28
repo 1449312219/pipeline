@@ -59,7 +59,7 @@ function branchPushPromotion() {
   
   # env-factory
   # purposeForNs namespace branchType manifestSuffix webhook env1 env2 env3
-  ./branch-push-env-factory.sh ${PURPOSE} $namespace $branchType $manifestSuffix $webhook ${envs[@]}
+  ./branch-push-env-factory.sh manifest ${PURPOSE} $namespace $branchType $manifestSuffix $webhook ${envs[@]}
 }
 
 
@@ -77,5 +77,5 @@ shift
 
 
 case $promotionType in
-  branch-push) branchPushPromotion $@;
+  branch-push) branchPushPromotion $@;;
 esac
