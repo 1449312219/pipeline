@@ -34,3 +34,5 @@
         value: $(params.git-server)
       - name: env
         value: ${ENV}
+      - name: env-version
+        value: ${ENV_VERSION}

@@ -53,6 +53,19 @@ spec:
       value: $(params.repo-full-name)
     - name: env-version
       value: $(params.env-version)
+      
+  - name: create-issue
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server)
+    - name: cmd
+      value: createIssue
+    - name: args
+      value: |
+        $(params.repo-full-name) ${PURPOSE}-$(params.env-version)-pipeline
 
   - name: flux-init-apply
     taskRef:

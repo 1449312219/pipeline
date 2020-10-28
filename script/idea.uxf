@@ -277,7 +277,7 @@ r1pos=-20,15</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>590</x>
-      <y>2930</y>
+      <y>3000</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -311,7 +311,7 @@ _/pipeline/_</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>630</x>
-      <y>2890</y>
+      <y>2960</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -328,7 +328,7 @@ fontsize=18
     <id>Relation</id>
     <coordinates>
       <x>650</x>
-      <y>2920</y>
+      <y>2990</y>
       <w>30</w>
       <h>330</h>
     </coordinates>
@@ -340,7 +340,7 @@ lw=.6</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>670</x>
-      <y>2960</y>
+      <y>3030</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -357,7 +357,7 @@ fontsize=18
     <id>UMLClass</id>
     <coordinates>
       <x>670</x>
-      <y>3020</y>
+      <y>3090</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -374,7 +374,7 @@ fontsize=18
     <id>UMLClass</id>
     <coordinates>
       <x>670</x>
-      <y>3070</y>
+      <y>3140</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -391,7 +391,7 @@ fontsize=18
     <id>UMLClass</id>
     <coordinates>
       <x>670</x>
-      <y>3190</y>
+      <y>3260</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -410,17 +410,17 @@ fontsize=18
       <x>420</x>
       <y>2800</y>
       <w>30</w>
-      <h>450</h>
+      <h>520</h>
     </coordinates>
     <panel_attributes>lt=..&gt;
 lw=.6</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;430.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;500.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>0</x>
-      <y>3260</y>
+      <y>3320</y>
       <w>1120</w>
       <h>30</h>
     </coordinates>
@@ -1381,7 +1381,7 @@ fontsize=18
     <id>Relation</id>
     <coordinates>
       <x>760</x>
-      <y>3120</y>
+      <y>3190</y>
       <w>140</w>
       <h>60</h>
     </coordinates>
@@ -2043,7 +2043,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>760</x>
-      <y>3010</y>
+      <y>3080</y>
       <w>340</w>
       <h>50</h>
     </coordinates>
@@ -2062,7 +2062,7 @@ fontsize=14
     <coordinates>
       <x>750</x>
       <y>2370</y>
-      <w>100</w>
+      <w>90</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2536,7 +2536,7 @@ fontsize=15
     <id>UMLClass</id>
     <coordinates>
       <x>440</x>
-      <y>2890</y>
+      <y>2960</y>
       <w>150</w>
       <h>40</h>
     </coordinates>
@@ -2553,7 +2553,7 @@ fontsize=18
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>2860</y>
+      <y>2930</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -2570,7 +2570,7 @@ fontsize=15
     <id>Relation</id>
     <coordinates>
       <x>580</x>
-      <y>2890</y>
+      <y>2960</y>
       <w>70</w>
       <h>40</h>
     </coordinates>
@@ -2583,7 +2583,7 @@ lw=.6
     <id>Text</id>
     <coordinates>
       <x>630</x>
-      <y>2860</y>
+      <y>2930</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -2600,7 +2600,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>2930</y>
+      <y>3000</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -2617,7 +2617,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>2990</y>
+      <y>3060</y>
       <w>130</w>
       <h>40</h>
     </coordinates>
@@ -2634,7 +2634,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>760</x>
-      <y>3070</y>
+      <y>3140</y>
       <w>210</w>
       <h>30</h>
     </coordinates>
@@ -2651,7 +2651,7 @@ fontsize=14
     <id>UMLClass</id>
     <coordinates>
       <x>670</x>
-      <y>3130</y>
+      <y>3200</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -2668,7 +2668,7 @@ fontsize=18
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>3100</y>
+      <y>3170</y>
       <w>90</w>
       <h>40</h>
     </coordinates>
@@ -2685,7 +2685,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>3160</y>
+      <y>3230</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -2702,7 +2702,7 @@ fontsize=15
     <id>Text</id>
     <coordinates>
       <x>760</x>
-      <y>3190</y>
+      <y>3260</y>
       <w>320</w>
       <h>30</h>
     </coordinates>
@@ -2719,7 +2719,7 @@ fontsize=14
     <id>UMLClass</id>
     <coordinates>
       <x>700</x>
-      <y>300</y>
+      <y>290</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -2737,14 +2737,16 @@ fontsize=18
     <coordinates>
       <x>730</x>
       <y>230</y>
-      <w>30</w>
-      <h>90</h>
+      <w>40</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
-r2=/*/
-r2pos=1,30</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+r1=/*/
+r1pos=1,-30
+r2=/1/
+r2pos=0,27</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -2752,7 +2754,7 @@ r2pos=1,30</panel_attributes>
       <x>230</x>
       <y>50</y>
       <w>560</w>
-      <h>210</h>
+      <h>300</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
@@ -2792,6 +2794,74 @@ valign=center
 halign=center
 fontsize=18
 /factory/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>2890</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=18
+/gitea/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>440</x>
+      <y>2860</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=15
+/create-issue/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>520</x>
+      <y>2890</y>
+      <w>160</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=left
+fontsize=15
+/依约定, 创建issue/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>840</x>
+      <y>2360</y>
+      <w>270</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=16
+/(&lt;purpose&gt;-&lt;env-version&gt;-pipeline)/</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

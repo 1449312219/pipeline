@@ -49,9 +49,14 @@ function manifest() {
   addWebHook http://el-${PURPOSE}-branch-created.${namespace}:8080 ${branchType} create
 }
 
+function envVersionPlaceHolderValue() {
+  echo "'\$(params.repo-branch)'"
+}
+
 subCmd=$1
 shift
 
 case $subCmd in
   manifest )  manifest $@ ;;
+  envVersion ) envVersionPlaceHolderValue ;;
 esac

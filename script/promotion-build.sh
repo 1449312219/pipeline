@@ -29,6 +29,8 @@ function showTaskRun() {
 
 function branchPushPromotion() { 
   export PURPOSE=${purposeForNs}
+  
+  export ENV_VERSION="$(./branch-push-env-factory.sh envVersion)"
 
   # pipeline
   parsePlaceHolder $TEMP_DIR/branch-push-pipeline.yaml

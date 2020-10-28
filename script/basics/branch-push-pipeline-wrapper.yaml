@@ -23,6 +23,8 @@ spec:
   - name: env
   - name: before-env
     default: ""
+  - name: env-version
+    description: env version, 用于关联具体env
 
   - name: pipeline-name
   - name: pipeline-serviceaccountname
