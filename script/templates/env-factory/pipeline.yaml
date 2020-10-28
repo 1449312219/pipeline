@@ -23,8 +23,8 @@ spec:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
           echo -n '$(params.repo-url)' | sed 's/.git$/${MANIFEST_SUFFIX}.git/' \
-          > $(results.repo-url.path)
-          echo -n '$(params.repo-full-name)'${MANIFEST_SUFFIX} > $(results.repo-full-name.path)
+          > $(results.manifest-repo-url.path)
+          echo -n '$(params.repo-full-name)'${MANIFEST_SUFFIX} > $(results.manifest-repo-full-name.path)
 
           function parse() {
             local value=$1
@@ -32,16 +32,19 @@ spec:
             echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
 
-          parse $(params.repo-full-name) > $(results.repo-full-name-ns.path)
+          parse $(params.repo-full-name) > $(results.manifest-repo-full-name-ns.path)
           parse $(params.env-version) > $(results.env-version-ns.path)
       params:
       - name: repo-url
       - name: repo-full-name
       - name: env-version
       results:
-      - name: repo-url
-      - name: repo-full-name
-      - name: repo-full-name-ns
+      - name: manifest-repo-url
+        description: 资源项目仓库URL
+      - name: manifest-repo-full-name
+        description: 资源项目仓库名称
+      - name: manifest-repo-full-name-ns
+        description: 资源项目仓库名称namespace格式
       - name: env-version-ns
     params:
     - name: repo-url
@@ -79,9 +82,9 @@ spec:
             SecretName: gitea-user-token
         params:
         - name: repo-url
-          value: $(tasks.params.results.repo-url)
+          value: $(tasks.params.results.manifest-repo-url)
         - name: repo-full-name
-          value: $(tasks.params.results.repo-full-name)
+          value: $(tasks.params.results.manifest-repo-full-name)
         - name: git-server
           value: $(params.git-server)
         - name: paths
@@ -89,8 +92,8 @@ spec:
             ${PURPOSE}-$(params.env-version)/${ENV}
         - name: namespaces
           value: |
-            $(tasks.params.results.repo-full-name-ns)-${PURPOSE}-$(tasks.params.results.env-version-ns)-${ENV}
+            $(tasks.params.results.manifest-repo-full-name-ns)-${PURPOSE}-$(tasks.params.results.env-version-ns)-${ENV}
         - name: webhook
           value: ${WEBHOOK}
         - name: cluster-role
-          value: pipeline:init-flux-env:$(tasks.params.results.repo-full-name-ns)-flux
+          value: pipeline:init-flux-env:$(tasks.params.results.manifest-repo-full-name-ns)-flux
