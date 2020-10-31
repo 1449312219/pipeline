@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: padding-set
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: padding-name
+
+    - name: pass
+      default: "true"
+      description: 是否通过
+
+  steps:
+    - name: padding
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+        
+        
+        name=padding.$(params.padding-name)
+        
+        status="fail"
+        if test "$(params.pass)" == "true"; then
+          status="pass"
+        fi
+        
+        $kubectl annotate endpoints $name status=$status --overwrite
