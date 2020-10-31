@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: env-lock-release
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: lock-name
+      description:  删除指定名称的endpoint
+
+  steps:
+    - name: release
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+
+        
+        $kubectl delete endpoints $(params.lock-name)
