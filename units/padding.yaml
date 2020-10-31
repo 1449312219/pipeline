@@ -1,0 +1,64 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: padding
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: padding-name
+
+    - name: await-count
+      default: '0'
+      description: 未能创建时,是否等待. 0,不等待,异常退出.
+    - name: await-interval
+      default: '15'
+      description: 等待时间. (单位:秒)
+
+  steps:
+    - name: await
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+        
+        
+        awaitCount=0
+        function doAwait() {
+          if test $awaitCount -ge $(params.await-count); then
+            exit -1
+          fi
+          awaitCount=$(($awaitCount+1))
+          sleep $(params.await-interval)
+        }
+        
+        name=$(params.padding-name)
+        manifest='apiVersion: v1
+        kind: Endpoints
+        metadata:
+          name: '$name'
+          annotations:
+            status: padding'
+  
+        # init
+        $kubectl apply -f - <<EOF
+        $manifest
+        EOF
+        
+        while true; do
+          status=$($kubectl get endpoints $name -o jsonpath={.metadata.annotations.status})
+          
+          if test "$status" == "padding"; then
+            doAwait
+            continue
+          fi
+                    
+          test "$status" == "pass"
+          exit
+        done
