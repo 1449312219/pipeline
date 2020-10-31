@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: env-lock    
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: lock-name
+
+    - name: await-count
+      default: '0'
+      description: 未能创建时,是否等待. 0,不等待,异常退出.
+    - name: await-interval
+      default: '15'
+      description: 等待时间. (单位:秒)
+
+  check:
+    image: 10.1.40.43:5000/lachlanevenson/k8s-kubectl
+    imagePullPolicy: IfNotPresent 
+    script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+        
+        manifest='apiVersion: v1
+        kind: Endpoints
+        metadata:
+          name: $(params.lock-name)'
+
+        function doCreate() {
+          $kubectl create -f - <<EOF
+        $manifest
+        EOF
+        }
+        
+        awaitCount=0
+        function doAwait() {
+          if test $awaitCount -ge $(params.await-count); then
+            exit -1
+          fi
+          awaitCount=$(($awaitCount+1))
+          sleep $(params.await-interval)
+        }
+        
+        until doCreate; do
+          doAwait
+        done
