@@ -33,13 +33,12 @@ spec:
         
         awaitCount=0
         function doAwait() {
-          if test $awaitCount -ge $(params.await-count); then
+          local maxCount=${1-$(params.await-count)}
+          
+          if test $awaitCount -ge $maxCount; then
             exit 1
           fi
           awaitCount=$(($awaitCount+1))
-          sleep $(params.await-interval)
-        }
-        function onlyAwait() {
           sleep $(params.await-interval)
         }
         
@@ -69,7 +68,7 @@ spec:
           selector=$(getSelector)
           
           if test -z "$selector"; then
-            onlyAwait
+            doAwait 99
             continue
           fi
           
