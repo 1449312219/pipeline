@@ -23,4 +23,5 @@ spec:
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
 
         
-        $kubectl delete endpoints $(params.lock-name)
+        name=env-lock.$(params.lock-name)
+        $kubectl delete endpoints $name

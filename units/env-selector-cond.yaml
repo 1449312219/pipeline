@@ -43,7 +43,7 @@ spec:
           sleep $(params.await-interval)
         }
         
-        name=$(params.selector-name)
+        name=env-selector.$(params.selector-name)
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:

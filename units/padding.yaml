@@ -38,7 +38,7 @@ spec:
           sleep $(params.await-interval)
         }
         
-        name=$(params.padding-name)
+        name=padding.$(params.padding-name)
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:

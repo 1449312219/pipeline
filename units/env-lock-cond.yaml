@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Condition
 metadata:
-  name: env-lock    
+  name: env-lock
 spec:
   params:
     - name: url
@@ -37,10 +37,11 @@ spec:
           sleep $(params.await-interval)
         }
         
+        name=env-lock.$(params.lock-name)
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:
-          name: $(params.lock-name)'
+          name: '$name
 
         function doCreate() {
           $kubectl create -f - <<EOF
