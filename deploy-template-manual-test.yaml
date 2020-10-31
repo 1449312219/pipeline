@@ -1,0 +1,161 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: deploy-template-manual-test
+spec:
+  params:
+  - name: work-id
+    description: all-workspaces-pvc内唯一子目录,作为workspace根目录(伪pvc)
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+  - name: src-root
+    description: 代码根目录
+    default: ""
+  
+  - name: git-server
+  - name: issue-id
+  
+  - name: promotion-name
+  - name: env-version
+  - name: env
+
+  - name: job-id
+
+  - name: await-count
+    default: '1440'
+  - name: await-interval
+    default: '30'
+    
+
+  workspaces:
+  - name: all-workspaces
+    description: |
+      workspace根, 提供独立path,成workspace, 供各PipelineRun执行
+  - name: workspace
+    description: |
+      存储输入资源, 作为后续步骤的数据来源/结果数据
+  - name: gitea-user-token
+  
+
+  tasks:
+  - name: ask
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server)
+    - name: cmd
+      value: createComment
+    - name: args
+      value: |
+        $(params.repo-full-name) $(params.issue-id) '是否部署到此环境. yes / no'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      
+  - name: await-answer
+    runAfter:
+    - ask
+    conditions:
+    - conditionRef: env-selector
+      params:
+      - name: selector-name
+        value: $(params.promotion-name).$(params.env-version).$(params.env).menual-test
+      - name: candidate
+        value: $(params.job-id)
+      - name: await-count
+        value: $(params.await-count)
+      - name: await-interval
+        value: $(params.await-interval)
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+        
+  - name: tag-deploy-images
+    runAfter:
+    - await-answer
+    conditions:
+    - conditionRef: env-lock
+      params:
+      - name: lock-name
+        value: $(params.promotion-name).$(params.env-version).$(params.env).menual-test
+      - name: await-count
+        value: $(params.await-count)
+      - name: await-interval
+        value: $(params.await-interval)
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        command:
+        - echo
+#    taskRef:
+#      name: kaniko
+#    workspaces:
+#    - name: source
+#      workspace: workspace
+#    params:
+#    - name: destination
+#     value: 10.1.40.43:5000/busybox:$(params.repo-ref)
+
+  - name: await-deploy-success
+    runAfter:
+    - tag-deploy-images
+    taskRef:
+      kind: ClusterTask
+      name: padding
+    params:
+    - name: padding-name
+      value: $(params.promotion-name).$(params.env-version).$(params.env).deploy.menual-test
+    - name: await-count
+      value: $(params.await-count)
+    - name: await-interval
+      value: $(params.await-interval)
+      
+  - name: notify-deploy-success
+    runAfter:
+    - await-deploy-success
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: cmd
+      value: createComment
+    - name: args
+      value: |
+        $(params.repo-full-name) $(params.issue-id) '已否部署到此环境. 是否可继续. yes / no'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      
+  - name: await-manual-result
+    runAfter:
+    - notify-deploy-success
+    taskRef:
+      kind: ClusterTask
+      name: padding
+    params:
+    - name: padding-name
+      value: $(params.promotion-name).$(params.env-version).$(params.env).result.menual-test
+    - name: await-count
+      value: $(params.await-count)
+    - name: await-interval
+      value: $(params.await-interval)
+      
+  - name: release-lock
+    runAfter:
+    - await-manual-result
+    taskRef:
+      kind: ClusterTask
+      name: env-lock-release
+    params:
+    - name: lock-name
+      value: $(params.promotion-name).$(params.env-version).$(params.env).menual-test
