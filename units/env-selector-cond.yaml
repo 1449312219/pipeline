@@ -67,11 +67,6 @@ spec:
         while true; do
           selector=$(getSelector)
           
-          if test -z "$selector"; then
-            doAwait 99
-            continue
-          fi
-          
           if test "$selector" == "$(params.candidate)"; then
             exit
           fi
