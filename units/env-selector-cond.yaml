@@ -1,13 +1,16 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Condition
 metadata:
-  name: env-lock    
+  name: env-selector    
 spec:
   params:
     - name: url
       default: https://kubernetes.default
 
-    - name: lock-name
+    - name: selector-name
+    
+    - name: candidate
+      description:  候选者名称, 当选中时才可继续. 未修改选中者时,可重复进入.
 
     - name: await-count
       default: '0'
@@ -36,18 +39,43 @@ spec:
           awaitCount=$(($awaitCount+1))
           sleep $(params.await-interval)
         }
+        function onlyAwait() {
+          sleep $(params.await-interval)
+        }
         
+        name=$(params.selector-name)
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:
-          name: $(params.lock-name)'
-
-        function doCreate() {
-          $kubectl create -f - <<EOF
+          name: '$name'
+          annotations:
+            selector: ""'          
+        
+        # init
+        if result=$($kubectl create -f - 2>&1); then
+          echo inited
+        elif echo $result | grep AlreadyExists -v; then
+          echo init error
+          exit 1
+        fi <<EOF
         $manifest
         EOF
+        
+        function getSelector() {
+           $kubectl get endpoints $name -o jsonpath={.metadata.annotations.selector}
         }
-                
-        until doCreate; do
+        
+        while true; do
+          selector=$(getSelector)
+          
+          if test -z "$selector"; then
+            onlyAwait
+            continue
+          fi
+          
+          if test "$selector" == "$(params.candidate)"; then
+            exit
+          fi
+          
           doAwait
         done

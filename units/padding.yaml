@@ -32,7 +32,7 @@ spec:
         awaitCount=0
         function doAwait() {
           if test $awaitCount -ge $(params.await-count); then
-            exit -1
+            exit 1
           fi
           awaitCount=$(($awaitCount+1))
           sleep $(params.await-interval)
