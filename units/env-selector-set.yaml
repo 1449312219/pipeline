@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: env-selector-set
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: selector-name
+    
+    - name: selector
+      description:  选中为指定名称
+
+  steps:
+    - name: set
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+
+        
+        name=env-selector.$(params.selector-name)
+        $kubectl annotate endpoints $name selector='$(params.selector)' --overwrite
