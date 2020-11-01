@@ -7,8 +7,6 @@ spec:
     - name: url
       default: https://kubernetes.default
 
-    - name: config-name
-
     - name: opt
       description: get / set
       
@@ -40,7 +38,7 @@ spec:
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
         
         
-        name=promotion-config.$(params.config-name)
+        name=promotion-config.branch-push
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:
@@ -57,7 +55,7 @@ spec:
           init
           local promotionName=$1
           local branchPattern=$2
-          $kubectl annotate endpoints $name "$promotionName"="$branchPattern"
+          $kubectl annotate endpoints $name "$promotionName"="$branchPattern" --overwrite
         }
         
         function doGet() {
