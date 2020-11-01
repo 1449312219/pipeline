@@ -1,0 +1,83 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: promotion-config
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: config-name
+
+    - name: opt
+      description: get / set
+      
+    - name: promotion-name
+      default: ""
+      description: set时必传
+    - name: branch-pattern
+      default: ""
+      description: set时必传
+      
+    - name: branch
+      default: ""
+      description: get时必传
+      
+  results:
+  - name: promotion-names
+    description: get时返回,存储branch匹配的promotion-name
+      
+  steps:
+    - name: config
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+        
+        
+        name=promotion-config.$(params.config-name)
+        manifest='apiVersion: v1
+        kind: Endpoints
+        metadata:
+          name: '$name   
+        
+        function init() {
+          set +e
+          $kubectl create -f - <<EOF
+        $manifest
+        EOF
+          set -e
+        }
+        function doSet() {
+          init
+          local promotionName=$1
+          local branchPattern=$2
+          $kubectl annotate endpoints $name "$promotionName"="$branchPattern"
+        }
+        
+        function doGet() {
+          local branch=$1
+          
+          local configs=$($kubectl get endpoints $name -o jsonpath={.metadata.annotations} | xargs echo -n | sed -r 's/map\[(.*)]/\1/')
+          
+          local match=1
+          for i in $configs; do
+            local name=${i%%:*}
+            local branchPattern=${i#*:}
+            if echo $branch | grep "^${branchPattern}$" 2>&1 >/dev/null; then
+              match=0
+              echo $name
+            fi
+          done
+          return $match
+        }
+        
+        case '$(params.opt)' in
+          set) doSet '$(params.promotion-name)' '$(params.branch-pattern)' ;;
+          get) doGet '$(params.branch)' > $(results.promotion-names.path)
+        esac
