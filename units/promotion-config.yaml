@@ -22,8 +22,8 @@ spec:
       description: get时必传
       
   results:
-  - name: promotion-names
-    description: get时返回,存储branch匹配的promotion-name
+  - name: promotion-name
+    description: get时返回,存储branch最匹配的promotion-name (==pattern > 最长pattern > 最早pattern)
       
   steps:
     - name: config
@@ -63,19 +63,31 @@ spec:
           
           local configs=$($kubectl get endpoints $name -o jsonpath={.metadata.annotations} | xargs echo -n | sed -r 's/map\[(.*)]/\1/')
           
-          local match=1
+          local optimalPromotionName
+          local optimalBranchPattern
           for i in $configs; do
             local name=${i%%:*}
             local branchPattern=${i#*:}
+            if test "$branch" == "$branchPattern"; then
+              echo -n $name
+              return
+            fi
             if echo $branch | grep "^${branchPattern}$" 2>&1 >/dev/null; then
-              match=0
-              echo $name
+              if test ${#branchPattern} -gt ${#optimalBranchPattern}; then
+                optimalPromotionName="$name"
+                optimalBranchPattern="$branchPattern"
+              fi
             fi
           done
-          return $match
+          
+          if test -z "$optimalPromotionName"; then
+            return 1
+          else
+            echo -n $optimalPromotionName
+          fi
         }
         
         case '$(params.opt)' in
           set) doSet '$(params.promotion-name)' '$(params.branch-pattern)' ;;
-          get) doGet '$(params.branch)' > $(results.promotion-names.path)
+          get) doGet '$(params.branch)' > $(results.promotion-name.path)
         esac
