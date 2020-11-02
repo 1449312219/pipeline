@@ -48,6 +48,7 @@ spec:
         metadata:
           name: '$name'
           annotations:
+            control-plane.alpha.kubernetes.io/leader: "true"
             selector: ""'          
         
         # init

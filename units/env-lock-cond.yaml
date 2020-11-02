@@ -41,7 +41,9 @@ spec:
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:
-          name: '$name
+          name: '$name'
+          annotations:
+            control-plane.alpha.kubernetes.io/leader: "true"'
 
         function doCreate() {
           $kubectl create -f - <<EOF
