@@ -30,8 +30,8 @@ spec:
 
 
   workspaces:
-  - name: project
-    description: 存储项目
+  - name: pipelines
+    description: 由job-id分离各流水线数据目录
   - name: gitea-user-token
 
 
@@ -68,11 +68,29 @@ spec:
       name: git-clone
     workspaces:
     - name: output
-      workspace: project
+      workspace: pipelines
     params:
     - name: url
       value: $(params.repo-url)
     - name: revision
       value: $(params.repo-ref)
+    - name: subdirectory
+      value: $(params.job-id)
     - name: deleteExisting
       value: "true"
+      
+  - name: params
+    runAfter:
+    - fetch-repo
+    taskSpec:
+      workspaces:
+      - name: pipelines
+      results:
+      - name: pipelines-claim
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
+    workspaces:
+    - name: pipelines
+      workspace: pipelines
