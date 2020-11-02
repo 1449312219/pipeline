@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>1120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.6</panel_attributes>
+    <additional_attributes>10.0;10.0;1100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>360</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=left
+fontsize=16
+/docker tag/
+/docker push/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>300</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=16
+/环境可用/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>270</y>
+      <w>30</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.5</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>270</y>
+      <w>30</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.5</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>360</y>
+      <w>80</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=16
+/等待结果/
+/释放环境/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>280</x>
+      <y>270</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/是否等待/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>300</x>
+      <y>550</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/Flux自动检测更新/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>510</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/Flux/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>520</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.6
+fontsize=16
+r2=/部署/
+r2pos=55,10</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>390</y>
+      <w>170</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.6
+fontsize=15
+/通知/</panel_attributes>
+    <additional_attributes>10.0;140.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>360</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/Padding/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>310</x>
+      <y>410</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.1</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>360</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=16
+/fluxctl sync/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>280</x>
+      <y>320</y>
+      <w>50</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/Token/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>590</x>
+      <y>360</y>
+      <w>60</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=22
+/*. . .*/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>160</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=18
+/Endpoint/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>190</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+lw=.1</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>310</x>
+      <y>130</y>
+      <w>320</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-lock/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>310</x>
+      <y>80</y>
+      <w>350</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-selector/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>440</x>
+      <y>310</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.padding/
+/=&gt; name: deploy/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>490</x>
+      <y>270</y>
+      <w>70</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/padding/
+/pass / fail/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>270</y>
+      <w>60</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.1</panel_attributes>
+    <additional_attributes>20.0;40.0;40.0;40.0;40.0;10.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>650</x>
+      <y>130</y>
+      <w>380</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-lock-release/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>560</x>
+      <y>50</y>
+      <w>220</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/选中后,未清理,  未选中,等待/离开/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>850</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=left
+fontsize=16
+/docker tag/
+/docker push/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>660</y>
+      <w>30</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.5</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>700</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=16
+/同意继续/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>650</y>
+      <w>30</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.5</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>280</x>
+      <y>670</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=14
+/等待手动触发/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>310</x>
+      <y>1040</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/Flux自动检测更新/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>1000</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/Flux/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>1010</y>
+      <w>110</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.6
+fontsize=16
+r2=/部署/
+r2pos=55,10</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>900</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.1</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>850</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=16
+/fluxctl sync/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>850</y>
+      <w>80</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=16
+/等待结果/
+/释放环境/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>250</x>
+      <y>700</y>
+      <w>40</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>790</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=center
+fontsize=16
+/环境可用/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>280</x>
+      <y>760</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/是否等待/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>280</x>
+      <y>810</y>
+      <w>50</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/Token/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>880</y>
+      <w>170</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.6
+fontsize=15
+/通知/</panel_attributes>
+    <additional_attributes>10.0;140.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>850</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/Padding/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>360</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lw=.6</panel_attributes>
+    <additional_attributes>90.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>200</x>
+      <y>850</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/通知/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>850</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/通知/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>650</x>
+      <y>850</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=16
+/Padding/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>460</x>
+      <y>800</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.padding/
+/=&gt; name: deploy/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>610</x>
+      <y>900</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.padding/
+/=&gt; name: result/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>520</x>
+      <y>160</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/await-count/
+/await-interval/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>670</x>
+      <y>80</y>
+      <w>370</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/&lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-selector-set/</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
