@@ -7,9 +7,6 @@ spec:
   - name: job-id
     description: 任务ID,串联起所有子流水线
 
-#  - name: promotion-name
-#    description: promotion name
-#    default: "release"
   - name: env-version
     description: env version, 用于关联具体env
     default: "0.1.1"
@@ -25,8 +22,6 @@ spec:
 
   - name: git-server-http
     description: git server host (如:http://localhost:30280)
-#  - name: issue-id
-#    description: 工单ID, 用以与用户交互
 
 
   workspaces:
@@ -80,8 +75,6 @@ spec:
       value: "true"
       
   - name: params
-    runAfter:
-    - fetch-repo
     taskSpec:
       workspaces:
       - name: pipelines
@@ -94,3 +87,42 @@ spec:
     workspaces:
     - name: pipelines
       workspace: pipelines
+      
+  - name: trigger
+    runAfter:
+    - fetch-repo
+    taskRef:
+      kind: ClusterTask
+      name: pipelinerun-apply
+    params:
+    - name: name
+      value: $(context.pipelineRun.name)-trigger-$(tasks.get-promotion-name.results.promotion-name)
+    - name: spec
+      value: |
+        pipelineRef:
+          name: promotion-$(tasks.get-promotion-name.results.promotion-name)
+        serviceAccountName: pipeline
+        workspaces:
+        - name: project 
+          persistentVolumeClaim:
+            claimName: $(tasks.params.results.pipelines-claim)
+          subPath: $(params.job-id)
+        params:
+        - name: job-id
+          value: "$(params.job-id)"
+        - name: promotion-name
+          value: "$(tasks.get-promotion-name.results.promotion-name)"
+        - name: env-version
+          value: "$(params.env-version)"
+        - name: repo-full-name
+          value: "$(params.repo-full-name)"
+        - name: repo-branch
+          value: "$(params.repo-branch)"
+        - name: repo-ref
+          value: "$(params.repo-ref)"
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: git-server-http
+          value: $(params.git-server-http)
+        - name: issue-id
+          value: "$(tasks.get-issue-id.results.output)"

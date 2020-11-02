@@ -1,0 +1,47 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: promotion-release
+spec:
+  params:
+  - name: job-id
+    description: 任务ID,串联起所有子流水线
+
+  - name: promotion-name
+    description: promotion name
+  - name: env-version
+    description: env version, 用于关联具体env
+    
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+  - name: repo-url
+    description: git仓库URL
+
+  - name: git-server-http
+    description: git server host (如:http://localhost:30280)
+  - name: issue-id
+    description: 工单ID, 用以与用户交互
+
+
+  workspaces:
+  - name: project
+    description: 存储项目
+
+
+  tasks:
+  - name: params
+    taskSpec:
+      workspaces:
+      - name: project
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo 1111111111
+          sleep 1d
+    workspaces:
+    - name: project
+      workspace: project
