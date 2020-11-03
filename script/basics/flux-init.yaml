@@ -24,9 +24,6 @@ spec:
   - name: webhook
     description: 回调地址 (用以flux部署环境资源成功后回调)
 
-  - name: cluster-role
-    description: ClusterRole name, 将绑定到flux
-
   workspaces:
   - name: workspace
     description: 存储yaml仓库内容
@@ -45,14 +42,22 @@ spec:
           > $(results.monitored-git-path.path)
           
           
-          function parse() {
+          function parseToNameSpace() {
             local value=$1
             # [a-z0-9]([-a-z0-9]*[a-z0-9])?
             echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
           
-          parse $(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
+          parseToNameSpace $(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
           > $(results.env-namespace.path)
+          
+          
+          function parseToCluserRoleName() {
+            local value=$1
+            echo $value | tr / - | xargs echo -n
+          }
+          parseToCluserRoleName pipeline:init-flux-env:$(params.repo-full-name)-flux \
+          > $(results.flux-cluster-role.path)
       params:
       - name: promotion-name
       - name: env-version
@@ -63,6 +68,8 @@ spec:
         description: flux将监视的资源仓库目录, 用以存放当前环境配置
       - name: env-namespace
         description: 环境的命名空间, 用以存放flux+项目实例
+      - name: flux-cluster-role
+        description: ClusterRole name, 将绑定到flux
     params:
     - name: promotion-name
       value: $(params.promotion-name)
@@ -146,17 +153,17 @@ spec:
       name: flux
     params:
     - name: git-url
-      value: $(params.repo-url)
+      value: $(params.manifest-repo-url)
     - name: webhook
       value: $(params.webhook)
     - name: envs
       value: $(tasks.params.results.env-namespace)
     - name: namespaces
-      value: $(tasks.params.results.env-namespaces)
+      value: $(tasks.params.results.env-namespace)
     - name: git-paths
       value: $(tasks.params.results.monitored-git-path)
     - name: cluster-role
-      value: $(params.cluster-role)
+      value: $(tasks.params.results.flux-cluster-role)
     - name: http-registry
       value: 10.1.40.43:5000 
 
