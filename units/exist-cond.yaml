@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: exist
+spec:
+  params:
+    - name: content
+      description: 指定内容
+
+    - name: expect
+      description: 期望内容, 可指定正则表达式
+
+  check:
+    image: 10.1.40.43:5000/busybox:1.31
+    imagePullPolicy: IfNotPresent 
+    script: |
+      while read line; do
+        if echo "$line" | grep "$(params.expect)"; then
+          exit
+         fi
+      done <<EOF
+      $(params.content)
+      EOF
+      exit 1
