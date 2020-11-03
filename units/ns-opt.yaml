@@ -9,9 +9,13 @@ spec:
 
     - name: names
     - name: opt
-      description: create / delete 
+      description: create / delete / has
       default: create
 
+  results:
+  - name: has
+    description: "存储has结果. 格式: name bool"
+  
   steps:
     - name: await
       image: lachlanevenson/k8s-kubectl
@@ -28,5 +32,15 @@ spec:
         names='$(params.names)'
 
         for name in $names; do
-          $kubectl $(params.opt) ns $name
+          case "$(params.opt)" in
+            has ) 
+              has=false
+              if $kubectl get ns $name -o jsonpath={.metadata.name}; then
+                has=true
+              fi
+              echo $name $has >> $(results.has.path)
+              ;;
+            create ) $kubectl create ns $name ;;
+            delete ) $kubectl delete ns $name ;;
+          esac
         done
