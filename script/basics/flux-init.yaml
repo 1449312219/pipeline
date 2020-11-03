@@ -30,7 +30,28 @@ spec:
     description: 存储gitea user token (于/token文件)
 
   tasks:
+  - name: has-ns
+    taskRef:
+      kind: ClusterTask
+      name: ns-opt
+    params:
+    - name: opt
+      value: has
+    - name: names
+      value: $(params.namespaces)
+      
   - name: fetch-flux-config-repo
+    runAfter:
+    - has-ns
+    conditions:
+    - conditionRef: exist
+      params:
+      - name: negate
+        value: "true"
+      - name: content
+        value: $(tasks.has-ns.results.has)
+      - name: expect
+        value: " true"
     taskRef:
       kind: ClusterTask
       name: git-clone
