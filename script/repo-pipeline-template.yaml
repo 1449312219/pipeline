@@ -19,6 +19,9 @@ spec:
     description: git仓库SHA
   - name: repo-url
     description: git仓库URL
+  - name: manifest-repo-suffix
+    default: "-manifest"
+    description: 资源仓库后缀, 追加到git仓库后
 
   - name: git-server-http
     description: git server host (如:http://localhost:30280)
@@ -35,6 +38,55 @@ spec:
 
 
   tasks:
+  - name: fetch-repo
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: pipelines
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.repo-ref)
+    - name: subdirectory
+      value: $(params.job-id)/temporary/project-repo
+    - name: deleteExisting
+      value: "true"
+      
+  - name: params
+    taskSpec:
+      workspaces:
+      - name: pipelines
+      params:
+      - name: repo-url
+      - name: repo-full-name
+      results:
+      - name: pipelines-claim
+        description: pipelines-pvc claim
+      - name: manifest-repo-url
+        description: 资源仓库URL
+      - name: manifest-repo-full-name
+        description: 资源仓库名称   
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
+          
+          manifestRepoSuffix="$(params.manifest-repo-suffix)"
+          echo -n '$(params.repo-url)' | sed "s/.git$/${manifestRepoSuffix}.git/" \
+          > $(results.manifest-repo-url.path)
+          echo -n '$(params.repo-full-name)'${manifestRepoSuffix} > $(results.manifest-repo-full-name.path)
+    workspaces:
+    - name: pipelines
+      workspace: pipelines
+    params:
+    - name: repo-url
+      value: $(params.repo-url)
+    - name: repo-full-name
+      value: $(params.repo-full-name)
+
   - name: get-promotion-name
     taskRef:
       kind: ClusterTask
@@ -60,38 +112,7 @@ spec:
     workspaces:
     - name: token
       workspace: gitea-user-token
-      
-  - name: fetch-repo
-    taskRef:
-      kind: ClusterTask
-      name: git-clone
-    workspaces:
-    - name: output
-      workspace: pipelines
-    params:
-    - name: url
-      value: $(params.repo-url)
-    - name: revision
-      value: $(params.repo-ref)
-    - name: subdirectory
-      value: $(params.job-id)/temporary/project-repo
-    - name: deleteExisting
-      value: "true"
-      
-  - name: params
-    taskSpec:
-      workspaces:
-      - name: pipelines
-      results:
-      - name: pipelines-claim
-      steps:
-      - image: 10.1.40.43:5000/busybox:1.31
-        script: |
-          echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
-    workspaces:
-    - name: pipelines
-      workspace: pipelines
-      
+
   - name: trigger
     runAfter:
     - fetch-repo
@@ -128,6 +149,10 @@ spec:
           value: "$(params.repo-ref)"
         - name: repo-url
           value: $(params.repo-url)
+        - name: manifest-repo-full-name
+          value: "$(tasks.params.results.manifest-repo-full-name)"
+        - name: manifest-repo-url
+          value: $(tasks.params.results.manifest-repo-url)
         - name: git-server-http
           value: $(params.git-server-http)
         - name: issue-id
