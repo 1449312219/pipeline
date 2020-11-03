@@ -4,6 +4,24 @@ metadata:
   name: pipeline:init-flux-env:binding
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  - apps
+  resources:
+  - deployments
+  - services
+  - configmaps
+  - secrets
+  - serviceaccounts
+  verbs:
+  - get
+  - create
+- apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - rolebindings

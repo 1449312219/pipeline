@@ -431,7 +431,7 @@ lw=.6</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>280</x>
+      <x>190</x>
       <y>2090</y>
       <w>80</w>
       <h>40</h>
@@ -448,7 +448,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>260</x>
+      <x>170</x>
       <y>2120</y>
       <w>130</w>
       <h>40</h>
@@ -465,7 +465,7 @@ _/serviceaccount/_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>350</x>
       <y>2090</y>
       <w>80</w>
       <h>40</h>
@@ -482,7 +482,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>420</x>
+      <x>330</x>
       <y>2120</y>
       <w>130</w>
       <h>40</h>
@@ -499,7 +499,7 @@ _/secret (ssh-auth)/_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>260</x>
       <y>2090</y>
       <w>110</w>
       <h>40</h>
@@ -513,7 +513,7 @@ r2pos=15,0</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>280</x>
+      <x>190</x>
       <y>1980</y>
       <w>80</w>
       <h>40</h>
@@ -530,9 +530,9 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>300</x>
+      <x>210</x>
       <y>2010</y>
-      <w>50</w>
+      <w>90</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -541,13 +541,13 @@ style=autoresize
 valign=center
 halign=center
 fontsize=15
-_/role/_</panel_attributes>
+_/clusterrole/_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>360</x>
+      <x>270</x>
       <y>1970</y>
       <w>160</w>
       <h>60</h>
@@ -566,7 +566,7 @@ fontsize=15
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>290</x>
+      <x>200</x>
       <y>2010</y>
       <w>40</w>
       <h>100</h>
@@ -606,7 +606,7 @@ lw=.6</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>640</x>
+      <x>550</x>
       <y>2090</y>
       <w>160</w>
       <h>40</h>
@@ -623,7 +623,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>690</x>
+      <x>600</x>
       <y>2120</y>
       <w>70</w>
       <h>40</h>
@@ -739,8 +739,8 @@ lw=.6</panel_attributes>
       <w>280</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=..
-lw=.6
+    <panel_attributes>lt=.
+lw=.1
 style=autoresize
 valign=center
 halign=center
@@ -787,8 +787,8 @@ _/pv/_</panel_attributes>
       <w>240</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=..
-lw=.6
+    <panel_attributes>lt=.
+lw=.1
 style=autoresize
 valign=center
 halign=center
@@ -878,7 +878,7 @@ _/configmap/_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>250</x>
+      <x>180</x>
       <y>2230</y>
       <w>120</w>
       <h>40</h>
@@ -895,7 +895,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>240</x>
+      <x>170</x>
       <y>2260</y>
       <w>130</w>
       <h>40</h>
@@ -912,7 +912,7 @@ _/serviceaccount/_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>370</x>
       <y>2230</y>
       <w>240</w>
       <h>40</h>
@@ -929,9 +929,9 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>450</x>
+      <x>360</x>
       <y>2260</y>
-      <w>50</w>
+      <w>90</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -940,32 +940,13 @@ style=autoresize
 valign=center
 halign=center
 fontsize=15
-_/role/_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>680</x>
-      <y>2220</y>
-      <w>100</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=center
-fontsize=15
-/rolebindings/
--
-/get, create/</panel_attributes>
+_/clusterrole/_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>370</x>
       <y>2300</y>
       <w>300</w>
       <h>40</h>
@@ -982,24 +963,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>450</x>
-      <y>2330</y>
-      <w>50</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=center
-fontsize=15
-_/role/_</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>740</x>
+      <x>670</x>
       <y>2300</y>
       <w>80</w>
       <h>40</h>
@@ -1016,7 +980,7 @@ fontsize=15
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
+      <x>290</x>
       <y>2230</y>
       <w>100</w>
       <h>40</h>
@@ -1030,7 +994,7 @@ r2pos=15,0</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>310</x>
       <y>2240</y>
       <w>80</w>
       <h>100</h>
@@ -1044,7 +1008,7 @@ r2pos=15,3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
+      <x>750</x>
       <y>2380</y>
       <w>40</w>
       <h>40</h>
@@ -1061,7 +1025,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>760</x>
+      <x>710</x>
       <y>2410</y>
       <w>130</w>
       <h>40</h>
@@ -1078,9 +1042,9 @@ _/serviceaccount/_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
+      <x>580</x>
       <y>2330</y>
-      <w>170</w>
+      <w>190</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=.
@@ -1089,12 +1053,12 @@ r1=/1/
 r1pos=0,-30
 r2=/*/
 r2pos=15,3</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;150.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;170.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>770</x>
+      <x>720</x>
       <y>2370</y>
       <w>110</w>
       <h>80</h>
@@ -1110,7 +1074,7 @@ halign=left
   <element>
     <id>Text</id>
     <coordinates>
-      <x>760</x>
+      <x>710</x>
       <y>2340</y>
       <w>260</w>
       <h>40</h>
@@ -1224,7 +1188,7 @@ _/trigger/_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>860</x>
+      <x>790</x>
       <y>1970</y>
       <w>120</w>
       <h>40</h>
@@ -1241,7 +1205,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>880</x>
+      <x>810</x>
       <y>2000</y>
       <w>90</w>
       <h>40</h>
@@ -1258,7 +1222,7 @@ _/configMap/_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>860</x>
+      <x>790</x>
       <y>2060</y>
       <w>100</w>
       <h>40</h>
@@ -1275,7 +1239,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>880</x>
+      <x>810</x>
       <y>2090</y>
       <w>70</w>
       <h>40</h>
@@ -1292,7 +1256,7 @@ _/secret/_</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>980</x>
+      <x>910</x>
       <y>1950</y>
       <w>110</w>
       <h>110</h>
@@ -1313,7 +1277,7 @@ fontsize=15
   <element>
     <id>Text</id>
     <coordinates>
-      <x>960</x>
+      <x>890</x>
       <y>2060</y>
       <w>50</w>
       <h>40</h>
@@ -1330,7 +1294,7 @@ fontsize=15
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>840</x>
+      <x>770</x>
       <y>1950</y>
       <w>250</w>
       <h>270</h>
@@ -1346,7 +1310,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>840</x>
+      <x>770</x>
       <y>1920</y>
       <w>210</w>
       <h>40</h>
@@ -1358,23 +1322,6 @@ valign=center
 halign=left
 fontsize=13
 /ns: &lt;current&gt;  (执行./build.sh的ns)/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>10</x>
-      <y>1510</y>
-      <w>200</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=18
-*/ns: &lt;project&gt;-pipeilne/*</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1467,7 +1414,7 @@ lw=.1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>860</x>
+      <x>790</x>
       <y>2150</y>
       <w>100</w>
       <h>40</h>
@@ -1484,7 +1431,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>880</x>
+      <x>810</x>
       <y>2180</y>
       <w>70</w>
       <h>40</h>
@@ -1501,7 +1448,7 @@ _/secret/_</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>960</x>
+      <x>890</x>
       <y>2140</y>
       <w>120</w>
       <h>60</h>
@@ -3381,6 +3328,91 @@ valign=center
 halign=center
 fontsize=16
 /ConfigMap/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>430</x>
+      <y>1970</y>
+      <w>100</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+/namespaces/
+-
+/create, get/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>10</x>
+      <y>1550</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=18
+*/ns: &lt;project&gt;-pipeilne/*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>90</x>
+      <y>1960</y>
+      <w>90</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lw=.1
+r1=/内部权限/
+r1pos=-65,0</panel_attributes>
+    <additional_attributes>70.0;10.0;70.0;320.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>360</x>
+      <y>2330</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+_/clusterrole/_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>610</x>
+      <y>2210</y>
+      <w>500</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.3
+style=autoresize
+valign=center
+halign=left
+fontsize=15
+/get:  namespaces/
+/get, create:  deployments, services, configmaps, secrets, serviceaccounts/
+/get, create:  rolebindings/</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

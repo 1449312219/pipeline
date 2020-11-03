@@ -37,6 +37,7 @@ rules:
   resources:
   - namespaces
   verbs:
+  - get
   - create
 ---
 
