@@ -10,15 +10,22 @@ spec:
     - name: expect
       description: 期望内容, 可指定正则表达式
 
+    - name: negate
+      default: "false"
+      description: 求反 (不存在时通过)
+
   check:
     image: 10.1.40.43:5000/busybox:1.31
     imagePullPolicy: IfNotPresent 
     script: |
       while read line; do
         if echo "$line" | grep "$(params.expect)"; then
+          test "$(params.negate)" == "false"
           exit
          fi
       done <<EOF
       $(params.content)
       EOF
-      exit 1
+      
+      test "$(params.negate)" != "false"
+      exit
