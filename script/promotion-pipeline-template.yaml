@@ -6,6 +6,8 @@ spec:
   params:
   - name: job-id
     description: 任务ID,串联起所有子流水线
+  - name: pipelines-claim
+    description: pipelines-pvc claim, 用于传递给启动的pipelinerun
 
   - name: promotion-name
     description: promotion name

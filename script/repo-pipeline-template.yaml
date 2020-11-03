@@ -114,6 +114,8 @@ spec:
         params:
         - name: job-id
           value: "$(params.job-id)"
+        - name: pipelines-claim
+          value: "$(tasks.params.results.pipelines-claim)"
         - name: promotion-name
           value: "$(tasks.get-promotion-name.results.promotion-name)"
         - name: env-version
