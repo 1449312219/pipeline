@@ -27,6 +27,10 @@ spec:
         createComment:  repoFullName issueId body
         createWebHook:  repoFullName notifyUrl branchFilter events (多个event以逗号分隔)
 
+    - name: idempotent
+      default: "false"
+      description: 幂等 (现仅作用于createIssue)
+
 
   results:
   - name: output
@@ -126,6 +130,12 @@ spec:
           title=$2
           body=$3
           assignees=$4  #(echo $3|sed 's|"|\\"|g')
+
+          if test "$(params.idempotent)" == "true"; then
+            if getIssueId "$repoFullName" "$title"; then
+              return
+            fi
+          fi
           url=$(url POST /repos/$repoFullName/issues "{
                   \"title\": \"$title\",
                   \"body\": \"$body\", 
@@ -146,7 +156,7 @@ spec:
               return
             fi
           fi
-          exit 1
+          return 1
         }
         
         function createComment() {
