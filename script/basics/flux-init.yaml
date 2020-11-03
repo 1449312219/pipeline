@@ -1,20 +1,26 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: flux-init
+  name: env-init
 spec:
   params:
-  - name: repo-url
-    description: 资源项目仓库URL
+  - name: promotion-name
+    description: promotion name
+  - name: env-version
+    description: env version, 用于关联具体env
+    
+  - name: env
+    
   - name: repo-full-name
+    description: git仓库名称
+  - name: manifest-repo-url
+    description: 资源项目仓库URL
+  - name: manifest-repo-full-name
     description: 资源项目ID (用以部署deploy-key)
-  - name: git-server
+    
+  - name: git-server-http
     description: git server host (如:http://localhost:30280)
 
-  - name: paths
-    description: 需在资源项目仓库内创建的目录 (用以存放环境配置)
-  - name: namespaces
-    description: 需创建的命名空间 (用以由flux部署环境资源)
   - name: webhook
     description: 回调地址 (用以flux部署环境资源成功后回调)
 
@@ -30,6 +36,43 @@ spec:
     description: 存储gitea user token (于/token文件)
 
   tasks:
+  - name: params
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo -n $(params.promotion-name)-$(params.env-version)/$(params.env) \
+          > $(results.monitored-git-path.path)
+          
+          
+          function parse() {
+            local value=$1
+            # [a-z0-9]([-a-z0-9]*[a-z0-9])?
+            echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
+          }
+          
+          parse $(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
+          > $(results.env-namespace.path)
+      params:
+      - name: promotion-name
+      - name: env-version
+      - name: env
+      - name: repo-full-name
+      results:
+      - name: monitored-git-path
+        description: flux将监视的资源仓库目录, 用以存放当前环境配置
+      - name: env-namespace
+        description: 环境的命名空间, 用以存放flux+项目实例
+    params:
+    - name: promotion-name
+      value: $(params.promotion-name)
+    - name: env-version
+      value: $(params.env-version)
+    - name: env
+      value: $(params.env)
+    - name: repo-full-name
+      value: $(params.repo-full-name)
+
   - name: has-ns
     taskRef:
       kind: ClusterTask
@@ -38,7 +81,7 @@ spec:
     - name: opt
       value: has
     - name: names
-      value: $(params.namespaces)
+      value: $(tasks.params.results.env-namespace)
       
   - name: fetch-flux-config-repo
     runAfter:
@@ -60,7 +103,7 @@ spec:
       workspace: workspace
     params:
     - name: url
-      value: $(params.repo-url)
+      value: $(params.manifest-repo-url)
     - name: revision
       value: master
     - name: deleteExisting
@@ -79,7 +122,7 @@ spec:
       workspace: add
     params:
     - name: script-params
-      value: $(params.paths)
+      value: $(tasks.params.results.monitored-git-path)
     - name: message
       value: create env configs
 
@@ -93,7 +136,7 @@ spec:
     - name: opt
       value: create
     - name: names
-      value: $(params.namespaces)
+      value: $(tasks.params.results.env-namespace)
 
   - name: init-flux-env
     runAfter:
@@ -107,11 +150,11 @@ spec:
     - name: webhook
       value: $(params.webhook)
     - name: envs
-      value: $(params.namespaces)
+      value: $(tasks.params.results.env-namespace)
     - name: namespaces
-      value: $(params.namespaces)
+      value: $(tasks.params.results.env-namespaces)
     - name: git-paths
-      value: $(params.paths)
+      value: $(tasks.params.results.monitored-git-path)
     - name: cluster-role
       value: $(params.cluster-role)
     - name: http-registry
@@ -136,7 +179,7 @@ spec:
     - name: keys
       value: $(tasks.init-flux-env.results.ssh-key) 
     - name: project
-      value: $(params.repo-full-name)
+      value: $(params.manifest-repo-full-name)
 
   - name: init-deploy-key
     taskRef:
@@ -144,7 +187,7 @@ spec:
       name: gitea
     params:
     - name: git-server
-      value: $(params.git-server)
+      value: $(params.git-server-http)
     - name: cmd
       value: addDeployKey
     - name: args
