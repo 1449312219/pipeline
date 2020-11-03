@@ -28,8 +28,8 @@ spec:
 
 
   workspaces:
-  - name: project
-    description: 存储项目
+  - name: pipeline
+    description: 流水线数据目录
 
 
   tasks:

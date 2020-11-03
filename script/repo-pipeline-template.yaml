@@ -26,7 +26,11 @@ spec:
 
   workspaces:
   - name: pipelines
-    description: 由job-id分离各流水线数据目录
+    description: |
+      由job-id分离各流水线数据目录
+      结构: temporary/project-repo
+                      manifest-repo
+            persistent/
   - name: gitea-user-token
 
 
@@ -70,7 +74,7 @@ spec:
     - name: revision
       value: $(params.repo-ref)
     - name: subdirectory
-      value: $(params.job-id)
+      value: $(params.job-id)/temporary/project-repo
     - name: deleteExisting
       value: "true"
       
@@ -103,7 +107,7 @@ spec:
           name: promotion-$(tasks.get-promotion-name.results.promotion-name)
         serviceAccountName: pipeline
         workspaces:
-        - name: project 
+        - name: pipeline 
           persistentVolumeClaim:
             claimName: $(tasks.params.results.pipelines-claim)
           subPath: $(params.job-id)
