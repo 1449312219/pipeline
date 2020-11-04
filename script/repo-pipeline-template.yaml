@@ -9,7 +9,6 @@ spec:
 
   - name: env-version
     description: env version, 用于关联具体env
-    default: "0.1.1"
     
   - name: repo-full-name
     description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
@@ -62,6 +61,7 @@ spec:
       params:
       - name: repo-url
       - name: repo-full-name
+      - name: manifest-repo-suffix
       results:
       - name: pipelines-claim
         description: pipelines-pvc claim
@@ -86,6 +86,8 @@ spec:
       value: $(params.repo-url)
     - name: repo-full-name
       value: $(params.repo-full-name)
+    - name: manifest-repo-suffix
+      value: $(params.manifest-repo-suffix)
 
   - name: get-promotion-name
     taskRef:
@@ -97,7 +99,7 @@ spec:
     - name: branch
       value: $(params.repo-branch)
 
-  - name: get-issue-id
+  - name: init-issue
     taskRef:
       kind: ClusterTask
       name: gitea
@@ -105,10 +107,12 @@ spec:
     - name: git-server
       value: $(params.git-server-http)
     - name: cmd
-      value: getIssueId
+      value: createIssue
     - name: args
       value: |
         $(params.repo-full-name) $(tasks.get-promotion-name.results.promotion-name)-$(params.env-version)-pipeline
+    - name: idempotent
+      value: "true"
     workspaces:
     - name: token
       workspace: gitea-user-token
@@ -156,4 +160,4 @@ spec:
         - name: git-server-http
           value: $(params.git-server-http)
         - name: issue-id
-          value: "$(tasks.get-issue-id.results.output)"
+          value: "$(tasks.init-issue.results.output)"
