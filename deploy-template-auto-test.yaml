@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: deploy-auto-test
+spec:
+  params:
+  - name: work-id
+    description: all-workspaces-pvc内唯一子目录,作为workspace根目录(伪pvc)
+  - name: repo-url
+    description: git仓库URL
+  - name: repo-full-name
+    description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+  - name: repo-branch
+    description: git仓库分支
+  - name: repo-ref
+    description: git仓库SHA
+  - name: src-root
+    description: 代码根目录
+    default:  
+
+  workspaces:
+  - name: all-workspaces
+    description: |
+      workspace根, 提供独立path,成workspace, 供各PipelineRun执行
+  - name: workspace
+    description: |
+      存储输入资源, 作为后续步骤的数据来源/结果数据
+  - name: mvn-settings
+    description: |
+      maven settings.xml
+  - name: mvn-local-repo
+    description: |
+      maven 本地仓库
+  - name: gitea-user-token
+
+
+  tasks:
+  - name: tag-deploy-images
+    conditions:
+    - conditionRef: env-lock
+      params:
+      - name: lock-name
+        value: auto-test-token
+      - name: reentrant
+        value: "false"
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: workspace
+    params:
+    - name: destination
+      value: 10.1.40.43:5000/busybox:$(params.repo-ref)
+      
+  - name: await-deploy-success
+    runAfter:
+    - tag-deploy-images
+    taskRef:
+      name: padding
+    params:
+    - name: padding-name
+      value: auto-test-token
+      
+  - name: apply-other-pipeline
+    runAfter:
+    - await-deploy-success
+    taskRef:
+      name: pipielinerun-apply
+      
+  - name: release-lock
+    runAfter:
+    - apply-other-pipeline
+    taskRef:
+      name: release-env-lock

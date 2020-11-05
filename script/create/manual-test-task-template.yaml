@@ -1,0 +1,43 @@
+taskRef:
+  kind: ClusterTask
+  name: pipelinerun-apply
+params:
+- name: name
+  value: $(context.pipelineRun.name)-trigger-${INNER_PIPELINE_NAME}
+- name: spec
+  value: |
+    pipelineRef:
+      name: ${INNER_PIPELINE_NAME}
+    workspaces:
+    - name: pipeline 
+      persistentVolumeClaim:
+        claimName: $(params.pipelines-claim)
+      subPath: $(params.job-id)
+    - name: gitea-user-token
+      secret:
+        SecretName: gitea-user-token
+    params:
+    - name: job-id
+      value: "$(params.job-id)"
+    - name: pipelines-claim
+      value: "$(params.pipelines-claim)"
+    - name: env
+      value: "${ENV}"
+    - name: promotion-name
+      value: "$(params.promotion-name)"
+    - name: env-version
+      value: "$(params.env-version)"
+    - name: repo-full-name
+      value: "$(params.repo-full-name)"
+    - name: repo-ref
+      value: "$(params.repo-ref)"
+    - name: manifest-repo-full-name
+      value: "$(params.manifest-repo-full-name)"
+    - name: manifest-repo-url
+      value: $(params.manifest-repo-url)
+    - name: git-server-http
+      value: $(params.git-server-http)
+    - name: issue-id
+      value: "$(params.issue-id)"
+    - name: deploy-webhook
+      value: "${WEBHOOK}"
