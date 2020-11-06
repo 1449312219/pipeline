@@ -2730,9 +2730,9 @@ fontsize=16
 -
 /1.name/
 /2.labels:promotion-pipelines/custom-config: 为自定义pipeline配置/
-/            :promotion-pipelines/branch-pattern:  作用的分支/
+/3.annotations:promotion-pipelines/branch-pattern:  作用的分支/
 -.
-/3.将配置内tasks, 转换为Pipline内tasks/</panel_attributes>
+/4.将配置内tasks, 转换为Pipline内tasks/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

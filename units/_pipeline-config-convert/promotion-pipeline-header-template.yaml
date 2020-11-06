@@ -4,7 +4,8 @@ metadata:
   name: ${PROMOTION_NAME}
   labeles:
     promotion-pipelines/custom-config: "true"
-    promotion-pipelines/branch-pattern: "${BRANCH_PATTERN}"
+  annotations:
+    promotion-pipelines/branch-pattern: ${BRANCH_PATTERN}
 spec:
   params:
   - name: job-id
