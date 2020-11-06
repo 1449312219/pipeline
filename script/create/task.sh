@@ -11,6 +11,13 @@ spec:
   params:
   - name: url
     default: https://kubernetes.default
+  - name: deploy-success-webhook
+    description: 部署成功通知地址, 用于需部署后测试的任务
+    default: ""
+  workspaces:
+  - name: project
+    description: 存储项目根目录, 将扫描其内配置
+    readOnly: true
   steps:
   - name: build
     image: lachlanevenson/k8s-kubectl
@@ -50,16 +57,20 @@ function printFile() {
   
   doPrintFile ${filePath} ${fileName} | awk '{print "      "$0}'
 }
-function canExec() {
+function execScript() {
   local filePath=$1
+  shift
   local fileName=$(basename ${filePath})
-  echo "chmod u+x ${fileName}" \
-  | awk '{print "        "$0}'
+  echo "sh ${fileName}" "$@" \
+  | awk '{print "      "$0}'
 }
 
 for file in ${scriptDir}/*.yaml; do
   printFile $file
 done
 
-printFile ${scriptDir}/promotion.sh
-canExec ${scriptDir}/promotion.sh
+printFile ${scriptDir}/promotion.sh 
+
+execScript ${scriptDir}/promotion.sh \''$(workspaces.project.path)'\' '~/output' \''$(params.deploy-success-webhook)'\'
+
+echo '      $kubectl apply -f ~/output'

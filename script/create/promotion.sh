@@ -1,16 +1,17 @@
-
 PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
 AUTO_TEST_TASK_TEMPLATE="auto-test-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
 
-WEBHOOK="http://www.baidu.com"
+configDir=$1  #存储项目中资源配置
+shift
 
-configDir="../project"  #存储项目中资源配置
-
-pipelineDir="../tmp/output"  #pipeline输出目录
+pipelineDir=$1  #pipeline输出目录
+shift
 output="" #存储生成的pipeline文件
 
 tmpDir="./"  #存储临时文件
+
+deploySuccessWebhook=$1
 
 #-----------------------------------------------------
 
@@ -48,7 +49,7 @@ function pipelineTasks() {
     case $task in
       auto-test ) autoTestTask $file;;
       manual-test ) manualTestTask $file;;
-      * ) defaultTask $file;;
+      * ) commonTask $file;;
     esac
   done
   
@@ -107,7 +108,7 @@ function getValue() {
   }" ${file}
 }
 
-function defaultTask() {
+function commonTask() {
   local taskFile=$1
   if getContent ${taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
     return 1
@@ -148,7 +149,7 @@ function manualTestTask() {
   local env=$(getValue ${taskFile} env)
   sed -e "s/\${INNER_PIPELINE_NAME}/${innerPipelineName}/" \
       -e "s/\${ENV}/${env}/" \
-      -e "s/\${WEBHOOK}/${webhook}/" \
+      -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
       ${MANUAL_TEST_TASK_TEMPLATE} \
   | awk '{print "    "$0}' >> ${output}
 }

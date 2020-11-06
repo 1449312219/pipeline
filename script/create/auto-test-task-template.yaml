@@ -22,7 +22,7 @@ params:
     - name: pipelines-claim
       value: "$(params.pipelines-claim)"
     - name: env
-      value: "$(params.env1)"
+      value: "${ENV}"
     - name: promotion-name
       value: "$(params.promotion-name)"
     - name: env-version
@@ -40,4 +40,4 @@ params:
     - name: issue-id
       value: "$(params.issue-id)"
     - name: deploy-webhook
-      value: $(params.deploy-webhook)
+      value: "${DEPLOY_SUCCESS_WEBHOOK}"
