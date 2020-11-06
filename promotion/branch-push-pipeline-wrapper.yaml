@@ -88,8 +88,26 @@ spec:
       value: $(params.repo-full-name)
     - name: manifest-repo-suffix
       value: $(params.manifest-repo-suffix)
+      
+  - name: update-promotion-pipeline
+    runAfter:
+    - fetch-repo
+    taskRef:
+      kind: ClusterTask
+      name: promotion-config-convert
+    params:
+    - name: branch
+      value: $(params.repo-branch)
+    - name: deploy-success-webhook
+      value: "xxxxxxxxxxxxx"
+    workspaces:
+    - name: project
+      workspace: pipelines
+      subPath: $(params.job-id)/temporary/project-repo
 
   - name: get-promotion-name
+    runAfter:
+    - update-promotion-pipeline
     taskRef:
       kind: ClusterTask
       name: promotion-name
