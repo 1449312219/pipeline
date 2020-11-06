@@ -1,0 +1,79 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: branch-push
+spec:
+  serviceAccountName: trigger
+  triggers:
+  - name: pipeline
+    interceptors:
+    - cel:
+        filter: "body.ref.indexOf('refs/heads/') == 0 && body.before != '0000000000000000000000000000000000000000'"
+        overlays:
+        - key: branch
+          expression: "body.ref.replace('refs/heads/','')"
+        - key: git-server-http
+          # http://localhost:30280/root/test -> http://localhost:30280
+          expression: "body.repository.html_url.substring(0, body.repository.html_url.indexOf('/',8))"
+    bindings:
+    - ref: branch-push-params-binding
+    template:
+      name: branch-push
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: branch-push-params-binding
+spec:
+  params:
+  - name: repo-full-name
+    value: $(body.repository.full_name)
+  - name: repo-branch
+    value: $(body.branch)
+  - name: repo-ref
+    value: $(body.after)
+  - name: repo-url
+    value: $(body.repository.ssh_url)
+  - name: git-server-http
+    value: $(body.git-server-http)
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: branch-push
+spec:
+  params:
+  - name: repo-full-name
+  - name: repo-branch
+  - name: repo-ref
+  - name: repo-url 
+  - name: git-server-http
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: bp-$(uid)
+    spec:
+      pipelineRef:
+        name: branch-push-pipeline-wrapper
+      serviceAccountName: pipeline
+      params:
+      - name: job-id
+        value: $(params.repo-ref)-$(uid)
+
+      - name: env-version
+        value: $(params.repo-branch)
+    
+      - name: repo-full-name
+        value: $(params.repo-full-name)
+      - name: repo-branch
+        value: $(params.repo-branch)
+      - name: repo-ref
+        value: $(params.repo-ref)
+      - name: repo-url
+        value: $(params.repo-url)
+
+      - name: git-server-http
+        value: $(params.git-server)
