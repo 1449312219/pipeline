@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: ${PROMOTION_NAME}
-  labeles:
+  labels:
     promotion-pipelines/custom-config: "true"
   annotations:
     promotion-pipelines/branch-pattern: ${BRANCH_PATTERN}
