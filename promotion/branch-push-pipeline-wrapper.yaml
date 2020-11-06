@@ -92,10 +92,8 @@ spec:
   - name: get-promotion-name
     taskRef:
       kind: ClusterTask
-      name: promotion-config
+      name: promotion-name
     params:
-    - name: opt
-      value: get
     - name: branch
       value: $(params.repo-branch)
 
@@ -110,7 +108,7 @@ spec:
       value: createIssue
     - name: args
       value: |
-        $(params.repo-full-name) $(tasks.get-promotion-name.results.promotion-name)-$(params.env-version)-pipeline
+        $(params.repo-full-name) $(tasks.get-promotion-name.results.output)-$(params.env-version)-pipeline
     - name: idempotent
       value: "true"
     workspaces:
@@ -125,11 +123,11 @@ spec:
       name: pipelinerun-apply
     params:
     - name: name
-      value: $(context.pipelineRun.name)-trigger-$(tasks.get-promotion-name.results.promotion-name)
+      value: $(context.pipelineRun.name)-trigger-$(tasks.get-promotion-name.results.output)
     - name: spec
       value: |
         pipelineRef:
-          name: promotion-$(tasks.get-promotion-name.results.promotion-name)
+          name: $(tasks.get-promotion-name.results.output)
         serviceAccountName: pipeline
         workspaces:
         - name: pipeline 
@@ -142,7 +140,7 @@ spec:
         - name: pipelines-claim
           value: "$(tasks.params.results.pipelines-claim)"
         - name: promotion-name
-          value: "$(tasks.get-promotion-name.results.promotion-name)"
+          value: "$(tasks.get-promotion-name.results.output)"
         - name: env-version
           value: "$(params.env-version)"
         - name: repo-full-name
