@@ -6,7 +6,7 @@ check=${2:-true}
 echo 'apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: pipeline-config-convert
+  name: promotion-config-convert
 spec:
   params:
   - name: url

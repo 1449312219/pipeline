@@ -1,0 +1,366 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: promotion-config-convert
+spec:
+  params:
+  - name: url
+    default: https://kubernetes.default
+  - name: repo-branch
+    description: git仓库分支
+  - name: expect-branch
+    description: 期望git仓库分支, 仅为期望分支时生成pipeline
+    default: master
+  - name: deploy-success-webhook
+    description: 部署成功通知地址, 用于需部署后测试的任务
+    default: ""
+  workspaces:
+  - name: project
+    description: 存储项目根目录, 将扫描其内配置
+    readOnly: true
+  steps:
+  - name: build
+    image: lachlanevenson/k8s-kubectl
+    imagePullPolicy: IfNotPresent 
+    script: |
+      url=$(params.url)
+      ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+      namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+      
+      
+      if test "$(params.repo-branch)" != "$(params.expect-branch)"; then
+        exit
+      fi
+      
+      mkdir ~/script -p && cd ~/script
+      cat <<EOFEOFEOFEOF > auto-test-task-template.yaml
+      taskRef:
+        kind: ClusterTask
+        name: pipelinerun-apply
+      params:
+      - name: name
+        value: __o5dptI__(context.pipelineRun.name)-trigger-__o5dptI__{INNER_PIPELINE_NAME}
+      - name: spec
+        value: |
+          pipelineRef:
+            name: __o5dptI__{INNER_PIPELINE_NAME}
+          workspaces:
+          - name: pipeline 
+            persistentVolumeClaim:
+              claimName: __o5dptI__(params.pipelines-claim)
+            subPath: __o5dptI__(params.job-id)
+          - name: gitea-user-token
+            secret:
+              SecretName: gitea-user-token
+          params:
+          - name: job-id
+            value: "__o5dptI__(params.job-id)"
+          - name: pipelines-claim
+            value: "__o5dptI__(params.pipelines-claim)"
+          - name: env
+            value: "__o5dptI__{ENV}"
+          - name: promotion-name
+            value: "__o5dptI__(params.promotion-name)"
+          - name: env-version
+            value: "__o5dptI__(params.env-version)"
+          - name: repo-full-name
+            value: "__o5dptI__(params.repo-full-name)"
+          - name: repo-ref
+            value: "__o5dptI__(params.repo-ref)"
+          - name: manifest-repo-full-name
+            value: "__o5dptI__(params.manifest-repo-full-name)"
+          - name: manifest-repo-url
+            value: __o5dptI__(params.manifest-repo-url)
+          - name: git-server-http
+            value: __o5dptI__(params.git-server-http)
+          - name: issue-id
+            value: "__o5dptI__(params.issue-id)"
+          - name: deploy-webhook
+            value: "__o5dptI__{DEPLOY_SUCCESS_WEBHOOK}"
+      EOFEOFEOFEOF
+      sed -i '/__o5dptI__/s/__o5dptI__/$/g' auto-test-task-template.yaml
+      cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
+      taskRef:
+        kind: ClusterTask
+        name: pipelinerun-apply
+      params:
+      - name: name
+        value: __LwasiR__(context.pipelineRun.name)-trigger-manual-test-__LwasiR__{INNER_PIPELINE_RUN_NAME}
+      - name: spec
+        value: |
+          pipelineRef:
+            name: manual-test
+          workspaces:
+          - name: pipeline 
+            persistentVolumeClaim:
+              claimName: __LwasiR__(params.pipelines-claim)
+            subPath: __LwasiR__(params.job-id)
+          - name: gitea-user-token
+            secret:
+              SecretName: gitea-user-token
+          params:
+          - name: job-id
+            value: "__LwasiR__(params.job-id)"
+          - name: pipelines-claim
+            value: "__LwasiR__(params.pipelines-claim)"
+          - name: env
+            value: "__LwasiR__{ENV}"
+          - name: promotion-name
+            value: "__LwasiR__(params.promotion-name)"
+          - name: env-version
+            value: "__LwasiR__(params.env-version)"
+          - name: repo-full-name
+            value: "__LwasiR__(params.repo-full-name)"
+          - name: repo-ref
+            value: "__LwasiR__(params.repo-ref)"
+          - name: manifest-repo-full-name
+            value: "__LwasiR__(params.manifest-repo-full-name)"
+          - name: manifest-repo-url
+            value: __LwasiR__(params.manifest-repo-url)
+          - name: git-server-http
+            value: __LwasiR__(params.git-server-http)
+          - name: issue-id
+            value: "__LwasiR__(params.issue-id)"
+          - name: deploy-webhook
+            value: "__LwasiR__{DEPLOY_SUCCESS_WEBHOOK}"
+      EOFEOFEOFEOF
+      sed -i '/__LwasiR__/s/__LwasiR__/$/g' manual-test-task-template.yaml
+      cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
+      apiVersion: tekton.dev/v1beta1
+      kind: Pipeline
+      metadata:
+        name: __ZhgQMv__{PROMOTION_NAME}
+        labels:
+          promotion-pipelines/custom-config: "true"
+        annotations:
+          promotion-pipelines/branch-pattern: __ZhgQMv__{BRANCH_PATTERN}
+      spec:
+        params:
+        - name: job-id
+          description: 任务ID,串联起所有子流水线
+        - name: pipelines-claim
+          description: pipelines-pvc claim, 用于传递给启动的pipelinerun
+      
+        - name: promotion-name
+          description: promotion name
+        - name: env-version
+          description: env version, 用于关联具体env
+          
+        - name: repo-full-name
+          description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+        - name: repo-branch
+          description: git仓库分支
+        - name: repo-ref
+          description: git仓库SHA
+        - name: repo-url
+          description: git仓库URL
+          
+        - name: manifest-repo-full-name
+          description: 资源仓库名称
+        - name: manifest-repo-url
+          description: 资源仓库URL
+      
+        - name: git-server-http
+          description: git server host (如:http://localhost:30280)
+        - name: issue-id
+          description: 工单ID, 用以与用户交互
+      
+        workspaces:
+        - name: pipeline
+          description: 流水线数据目录
+      EOFEOFEOFEOF
+      sed -i '/__ZhgQMv__/s/__ZhgQMv__/$/g' promotion-pipeline-header-template.yaml
+      cat <<EOFEOFEOFEOF > convert.sh
+      PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
+      AUTO_TEST_TASK_TEMPLATE="auto-test-task-template.yaml"
+      MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
+      
+      configDir=__T8V9hj__1  #存储项目中资源配置
+      shift
+      
+      pipelineDir=__T8V9hj__1  #pipeline输出目录
+      shift
+      output="" #存储生成的pipeline文件
+      
+      tmpDir="./"  #存储临时文件
+      
+      deploySuccessWebhook=__T8V9hj__1
+      
+      #-----------------------------------------------------
+      
+      function validateConfig() {
+        local configFile=__T8V9hj__1
+        if egrep "^ +taskSpec:" __T8V9hj__{configFile}; then
+          echo '[taskSpec] cannot exist !' >&2
+          return 1
+        fi
+      }
+      
+      #-----------------------------------------------------
+      
+      function pipelineHeader() {
+        local configFile=__T8V9hj__1
+        
+        local pipelineName=__T8V9hj__(basename __T8V9hj__configFile) \\
+           && pipelineName=__T8V9hj__{configFile#*pipeline.} \\
+           && pipelineName=__T8V9hj__{pipelineName%.yaml*}
+        
+        local branchPattern=__T8V9hj__(sed -nr '/^branchPattern: .+__T8V9hj__/ {s/^branchPattern: (.+)__T8V9hj__/\\1/p;q}' __T8V9hj__{configFile})
+        if test -z "__T8V9hj__{branchPattern}"; then
+          echo '[branchPattern] not specified !' >&2
+          return 1
+        fi
+        
+        sed -e "s/\\__T8V9hj__{PROMOTION_NAME}/__T8V9hj__{pipelineName}/" \\
+            -e "s/\\__T8V9hj__{BRANCH_PATTERN}/__T8V9hj__{branchPattern}/" \\
+            __T8V9hj__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __T8V9hj__{output}
+      }
+      
+      #-----------------------------------------------------
+      
+      function pipelineTasks() {
+        echo "  tasks:" >> __T8V9hj__{output}
+        
+        local configFile=__T8V9hj__1
+        
+        local TEMP_PREFIX="__T8V9hj__{tmpDir}/.tmp.pipeline-task-"
+        
+        splitTasks __T8V9hj__{configFile} __T8V9hj__{TEMP_PREFIX}
+        
+        local file=""
+        for file in __T8V9hj__{TEMP_PREFIX}*; do
+          local task=__T8V9hj__(getTaskType __T8V9hj__file)
+          case __T8V9hj__task in
+            auto-test ) autoTestTask __T8V9hj__file;;
+            manual-test ) manualTestTask __T8V9hj__file;;
+            * ) commonTask __T8V9hj__file;;
+          esac
+        done
+        
+        rm __T8V9hj__{TEMP_PREFIX}* -f
+      }
+      
+      #拆分tasks到独立文件
+      function splitTasks() {
+        local configFile=__T8V9hj__1
+        local tempPreifx=__T8V9hj__2
+        
+        local i=0
+        local file=
+        while IFS=~ read line; do
+          if echo "__T8V9hj__line"|grep ^- 2>&1 >/dev/null; then
+            i=__T8V9hj__(( __T8V9hj__i + 1 ))
+            file=__T8V9hj__{tempPreifx}__T8V9hj__i
+            touch __T8V9hj__file
+          fi
+          echo "__T8V9hj__line" >> __T8V9hj__{file}
+        done <<EOF
+      __T8V9hj__(sed -nr '/^tasks:/,/^[a-zA-Z0-9]/ {/^[- ]/p}' __T8V9hj__{configFile})
+      EOF
+      }
+      
+      function getTaskType() {
+        local taskFile=__T8V9hj__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __T8V9hj__{taskFile}
+      }
+      function getContent() {
+        local file=__T8V9hj__1
+        local key=__T8V9hj__2
+        
+        local hasKey=__T8V9hj__3
+        local args=
+        if test "__T8V9hj__hasKey" == "true"; then
+          args="/^  __T8V9hj__key:/{p;d} /^- __T8V9hj__key:/{s/^-(.*)/ \\1/p;d}"
+        fi
+        sed -nr "/^[- ] __T8V9hj__key:/,/^  [a-zA-Z0-9]/{__T8V9hj__args /^  [- ]/p}" __T8V9hj__file
+      }
+      function getValue() {
+        local file=__T8V9hj__1
+        local name=__T8V9hj__2
+        local prefix="__T8V9hj__3"
+        sed -nr "/^__T8V9hj__{prefix}- name: __T8V9hj__{name}/,/^__T8V9hj__{prefix}[^ ]/ {
+          /^__T8V9hj__{prefix}  value: [^|]/ {
+            s/^ +value: (.*)/\\1/p;
+            q;
+          }
+          /^__T8V9hj__{prefix}  value: |/ {
+            s/^ +value: (.*)/\\1/p;
+          }
+          /^__T8V9hj__{prefix}    / {
+            s/^__T8V9hj__{prefix}  (.*)/\\1/p;
+          }
+        }" __T8V9hj__{file}
+      }
+      
+      function commonTask() {
+        local taskFile=__T8V9hj__1
+        if getContent __T8V9hj__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+          echo '[kind] cannot be specified in [taskRef] !' >&2
+          return 1
+        fi
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __T8V9hj__{taskFile} \\
+        | awk '{print "  "__T8V9hj__0}' >> __T8V9hj__{output}
+      }
+      
+      function autoTestTask() {
+        local taskFile=__T8V9hj__1
+        
+        local name=__T8V9hj__(getContent __T8V9hj__{taskFile} name true)
+        local innerPipelineName=__T8V9hj__{name#*: }
+        
+        echo "__T8V9hj__{name}" | sed -r 's/^ (.*)/  -\\1/' >> __T8V9hj__{output}
+        getContent __T8V9hj__{taskFile} runAfter true | awk '{print "  "__T8V9hj__0}' >> __T8V9hj__{output}
+        
+        sed "s/\\__T8V9hj__{INNER_PIPELINE_NAME}/__T8V9hj__{innerPipelineName}/" __T8V9hj__{AUTO_TEST_TASK_TEMPLATE} \\
+        | awk '{print "    "__T8V9hj__0}' >> __T8V9hj__{output}
+        getContent __T8V9hj__{taskFile} pipelineRun | awk '{print "      "__T8V9hj__0}'>> __T8V9hj__{output}
+      
+        
+        local innerPipelinePath=__T8V9hj__{pipelineDir}/__T8V9hj__{innerPipelineName}.yaml
+        echo 'apiVersion: tekton.dev/v1beta1
+      kind: Pipeline
+      metadata:
+        name: '__T8V9hj__{innerPipelineName}'
+      spec:' >> __T8V9hj__{innerPipelinePath}
+        getContent __T8V9hj__{taskFile} pipelineSpec \\
+        | sed -r 's/^  (.*)/\\1/' >> __T8V9hj__{innerPipelinePath}
+      }
+      
+      function manualTestTask() {
+        local taskFile=__T8V9hj__1
+        
+        local name=__T8V9hj__(getContent __T8V9hj__{taskFile} name true)
+        local innerPipelineRunName=__T8V9hj__{name#*: }
+        
+        echo "__T8V9hj__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __T8V9hj__{output}
+        getContent __T8V9hj__{taskFile} runAfter true | awk '{print "  "__T8V9hj__0}' >> __T8V9hj__{output}
+        
+        local env=__T8V9hj__(getValue __T8V9hj__{taskFile} env)
+        sed -e "s/\\__T8V9hj__{INNER_PIPELINE_RUN_NAME}/__T8V9hj__{innerPipelineRunName}/" \\
+            -e "s/\\__T8V9hj__{ENV}/__T8V9hj__{env}/" \\
+            -e "s/\\__T8V9hj__{DEPLOY_SUCCESS_WEBHOOK}/__T8V9hj__{deploySuccessWebhook}/" \\
+            __T8V9hj__{MANUAL_TEST_TASK_TEMPLATE} \\
+        | awk '{print "    "__T8V9hj__0}' >> __T8V9hj__{output}
+      }
+      
+      #-----------------------------------------------------
+      set -ex
+      
+      mkdir __T8V9hj__{pipelineDir} -p
+      
+      for file in __T8V9hj__(find __T8V9hj__{configDir} -name 'pipeline.promotion-*.yaml' -maxdepth 1); do
+        output=__T8V9hj__{pipelineDir}/__T8V9hj__(basename __T8V9hj__file)
+        
+        validateConfig __T8V9hj__file
+      
+        pipelineHeader __T8V9hj__file
+      
+        pipelineTasks __T8V9hj__file
+      done
+      EOFEOFEOFEOF
+      sed -i '/__T8V9hj__/s/__T8V9hj__/$/g' convert.sh
+      sh convert.sh '$(workspaces.project.path)' ~/output '$(params.deploy-success-webhook)'
+      $kubectl apply -f ~/output
