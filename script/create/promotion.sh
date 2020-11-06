@@ -10,6 +10,8 @@ configDir="../project"  #存储项目中资源配置
 pipelineDir="../tmp/output"  #pipeline输出目录
 output="" #存储生成的pipeline文件
 
+tmpDir="./"  #存储临时文件
+
 #-----------------------------------------------------
 
 function pipelineHeader() {
@@ -17,7 +19,7 @@ function pipelineHeader() {
   
   local pipelineName=$(basename $configFile) \
      && pipelineName=${configFile#*pipeline.} \
-	 && pipelineName=${pipelineName%.yaml*}
+     && pipelineName=${pipelineName%.yaml*}
   
   local branchPattern=$(sed -nr '/^branchPattern: .+$/ {s/^branchPattern: (.+)$/\1/p;q}' ${configFile})
   if test -z "${branchPattern}"; then
@@ -26,7 +28,7 @@ function pipelineHeader() {
   
   sed -e "s/\${PROMOTION_NAME}/${pipelineName}/" \
       -e "s/\${BRANCH_PATTERN}/${branchPattern}/" \
-	  ${PROMOTION_PIPELINE_HEADER_TEMPLATE} >> ${output}
+      ${PROMOTION_PIPELINE_HEADER_TEMPLATE} >> ${output}
 }
 
 #-----------------------------------------------------
@@ -36,7 +38,7 @@ function pipelineTasks() {
   
   local configFile=$1
   
-  local TEMP_PREFIX="${pipelineDir}/.tmp.pipeline-task-"
+  local TEMP_PREFIX="${tmpDir}/.tmp.pipeline-task-"
   
   splitTasks ${configFile} ${TEMP_PREFIX}
   
@@ -45,8 +47,8 @@ function pipelineTasks() {
     local task=$(getTaskType $file)
     case $task in
       auto-test ) autoTestTask $file;;
-	  manual-test ) manualTestTask $file;;
-	  * ) defaultTask $file;;
+      manual-test ) manualTestTask $file;;
+      * ) defaultTask $file;;
     esac
   done
   
@@ -63,8 +65,8 @@ function splitTasks() {
   while IFS=~ read line; do
     if echo "$line"|grep ^- 2>&1 >/dev/null; then
       i=$(( $i + 1 ))
-	  file=${tempPreifx}$i
-	  touch $file
+      file=${tempPreifx}$i
+      touch $file
     fi
     echo "$line" >> ${file}
   done <<EOF
@@ -160,6 +162,6 @@ for file in $(find ${configDir} -name 'pipeline.promotion-*.yaml' -maxdepth 1); 
   output=${pipelineDir}/$(basename $file)
 
   pipelineHeader $file
-	  
+
   pipelineTasks $file
 done
