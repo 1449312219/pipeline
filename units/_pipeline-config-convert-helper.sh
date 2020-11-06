@@ -1,0 +1,1 @@
+sh _pipeline-config-convert/task.sh > pipeline-config-convert.yaml

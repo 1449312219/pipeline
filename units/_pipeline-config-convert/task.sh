@@ -6,7 +6,7 @@ check="true"
 echo 'apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: promotion-pipeline-factory
+  name: pipeline-config-convert
 spec:
   params:
   - name: url
@@ -79,8 +79,8 @@ for file in ${scriptDir}/*.yaml; do
   printFile $file
 done
 
-printFile ${scriptDir}/promotion.sh 
+printFile ${scriptDir}/convert.sh
 
-execScript ${scriptDir}/promotion.sh \''$(workspaces.project.path)'\' ~/output \''$(params.deploy-success-webhook)'\'
+execScript ${scriptDir}/convert.sh \''$(workspaces.project.path)'\' ~/output \''$(params.deploy-success-webhook)'\'
 
 echo '      $kubectl apply -f ~/output'
