@@ -90,7 +90,7 @@ spec:
     - name: names
       value: $(tasks.params.results.env-namespace)
       
-  - name: fetch-flux-config-repo
+  - name: fetch-manifest-repo
     runAfter:
     - has-ns
     conditions:
@@ -118,7 +118,7 @@ spec:
 
   - name: create-env-config
     runAfter:
-    - fetch-flux-config-repo
+    - fetch-manifest-repo
     taskRef:
       kind: ClusterTask
       name: git-add
