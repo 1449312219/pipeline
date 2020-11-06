@@ -11,6 +11,11 @@ spec:
   params:
   - name: url
     default: https://kubernetes.default
+  - name: repo-branch
+    description: git仓库分支
+  - name: expect-branch
+    description: 期望git仓库分支, 仅为期望分支时生成pipeline
+    default: master
   - name: deploy-success-webhook
     description: 部署成功通知地址, 用于需部署后测试的任务
     default: ""
@@ -29,6 +34,11 @@ spec:
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+      
+      
+      if test '$(params.repo-branch)' != '$(params.expect-branch)'; then
+        exit
+      fi
       
       mkdir ~/script -p && cd ~/script'
 
