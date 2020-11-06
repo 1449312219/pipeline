@@ -1,0 +1,61 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: promotion-name
+spec:
+  params:
+    - name: url
+      default: https://kubernetes.default
+
+    - name: branch
+
+  results:
+  - name: output
+    description: 存储branch最匹配的promotion-name (==pattern > 最长pattern > 最早pattern)
+
+  steps:
+  - name: find
+    image: lachlanevenson/k8s-kubectl
+    imagePullPolicy: IfNotPresent 
+    script: |
+      set -o pipefail
+      
+      url=$(params.url)
+      ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+      namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+      
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+      
+      branch='${params.branch}'
+      output='$(results.output.path)'
+      
+      optimalName=""
+      optimalPattern=""
+      
+      while read name pattern; do
+        if test -z "${name}"; then
+          continue
+        fi
+      
+        if test "${branch}" == "${pattern}"; then
+          echo -n $name > ${output}
+          exit
+        fi
+      
+        if echo ${branch} | grep "^${pattern}$" 2>&1 >/dev/null; then
+          if test ${#pattern} -gt ${#optimalPattern}; then
+            optimalName="${name}"
+            optimalPattern="${pattern}"
+          fi
+        fi
+      done <<EOF
+      $($kubectl get pipeline -l promotion-pipelines/custom-config -L promotion-pipelines/branch-pattern --sort-by=metadata.creationTimestamp --no-headers \
+      | awk '{print $1"  "$6}')
+      EOF
+      
+      if test -z "${optimalName}"; then
+        exit 1
+      else
+        echo -n ${optimalName} > ${output}
+      fi
