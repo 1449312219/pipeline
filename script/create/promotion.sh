@@ -15,6 +15,15 @@ deploySuccessWebhook=$1
 
 #-----------------------------------------------------
 
+function validateConfig() {
+  local configFile=$1
+  if egrep "^ +taskSpec:" ${configFile}; then
+    return 1
+  fi
+}
+
+#-----------------------------------------------------
+
 function pipelineHeader() {
   local configFile=$1
   
@@ -161,6 +170,8 @@ mkdir ${pipelineDir} -p
 
 for file in $(find ${configDir} -name 'pipeline.promotion-*.yaml' -maxdepth 1); do
   output=${pipelineDir}/$(basename $file)
+  
+  validateConfig $file
 
   pipelineHeader $file
 

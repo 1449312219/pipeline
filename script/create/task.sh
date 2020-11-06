@@ -71,6 +71,6 @@ done
 
 printFile ${scriptDir}/promotion.sh 
 
-execScript ${scriptDir}/promotion.sh \''$(workspaces.project.path)'\' '~/output' \''$(params.deploy-success-webhook)'\'
+execScript ${scriptDir}/promotion.sh \''$(workspaces.project.path)'\' ~/output \''$(params.deploy-success-webhook)'\'
 
 echo '      $kubectl apply -f ~/output'
