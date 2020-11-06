@@ -2,8 +2,9 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: ${PROMOTION_NAME}
-  annotations:
-    branch-pattern: ${BRANCH_PATTERN}
+  labeles:
+    promotion-pipelines/custom-config: "true"
+    promotion-pipelines/branch-pattern: "${BRANCH_PATTERN}"
 spec:
   params:
   - name: job-id
