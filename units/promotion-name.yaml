@@ -50,8 +50,9 @@ spec:
           fi
         fi
       done <<EOF
-      $($kubectl get pipeline -l promotion-pipelines/custom-config -L promotion-pipelines/branch-pattern --sort-by=metadata.creationTimestamp --no-headers \
-      | awk '{print $1"  "$6}')
+      $($kubectl get pipeline -l promotion-pipelines/custom-config \
+      -o custom-columns=name:.metadata.name,pattern:.metadata.annotations.promotion-pipelines/branch-pattern \
+      --sort-by=metadata.creationTimestamp --no-headers)
       EOF
       
       if test -z "${optimalName}"; then
