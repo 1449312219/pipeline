@@ -1717,24 +1717,6 @@ group=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>360</x>
-      <y>1740</y>
-      <w>240</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.8
-style=autoresize
-valign=center
-halign=center
-fontsize=18
-/deploy-template-manual-test/
-group=2</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Text</id>
     <coordinates>
       <x>440</x>
@@ -2591,5 +2573,23 @@ lw=.6</panel_attributes>
     <panel_attributes>lt=..
 lw=.1</panel_attributes>
     <additional_attributes>10.0;10.0;1100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>1740</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.8
+style=autoresize
+valign=center
+halign=center
+fontsize=18
+/manual-test/
+group=2</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

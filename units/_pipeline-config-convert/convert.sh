@@ -134,6 +134,7 @@ function autoTestTask() {
   
   echo "${name}" | sed -r 's/^ (.*)/  -\1/' >> ${output}
   getContent ${taskFile} runAfter true | awk '{print "  "$0}' >> ${output}
+  
   sed "s/\${INNER_PIPELINE_NAME}/${innerPipelineName}/" ${AUTO_TEST_TASK_TEMPLATE} \
   | awk '{print "    "$0}' >> ${output}
   getContent ${taskFile} pipelineRun | awk '{print "      "$0}'>> ${output}
@@ -152,11 +153,14 @@ spec:' >> ${innerPipelinePath}
 function manualTestTask() {
   local taskFile=$1
   
-  getContent ${taskFile} name true | sed -r 's/^ (.*)/  -\1/' >> ${output}
+  local name=$(getContent ${taskFile} name true)
+  local innerPipelineRunName=${name#*: }
+  
+  echo "${name}" |  sed -r 's/^ (.*)/  -\1/' >> ${output}
   getContent ${taskFile} runAfter true | awk '{print "  "$0}' >> ${output}
   
   local env=$(getValue ${taskFile} env)
-  sed -e "s/\${INNER_PIPELINE_NAME}/${innerPipelineName}/" \
+  sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
       ${MANUAL_TEST_TASK_TEMPLATE} \

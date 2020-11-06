@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: deploy-auto-test
+  name: auto-test
 spec:
   params:
   - name: work-id
