@@ -1,1 +1,1 @@
-sh _pipeline-config-convert/task.sh > pipeline-config-convert.yaml
+sh _pipeline-config-convert/task.sh "./_pipeline-config-convert" > pipeline-config-convert.yaml

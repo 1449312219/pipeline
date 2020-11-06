@@ -1,7 +1,7 @@
-set -e
+set -ex
 
-scriptDir="script"
-check="true"
+scriptDir=$1
+check=${2:-true}
 
 echo 'apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
@@ -45,9 +45,11 @@ spec:
 function doPrintFile() {
   local filePath=$1
   local newFilePath=$2
+  local placeholder=$(mktemp -u __XXXXXX__)
   echo "cat <<EOFEOFEOFEOF > ${newFilePath}
-$(sed -e 's/\\/\\\\/g' -e 's/\$/\\$/g'  ${filePath})
+$(sed -e 's/\\/\\\\/g' -e "s/\\$/${placeholder}/g"  ${filePath})
 EOFEOFEOFEOF"
+  echo "sed -i '/${placeholder}/s/${placeholder}/\$/g' ${newFilePath}"
 }
 function printFile() {
   local filePath=$1
