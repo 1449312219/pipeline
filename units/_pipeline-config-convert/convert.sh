@@ -18,6 +18,7 @@ deploySuccessWebhook=$1
 function validateConfig() {
   local configFile=$1
   if egrep "^ +taskSpec:" ${configFile}; then
+    echo '[taskSpec] cannot exist !' >&2
     return 1
   fi
 }
@@ -33,7 +34,8 @@ function pipelineHeader() {
   
   local branchPattern=$(sed -nr '/^branchPattern: .+$/ {s/^branchPattern: (.+)$/\1/p;q}' ${configFile})
   if test -z "${branchPattern}"; then
-    exit 1
+    echo '[branchPattern] not specified !' >&2
+    return 1
   fi
   
   sed -e "s/\${PROMOTION_NAME}/${pipelineName}/" \
@@ -120,6 +122,7 @@ function getValue() {
 function commonTask() {
   local taskFile=$1
   if getContent ${taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+    echo '[kind] cannot be specified in [taskRef] !' >&2
     return 1
   fi
   sed -r '/^  taskRef:/a\    kind: ClusterTask' ${taskFile} \

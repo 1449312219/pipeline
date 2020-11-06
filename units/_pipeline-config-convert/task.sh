@@ -36,7 +36,7 @@ spec:
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
       
       
-      if test '$(params.repo-branch)' != '$(params.expect-branch)'; then
+      if test "$(params.repo-branch)" != "$(params.expect-branch)"; then
         exit
       fi
       
@@ -83,6 +83,6 @@ done
 
 printFile ${scriptDir}/convert.sh
 
-execScript ${scriptDir}/convert.sh \''$(workspaces.project.path)'\' ~/output \''$(params.deploy-success-webhook)'\'
+execScript ${scriptDir}/convert.sh \''$(workspaces.project.path)'\' '~/output' \''$(params.deploy-success-webhook)'\'
 
 echo '      $kubectl apply -f ~/output'
