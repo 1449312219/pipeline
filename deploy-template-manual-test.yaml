@@ -45,7 +45,7 @@ spec:
 
 
   workspaces:
-  - name: project
+  - name: pipeline
   - name: gitea-user-token
 
 
