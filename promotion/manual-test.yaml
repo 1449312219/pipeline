@@ -55,6 +55,8 @@ spec:
       kind: ClusterTask
       name: pipelinerun-apply
     params:
+    - name: span-id
+      value: "$(params.job-id)"
     - name: name
       value: $(context.pipelineRun.name)-env-init
     - name: spec

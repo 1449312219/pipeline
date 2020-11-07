@@ -141,6 +141,8 @@ spec:
       kind: ClusterTask
       name: pipelinerun-apply
     params:
+    - name: span-id
+      value: "$(params.job-id)"
     - name: name
       value: $(context.pipelineRun.name)-trigger-$(tasks.get-promotion-name.results.output)
     - name: spec

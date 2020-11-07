@@ -2780,7 +2780,7 @@ group=4</panel_attributes>
       <x>460</x>
       <y>530</y>
       <w>440</w>
-      <h>70</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
@@ -2790,6 +2790,7 @@ fontsize=16
 /b. taskRef.name=manual-test  =&gt; 构建pipelinerun-apply task/
 -.
 /  pipelineRef: manual-test/
+/  params.env: params.env/
 -
 group=4</panel_attributes>
     <additional_attributes/>
@@ -2798,7 +2799,7 @@ group=4</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>590</y>
+      <y>600</y>
       <w>240</w>
       <h>40</h>
     </coordinates>

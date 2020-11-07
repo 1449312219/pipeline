@@ -2,6 +2,8 @@ taskRef:
   kind: ClusterTask
   name: pipelinerun-apply
 params:
+- name: span-id
+  value: "$(params.job-id)"
 - name: name
   value: $(context.pipelineRun.name)-trigger-${INNER_PIPELINE_NAME}
 - name: spec

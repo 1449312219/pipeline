@@ -162,7 +162,7 @@ function manualTestTask() {
   echo "${name}" |  sed -r 's/^ (.*)/  -\1/' >> ${output}
   getContent ${taskFile} runAfter true | awk '{print "  "$0}' >> ${output}
   
-  local env=$(getValue ${taskFile} env)
+  local env=$(getValue ${taskFile} env "  ")
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
