@@ -175,7 +175,7 @@ set -ex
 
 mkdir ${pipelineDir} -p
 
-for file in $(find ${configDir} -name 'pipeline.promotion-*.yaml' -maxdepth 1); do
+for file in $(find ${configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
   output=${pipelineDir}/$(basename $file)
   
   validateConfig $file

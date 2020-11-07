@@ -11,6 +11,9 @@ spec:
   params:
   - name: url
     default: https://kubernetes.default
+  - name: scan-path
+    description: 扫描指定目录内配置
+    default: ""
   - name: repo-branch
     description: git仓库分支
   - name: expect-branch
@@ -20,8 +23,8 @@ spec:
     description: 部署成功通知地址, 用于需部署后测试的任务
     default: ""
   workspaces:
-  - name: project
-    description: 存储项目根目录, 将扫描其内配置
+  - name: resources
+    description: 存储资源, 将扫描其内配置
     readOnly: true
   steps:
   - name: build
@@ -83,6 +86,7 @@ done
 
 printFile ${scriptDir}/convert.sh
 
-execScript ${scriptDir}/convert.sh \''$(workspaces.project.path)'\' '~/output' \''$(params.deploy-success-webhook)'\'
+scanPath='$(workspaces.resources.path)/$(params.scan-path)'
+execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\'
 
 echo '      $kubectl apply -f ~/output'
