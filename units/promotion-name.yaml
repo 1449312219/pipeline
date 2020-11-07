@@ -27,7 +27,7 @@ spec:
       
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
       
-      branch='${params.branch}'
+      branch='$(params.branch)'
       output='$(results.output.path)'
       
       optimalName=""
