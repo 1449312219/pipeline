@@ -1,5 +1,5 @@
 PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
-ENV_DEPLOY_TASK_TEMPLATE="auto-test-task-template.yaml"
+ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
 
 configDir=$1  #存储项目中资源配置
