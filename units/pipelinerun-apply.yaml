@@ -15,7 +15,11 @@ spec:
       description: pipelinerun-namespace, 默认为当前命名空间
       default: ""
     - name: name
-      description: pipelinerun-name
+      description: pipelinerun metadata.name
+      default: ""
+    - name: generate-name
+      description: pipelinerun metadata.genereateName
+      default: ""
     - name: spec
       description: pipelinerun-spec
 
@@ -53,12 +57,14 @@ spec:
         fi
 
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
-
-        $kubectl apply --wait -f - <<EOF
+        
+        
+        pipelineRunName=$($kubectl create -f - -o jsonpath={.metadata.name} <<EOF
         apiVersion: tekton.dev/v1beta1
         kind: PipelineRun
         metadata:
-          name: $(params.name)
+          name: "$(params.name)"
+          generateName: "$(params.generate-name)"
           labels:
             promotion-pipelines/pipeline-apply.span-id: "$(params.span-id)"
             promotion-pipelines/pipeline-apply.trigger-task: "$(context.task.name)"
@@ -66,6 +72,7 @@ spec:
         spec:
         $(echo '$(params.spec)' | awk '{print "  "$0}')
         EOF
+        )
 
         if test '$(params.await-finish)' != 'true'; then
           exit 0
@@ -74,7 +81,7 @@ spec:
         i=0
         while true; do
           set +e
-          status=$($kubectl get pipelinerun $(params.name) -o jsonpath={.status.conditions[0].status})
+          status=$($kubectl get pipelinerun ${pipelineRunName} -o jsonpath={.status.conditions[0].status})
           set -e
 
           if test ${status} == 'True'; then
@@ -94,7 +101,7 @@ spec:
         done
 
         if test -n '$(params.return-task)'; then
-          taskrun=$($kubectl get taskrun -l='tekton.dev/pipelineRun=$(params.name), tekton.dev/pipelineTask=$(params.return-task)' -o name)
+          taskrun=$($kubectl get taskrun -l='tekton.dev/pipelineRun=${pipelineRunName}, tekton.dev/pipelineTask=$(params.return-task)' -o name)
           if test -z "$taskrun"; then
             echo no expect task
             exit 1
