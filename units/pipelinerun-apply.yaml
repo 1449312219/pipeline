@@ -66,9 +66,9 @@ spec:
           name: "$(params.name)"
           generateName: "$(params.generate-name)"
           labels:
-            promotion-pipelines/pipeline-apply.span-id: "$(params.span-id)"
-            promotion-pipelines/pipeline-apply.trigger-task: "$(context.task.name)"
-            promotion-pipelines/pipeline-apply.trigger-taskRun: "$(context.taskRun.name)"
+            promotion-pipelines/pipelinerun-apply.span-id: "$(params.span-id)"
+            promotion-pipelines/pipelinerun-apply.trigger-task: "$(context.task.name)"
+            promotion-pipelines/pipelinerun-apply.trigger-taskRun: "$(context.taskRun.name)"
         spec:
         $(echo '$(params.spec)' | awk '{print "  "$0}')
         EOF
