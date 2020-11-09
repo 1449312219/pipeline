@@ -4,8 +4,8 @@ taskRef:
 params:
 - name: span-id
   value: "$(params.job-id)"
-- name: name
-  value: $(context.pipelineRun.name)-manual-test-${INNER_PIPELINE_RUN_NAME}
+- name: generate-name
+  value: manual-test-${INNER_PIPELINE_RUN_NAME}
 - name: spec
   value: |
     pipelineRef:
