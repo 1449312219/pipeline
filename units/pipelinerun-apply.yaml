@@ -101,7 +101,7 @@ spec:
         done
 
         if test -n '$(params.return-task)'; then
-          taskrun=$($kubectl get taskrun -l='tekton.dev/pipelineRun=${pipelineRunName}, tekton.dev/pipelineTask=$(params.return-task)' -o name)
+          taskrun=$($kubectl get taskrun -l="tekton.dev/pipelineRun=${pipelineRunName}, tekton.dev/pipelineTask=$(params.return-task)" -o name)
           if test -z "$taskrun"; then
             echo no expect task
             exit 1
