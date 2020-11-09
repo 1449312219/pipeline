@@ -1,5 +1,5 @@
 PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
-AUTO_TEST_TASK_TEMPLATE="auto-test-task-template.yaml"
+ENV_DEPLOY_TASK_TEMPLATE="auto-test-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
 
 configDir=$1  #存储项目中资源配置
@@ -58,7 +58,7 @@ function pipelineTasks() {
   for file in ${TEMP_PREFIX}*; do
     local task=$(getTaskType $file)
     case $task in
-      auto-test ) autoTestTask $file;;
+      env-deploy ) envDeployTask $file;;
       manual-test ) manualTestTask $file;;
       * ) commonTask $file;;
     esac
@@ -129,32 +129,17 @@ function commonTask() {
   | awk '{print "  "$0}' >> ${output}
 }
 
-function autoTestTask() {
-  local taskFile=$1
-  
-  local name=$(getContent ${taskFile} name true)
-  local innerPipelineName=${name#*: }
-  
-  echo "${name}" | sed -r 's/^ (.*)/  -\1/' >> ${output}
-  getContent ${taskFile} runAfter true | awk '{print "  "$0}' >> ${output}
-  
-  sed "s/\${INNER_PIPELINE_NAME}/${innerPipelineName}/" ${AUTO_TEST_TASK_TEMPLATE} \
-  | awk '{print "    "$0}' >> ${output}
-  getContent ${taskFile} pipelineRun | awk '{print "      "$0}'>> ${output}
-
-  
-  local innerPipelinePath=${pipelineDir}/${innerPipelineName}.yaml
-  echo 'apiVersion: tekton.dev/v1beta1
-kind: Pipeline
-metadata:
-  name: '${innerPipelineName}'
-spec:' >> ${innerPipelinePath}
-  getContent ${taskFile} pipelineSpec \
-  | sed -r 's/^  (.*)/\1/' >> ${innerPipelinePath}
+function envDeployTask() {
+  deployedTestTask $1 ${ENV_DEPLOY_TASK_TEMPLATE}
 }
 
 function manualTestTask() {
+  deployedTestTask $1 ${MANUAL_TEST_TASK_TEMPLATE}
+}
+
+function deployedTestTask() {
   local taskFile=$1
+  local templateFile=$2
   
   local name=$(getContent ${taskFile} name true)
   local innerPipelineRunName=${name#*: }
@@ -166,7 +151,7 @@ function manualTestTask() {
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
-      ${MANUAL_TEST_TASK_TEMPLATE} \
+      ${templateFile} \
   | awk '{print "    "$0}' >> ${output}
 }
 

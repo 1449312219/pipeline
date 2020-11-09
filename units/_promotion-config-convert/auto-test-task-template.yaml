@@ -4,12 +4,12 @@ taskRef:
 params:
 - name: span-id
   value: "$(params.job-id)"
-- name: name
-  value: $(context.pipelineRun.name)-trigger-${INNER_PIPELINE_NAME}
+- name: generate-name
+  value: env-deploy-${INNER_PIPELINE_RUN_NAME}
 - name: spec
   value: |
     pipelineRef:
-      name: ${INNER_PIPELINE_NAME}
+      name: env-deploy
     workspaces:
     - name: pipeline 
       persistentVolumeClaim:
