@@ -93,6 +93,19 @@ spec:
         - name: webhook
           value: $(params.deploy-webhook)
           
+  - name: env-lock-name
+    taskSpec:
+      steps:
+      - image: busybox:1.31
+        script: |
+          echo -n "$(params.lock-name)" > $(results.output.path)
+      results:
+      - name: output
+      params:
+      - name: lock-name
+    params:
+    - name: lock-name
+      value: $(params.promotion-name).$(params.env-version).$(params.env).env-deploy
   - name: tag-deploy-images
     runAfter:
     - env-init
@@ -100,7 +113,7 @@ spec:
     - conditionRef: env-lock
       params:
       - name: lock-name
-        value: $(params.promotion-name).$(params.env-version).$(params.env).env-deploy
+        value: $(tasks.env-lock-name.results.output)
       - name: await-count
         value: $(params.await-count)
       - name: await-interval

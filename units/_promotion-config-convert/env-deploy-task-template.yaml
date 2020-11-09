@@ -43,3 +43,5 @@ params:
       value: "$(params.issue-id)"
     - name: deploy-webhook
       value: "${DEPLOY_SUCCESS_WEBHOOK}"
+- name: return-task
+  value: env-lock-name
