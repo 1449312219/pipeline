@@ -219,7 +219,7 @@ spec:
     - name: token
       workspace: token
     
-  finally:    
+  finally:
   - name: release-lock
     taskRef:
       kind: ClusterTask

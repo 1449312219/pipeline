@@ -206,9 +206,8 @@ spec:
     - name: await-interval
       value: $(params.await-interval)
 
+  finally:
   - name: release-lock
-    runAfter:
-    - await-manual-result
     taskRef:
       kind: ClusterTask
       name: env-lock-release

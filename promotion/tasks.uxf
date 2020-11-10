@@ -828,7 +828,8 @@ style=autoresize
 valign=center
 halign=center
 fontsize=18
-/env-init/</panel_attributes>
+/env-init/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -845,7 +846,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/params/</panel_attributes>
+/params/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -862,7 +864,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/依约定,拼接flux-git-path, env-namespace, flux-clsuter-role/</panel_attributes>
+/依约定,拼接flux-git-path, env-namespace, flux-clsuter-role/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -882,7 +885,8 @@ fontsize=15
 -
 /flux-git-path:  &lt;name&gt;-&lt;env-version&gt;/&lt;env&gt;/
 /env-namespace:  &lt;repo&gt;-&lt;name&gt;-&lt;env-version&gt;-&lt;env&gt;/
-/flux-clsuter-role:  pipeline:init-flux-env:&lt;repo&gt;-flux/</panel_attributes>
+/flux-clsuter-role:  pipeline:init-flux-env:&lt;repo&gt;-flux/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -899,7 +903,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/ns-opt/</panel_attributes>
+/ns-opt/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -916,7 +921,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/has-ns/</panel_attributes>
+/has-ns/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -933,7 +939,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/待独占锁侯, 判断k8s内是否已存在env-namespace/</panel_attributes>
+/待独占锁侯, 判断k8s内是否已存在env-namespace/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -950,7 +957,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/git-clone/</panel_attributes>
+/git-clone/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -967,7 +975,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/fetch-manifest-repo/</panel_attributes>
+/fetch-manifest-repo/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -987,7 +996,8 @@ fontsize=15
 -
 /仅在 不存在 "任一期望" ns时继续/
 /lock名:  &lt;name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-init/
-/owner名:  env-init/</panel_attributes>
+/owner名:  env-init/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1004,7 +1014,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/git-add/</panel_attributes>
+/git-add/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1021,7 +1032,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/create-env-config/</panel_attributes>
+/create-env-config/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1038,7 +1050,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/将add内资源 放入manifest-repo/</panel_attributes>
+/将add内资源 放入manifest-repo/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1055,7 +1068,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/ns-opt/</panel_attributes>
+/ns-opt/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1072,7 +1086,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/create-ns/</panel_attributes>
+/create-ns/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1089,7 +1104,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/flux/</panel_attributes>
+/flux/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1106,7 +1122,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/init-flux-env/</panel_attributes>
+/init-flux-env/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1123,7 +1140,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/部署flux到env-namespace/</panel_attributes>
+/部署flux到env-namespace/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1140,7 +1158,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/gitea/</panel_attributes>
+/gitea/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1157,7 +1176,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/将flux ssh-public-key 部署到manifest-repo/</panel_attributes>
+/将flux ssh-public-key 部署到manifest-repo/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1174,7 +1194,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/init-deploy-key/</panel_attributes>
+/init-deploy-key/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1186,7 +1207,8 @@ fontsize=15
       <h>180</h>
     </coordinates>
     <panel_attributes>lt=..&gt;
-lw=.6</panel_attributes>
+lw=.6
+group=9</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
   </element>
   <element>
@@ -1203,7 +1225,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=15
-_/pipeline/_</panel_attributes>
+_/pipeline/_
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1215,7 +1238,8 @@ _/pipeline/_</panel_attributes>
       <h>480</h>
     </coordinates>
     <panel_attributes>lt=..&gt;
-lw=.6</panel_attributes>
+lw=.6
+group=9</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;460.0</additional_attributes>
   </element>
   <element>
@@ -2040,7 +2064,8 @@ halign=left
 fontsize=15
 
 -
-/flux部署项目实例后 通知/</panel_attributes>
+/flux部署项目实例后 通知/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2053,7 +2078,8 @@ fontsize=15
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;
 lw=.1
-// 通知</panel_attributes>
+// 通知
+group=9</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;20.0</additional_attributes>
   </element>
   <element>
@@ -3741,7 +3767,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/release-lock/</panel_attributes>
+/release-lock/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3758,7 +3785,8 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/env-lock-release/</panel_attributes>
+/env-lock-release/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3776,7 +3804,8 @@ halign=left
 fontsize=15
 
 -
-/env-init任务可继续/</panel_attributes>
+/env-init任务可继续/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3793,7 +3822,8 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/释放锁/</panel_attributes>
+/释放锁/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3811,7 +3841,27 @@ valign=center
 halign=right
 fontsize=14
 fg=red
-/finally/</panel_attributes>
+/finally/
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>320</x>
+      <y>4270</y>
+      <w>50</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=right
+fontsize=14
+fg=red
+/finally/
+group=6</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
