@@ -23,6 +23,11 @@ spec:
 
   - name: webhook
     description: 回调地址 (用以flux部署环境资源成功后回调)
+    
+  - name: await-count
+    default: '1440'
+  - name: await-interval
+    default: '30'
 
   workspaces:
   - name: workspace
@@ -81,6 +86,17 @@ spec:
       value: $(params.repo-full-name)
 
   - name: has-ns
+    conditions:
+    - conditionRef: env-lock
+      params:
+      - name: lock-name
+        value: $(params.promotion-name).$(params.env-version).$(params.env).env-init
+      - name: owner-name
+        value: env-init
+      - name: await-count
+        value: $(params.await-count)
+      - name: await-interval
+        value: $(params.await-interval)
     taskRef:
       kind: ClusterTask
       name: ns-opt
@@ -202,3 +218,14 @@ spec:
     workspaces:
     - name: token
       workspace: token
+    
+  finally:    
+  - name: release-lock
+    taskRef:
+      kind: ClusterTask
+      name: env-lock-release
+    params:
+    - name: lock-name
+      value: $(params.promotion-name).$(params.env-version).$(params.env).env-init
+    - name: owner-name
+      value: env-init
