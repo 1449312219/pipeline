@@ -8,6 +8,9 @@ spec:
       default: https://kubernetes.default
 
     - name: lock-name
+    
+    - name: owner-name
+      description: 锁拥有者
 
     - name: await-count
       default: '0'
@@ -41,9 +44,12 @@ spec:
         manifest='apiVersion: v1
         kind: Endpoints
         metadata:
-          name: '$name'
+          name: '${name}'
           annotations:
-            control-plane.alpha.kubernetes.io/leader: "true"'
+            control-plane.alpha.kubernetes.io/leader: "true"
+          labels:
+             promotion-pipelines/env-lock-cond.lock-name: '"${name}"'
+             promotion-pipelines/env-lock-cond.owner-name: $(params.owner-name)'
 
         function doCreate() {
           $kubectl create -f - <<EOF

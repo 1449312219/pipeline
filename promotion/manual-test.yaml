@@ -142,6 +142,8 @@ spec:
       params:
       - name: lock-name
         value: $(params.promotion-name).$(params.env-version).$(params.env).menual-test
+      - name: owner-name
+        value: $(params.job-id)
       - name: await-count
         value: $(params.await-count)
       - name: await-interval
@@ -213,3 +215,5 @@ spec:
     params:
     - name: lock-name
       value: $(params.promotion-name).$(params.env-version).$(params.env).menual-test
+    - name: owner-name
+      value: $(params.job-id)

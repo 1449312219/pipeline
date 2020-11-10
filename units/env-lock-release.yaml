@@ -9,6 +9,8 @@ spec:
 
     - name: lock-name
       description:  删除指定名称的endpoint
+    - name: owner-name
+      description:  删除指定名称的endpoint
 
   steps:
     - name: release
@@ -23,5 +25,8 @@ spec:
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
 
         
-        name=env-lock.$(params.lock-name)
-        $kubectl delete endpoints $name
+        lockName=env-lock.$(params.lock-name)
+        ownerName=$(params.owner-name)
+        
+        $kubectl delete endpoints -l \ promotion-pipelines/env-lock-cond.lock-name="${lockName}",\
+        promotion-pipelines/env-lock-cond.owner-name="${ownerName}"

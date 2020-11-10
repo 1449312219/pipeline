@@ -45,9 +45,9 @@ spec:
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__2xRdVA__(params.job-id)"
+        value: "__GRSFux__(params.job-id)"
       - name: generate-name
-        value: env-deploy-__2xRdVA__{INNER_PIPELINE_RUN_NAME}
+        value: env-deploy-__GRSFux__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -55,47 +55,49 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __2xRdVA__(params.pipelines-claim)
-            subPath: __2xRdVA__(params.job-id)
+              claimName: __GRSFux__(params.pipelines-claim)
+            subPath: __GRSFux__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__2xRdVA__(params.job-id)"
+            value: "__GRSFux__(params.job-id)"
           - name: pipelines-claim
-            value: "__2xRdVA__(params.pipelines-claim)"
+            value: "__GRSFux__(params.pipelines-claim)"
           - name: env
-            value: "__2xRdVA__{ENV}"
+            value: "__GRSFux__{ENV}"
           - name: promotion-name
-            value: "__2xRdVA__(params.promotion-name)"
+            value: "__GRSFux__(params.promotion-name)"
           - name: env-version
-            value: "__2xRdVA__(params.env-version)"
+            value: "__GRSFux__(params.env-version)"
           - name: repo-full-name
-            value: "__2xRdVA__(params.repo-full-name)"
+            value: "__GRSFux__(params.repo-full-name)"
           - name: repo-ref
-            value: "__2xRdVA__(params.repo-ref)"
+            value: "__GRSFux__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__2xRdVA__(params.manifest-repo-full-name)"
+            value: "__GRSFux__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __2xRdVA__(params.manifest-repo-url)
+            value: __GRSFux__(params.manifest-repo-url)
           - name: git-server-http
-            value: __2xRdVA__(params.git-server-http)
+            value: __GRSFux__(params.git-server-http)
           - name: issue-id
-            value: "__2xRdVA__(params.issue-id)"
+            value: "__GRSFux__(params.issue-id)"
           - name: deploy-webhook
-            value: "__2xRdVA__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__GRSFux__{DEPLOY_SUCCESS_WEBHOOK}"
+      - name: return-task
+        value: env-lock-name
       EOFEOFEOFEOF
-      sed -i '/__2xRdVA__/s/__2xRdVA__/$/g' env-deploy-task-template.yaml
+      sed -i '/__GRSFux__/s/__GRSFux__/$/g' env-deploy-task-template.yaml
       cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__gTVpBh__(params.job-id)"
+        value: "__WLI71j__(params.job-id)"
       - name: generate-name
-        value: manual-test-__gTVpBh__{INNER_PIPELINE_RUN_NAME}
+        value: manual-test-__WLI71j__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -103,47 +105,47 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __gTVpBh__(params.pipelines-claim)
-            subPath: __gTVpBh__(params.job-id)
+              claimName: __WLI71j__(params.pipelines-claim)
+            subPath: __WLI71j__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__gTVpBh__(params.job-id)"
+            value: "__WLI71j__(params.job-id)"
           - name: pipelines-claim
-            value: "__gTVpBh__(params.pipelines-claim)"
+            value: "__WLI71j__(params.pipelines-claim)"
           - name: env
-            value: "__gTVpBh__{ENV}"
+            value: "__WLI71j__{ENV}"
           - name: promotion-name
-            value: "__gTVpBh__(params.promotion-name)"
+            value: "__WLI71j__(params.promotion-name)"
           - name: env-version
-            value: "__gTVpBh__(params.env-version)"
+            value: "__WLI71j__(params.env-version)"
           - name: repo-full-name
-            value: "__gTVpBh__(params.repo-full-name)"
+            value: "__WLI71j__(params.repo-full-name)"
           - name: repo-ref
-            value: "__gTVpBh__(params.repo-ref)"
+            value: "__WLI71j__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__gTVpBh__(params.manifest-repo-full-name)"
+            value: "__WLI71j__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __gTVpBh__(params.manifest-repo-url)
+            value: __WLI71j__(params.manifest-repo-url)
           - name: git-server-http
-            value: __gTVpBh__(params.git-server-http)
+            value: __WLI71j__(params.git-server-http)
           - name: issue-id
-            value: "__gTVpBh__(params.issue-id)"
+            value: "__WLI71j__(params.issue-id)"
           - name: deploy-webhook
-            value: "__gTVpBh__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__WLI71j__{DEPLOY_SUCCESS_WEBHOOK}"
       EOFEOFEOFEOF
-      sed -i '/__gTVpBh__/s/__gTVpBh__/$/g' manual-test-task-template.yaml
+      sed -i '/__WLI71j__/s/__WLI71j__/$/g' manual-test-task-template.yaml
       cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
       apiVersion: tekton.dev/v1beta1
       kind: Pipeline
       metadata:
-        name: __i0s2n2__{PROMOTION_NAME}
+        name: __tFoYF2__{PROMOTION_NAME}
         labels:
           promotion-pipelines/custom-config: "true"
         annotations:
-          promotion-pipelines/branch-pattern: __i0s2n2__{BRANCH_PATTERN}
+          promotion-pipelines/branch-pattern: __tFoYF2__{BRANCH_PATTERN}
       spec:
         params:
         - name: job-id
@@ -179,28 +181,28 @@ spec:
         - name: pipeline
           description: 流水线数据目录
       EOFEOFEOFEOF
-      sed -i '/__i0s2n2__/s/__i0s2n2__/$/g' promotion-pipeline-header-template.yaml
+      sed -i '/__tFoYF2__/s/__tFoYF2__/$/g' promotion-pipeline-header-template.yaml
       cat <<EOFEOFEOFEOF > convert.sh
       PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
       ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
       MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
       
-      configDir=__5Z33ka__1  #存储项目中资源配置
+      configDir=__LhEEiV__1  #存储项目中资源配置
       shift
       
-      pipelineDir=__5Z33ka__1  #pipeline输出目录
+      pipelineDir=__LhEEiV__1  #pipeline输出目录
       shift
       output="" #存储生成的pipeline文件
       
       tmpDir="./"  #存储临时文件
       
-      deploySuccessWebhook=__5Z33ka__1
+      deploySuccessWebhook=__LhEEiV__1
       
       #-----------------------------------------------------
       
       function validateConfig() {
-        local configFile=__5Z33ka__1
-        if egrep "^ +taskSpec:" __5Z33ka__{configFile}; then
+        local configFile=__LhEEiV__1
+        if egrep "^ +taskSpec:" __LhEEiV__{configFile}; then
           echo '[taskSpec] cannot exist !' >&2
           return 1
         fi
@@ -209,150 +211,164 @@ spec:
       #-----------------------------------------------------
       
       function pipelineHeader() {
-        local configFile=__5Z33ka__1
+        local configFile=__LhEEiV__1
         
-        local pipelineName=__5Z33ka__(basename __5Z33ka__configFile) \\
-           && pipelineName=__5Z33ka__{configFile#*pipeline.} \\
-           && pipelineName=__5Z33ka__{pipelineName%.yaml*}
+        local pipelineName=__LhEEiV__(basename __LhEEiV__configFile) \\
+           && pipelineName=__LhEEiV__{configFile#*pipeline.} \\
+           && pipelineName=__LhEEiV__{pipelineName%.yaml*}
         
-        local branchPattern=__5Z33ka__(sed -nr '/^branchPattern: .+__5Z33ka__/ {s/^branchPattern: (.+)__5Z33ka__/\\1/p;q}' __5Z33ka__{configFile})
-        if test -z "__5Z33ka__{branchPattern}"; then
+        local branchPattern=__LhEEiV__(sed -nr '/^branchPattern: .+__LhEEiV__/ {s/^branchPattern: (.+)__LhEEiV__/\\1/p;q}' __LhEEiV__{configFile})
+        if test -z "__LhEEiV__{branchPattern}"; then
           echo '[branchPattern] not specified !' >&2
           return 1
         fi
         
-        sed -e "s/\\__5Z33ka__{PROMOTION_NAME}/__5Z33ka__{pipelineName}/" \\
-            -e "s/\\__5Z33ka__{BRANCH_PATTERN}/__5Z33ka__{branchPattern}/" \\
-            __5Z33ka__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __5Z33ka__{output}
+        sed -e "s/\\__LhEEiV__{PROMOTION_NAME}/__LhEEiV__{pipelineName}/" \\
+            -e "s/\\__LhEEiV__{BRANCH_PATTERN}/__LhEEiV__{branchPattern}/" \\
+            __LhEEiV__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __LhEEiV__{output}
       }
       
       #-----------------------------------------------------
       
       function pipelineTasks() {
-        echo "  tasks:" >> __5Z33ka__{output}
+        echo "  tasks:" >> __LhEEiV__{output}
         
-        local configFile=__5Z33ka__1
+        local configFile=__LhEEiV__1
         
-        local TEMP_PREFIX="__5Z33ka__{tmpDir}/.tmp.pipeline-task-"
+        local TEMP_PREFIX="__LhEEiV__{tmpDir}/.tmp.pipeline-task-"
         
-        splitTasks __5Z33ka__{configFile} __5Z33ka__{TEMP_PREFIX}
+        splitTasks __LhEEiV__{configFile} __LhEEiV__{TEMP_PREFIX}
         
         local file=""
-        for file in __5Z33ka__{TEMP_PREFIX}*; do
-          local task=__5Z33ka__(getTaskType __5Z33ka__file)
-          case __5Z33ka__task in
-            env-deploy ) envDeployTask __5Z33ka__file;;
-            manual-test ) manualTestTask __5Z33ka__file;;
-            * ) commonTask __5Z33ka__file;;
+        for file in __LhEEiV__{TEMP_PREFIX}*; do
+          local task=__LhEEiV__(getTaskType __LhEEiV__file)
+          case __LhEEiV__task in
+            env-deploy ) envDeployTask __LhEEiV__file;;
+            manual-test ) manualTestTask __LhEEiV__file;;
+            env-lock-release ) envLockReleaseTask __LhEEiV__file;;
+            * ) commonTask __LhEEiV__file;;
           esac
         done
         
-        rm __5Z33ka__{TEMP_PREFIX}* -f
+        rm __LhEEiV__{TEMP_PREFIX}* -f
       }
       
       #拆分tasks到独立文件
       function splitTasks() {
-        local configFile=__5Z33ka__1
-        local tempPreifx=__5Z33ka__2
+        local configFile=__LhEEiV__1
+        local tempPreifx=__LhEEiV__2
         
         local i=0
         local file=
         while IFS=~ read line; do
-          if echo "__5Z33ka__line"|grep ^- 2>&1 >/dev/null; then
-            i=__5Z33ka__(( __5Z33ka__i + 1 ))
-            file=__5Z33ka__{tempPreifx}__5Z33ka__i
-            touch __5Z33ka__file
+          if echo "__LhEEiV__line"|grep ^- 2>&1 >/dev/null; then
+            i=__LhEEiV__(( __LhEEiV__i + 1 ))
+            file=__LhEEiV__{tempPreifx}__LhEEiV__i
+            touch __LhEEiV__file
           fi
-          echo "__5Z33ka__line" >> __5Z33ka__{file}
+          echo "__LhEEiV__line" >> __LhEEiV__{file}
         done <<EOF
-      __5Z33ka__(sed -nr '/^tasks:/,/^[a-zA-Z0-9]/ {/^[- ]/p}' __5Z33ka__{configFile})
+      __LhEEiV__(sed -nr '/^tasks:/,/^[a-zA-Z0-9]/ {/^[- ]/p}' __LhEEiV__{configFile})
       EOF
       }
       
       function getTaskType() {
-        local taskFile=__5Z33ka__1
-        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __5Z33ka__{taskFile}
+        local taskFile=__LhEEiV__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __LhEEiV__{taskFile}
       }
       function getContent() {
-        local file=__5Z33ka__1
-        local key=__5Z33ka__2
+        local file=__LhEEiV__1
+        local key=__LhEEiV__2
         
-        local hasKey=__5Z33ka__3
+        local hasKey=__LhEEiV__3
         local args=
-        if test "__5Z33ka__hasKey" == "true"; then
-          args="/^  __5Z33ka__key:/{p;d} /^- __5Z33ka__key:/{s/^-(.*)/ \\1/p;d}"
+        if test "__LhEEiV__hasKey" == "true"; then
+          args="/^  __LhEEiV__key:/{p;d} /^- __LhEEiV__key:/{s/^-(.*)/ \\1/p;d}"
         fi
-        sed -nr "/^[- ] __5Z33ka__key:/,/^  [a-zA-Z0-9]/{__5Z33ka__args /^  [- ]/p}" __5Z33ka__file
+        sed -nr "/^[- ] __LhEEiV__key:/,/^  [a-zA-Z0-9]/{__LhEEiV__args /^  [- ]/p}" __LhEEiV__file
       }
       function getValue() {
-        local file=__5Z33ka__1
-        local name=__5Z33ka__2
-        local prefix="__5Z33ka__3"
-        sed -nr "/^__5Z33ka__{prefix}- name: __5Z33ka__{name}/,/^__5Z33ka__{prefix}[^ ]/ {
-          /^__5Z33ka__{prefix}  value: [^|]/ {
+        local file=__LhEEiV__1
+        local name=__LhEEiV__2
+        local prefix="__LhEEiV__3"
+        sed -nr "/^__LhEEiV__{prefix}- name: __LhEEiV__{name}/,/^__LhEEiV__{prefix}[^ ]/ {
+          /^__LhEEiV__{prefix}  value: [^|]/ {
             s/^ +value: (.*)/\\1/p;
             q;
           }
-          /^__5Z33ka__{prefix}  value: |/ {
+          /^__LhEEiV__{prefix}  value: |/ {
             s/^ +value: (.*)/\\1/p;
           }
-          /^__5Z33ka__{prefix}    / {
-            s/^__5Z33ka__{prefix}  (.*)/\\1/p;
+          /^__LhEEiV__{prefix}    / {
+            s/^__LhEEiV__{prefix}  (.*)/\\1/p;
           }
-        }" __5Z33ka__{file}
+        }" __LhEEiV__{file}
+      }
+      function addValue() {
+        local taskFile=__LhEEiV__1
+        local prefix=__LhEEiV__2
+        local name=__LhEEiV__3
+        local value=__LhEEiV__4
+        sed -i "/^__LhEEiV__{prefix}params:/a\\\\__LhEEiV__{prefix}- name: __LhEEiV__{name}\\n__LhEEiV__{prefix}  value: __LhEEiV__{value}" __LhEEiV__{taskFile}
+      }
+      
+      function envLockReleaseTask() {
+        local taskFile=__LhEEiV__1
+        addValue __LhEEiV__{taskFile} "  " owner-name '"__LhEEiV__(params.job-id)"'
+        commonTask __LhEEiV__{taskFile}
       }
       
       function commonTask() {
-        local taskFile=__5Z33ka__1
-        if getContent __5Z33ka__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+        local taskFile=__LhEEiV__1
+        if getContent __LhEEiV__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
           echo '[kind] cannot be specified in [taskRef] !' >&2
           return 1
         fi
-        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __5Z33ka__{taskFile} \\
-        | awk '{print "  "__5Z33ka__0}' >> __5Z33ka__{output}
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __LhEEiV__{taskFile} \\
+        | awk '{print "  "__LhEEiV__0}' >> __LhEEiV__{output}
       }
       
       function envDeployTask() {
-        deployedTestTask __5Z33ka__1 __5Z33ka__{ENV_DEPLOY_TASK_TEMPLATE}
+        deployedTestTask __LhEEiV__1 __LhEEiV__{ENV_DEPLOY_TASK_TEMPLATE}
       }
       
       function manualTestTask() {
-        deployedTestTask __5Z33ka__1 __5Z33ka__{MANUAL_TEST_TASK_TEMPLATE}
+        deployedTestTask __LhEEiV__1 __LhEEiV__{MANUAL_TEST_TASK_TEMPLATE}
       }
       
       function deployedTestTask() {
-        local taskFile=__5Z33ka__1
-        local templateFile=__5Z33ka__2
+        local taskFile=__LhEEiV__1
+        local templateFile=__LhEEiV__2
         
-        local name=__5Z33ka__(getContent __5Z33ka__{taskFile} name true)
-        local innerPipelineRunName=__5Z33ka__{name#*: }
+        local name=__LhEEiV__(getContent __LhEEiV__{taskFile} name true)
+        local innerPipelineRunName=__LhEEiV__{name#*: }
         
-        echo "__5Z33ka__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __5Z33ka__{output}
-        getContent __5Z33ka__{taskFile} runAfter true | awk '{print "  "__5Z33ka__0}' >> __5Z33ka__{output}
+        echo "__LhEEiV__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __LhEEiV__{output}
+        getContent __LhEEiV__{taskFile} runAfter true | awk '{print "  "__LhEEiV__0}' >> __LhEEiV__{output}
         
-        local env=__5Z33ka__(getValue __5Z33ka__{taskFile} env "  ")
-        sed -e "s/\\__5Z33ka__{INNER_PIPELINE_RUN_NAME}/__5Z33ka__{innerPipelineRunName}/" \\
-            -e "s/\\__5Z33ka__{ENV}/__5Z33ka__{env}/" \\
-            -e "s/\\__5Z33ka__{DEPLOY_SUCCESS_WEBHOOK}/__5Z33ka__{deploySuccessWebhook}/" \\
-            __5Z33ka__{templateFile} \\
-        | awk '{print "    "__5Z33ka__0}' >> __5Z33ka__{output}
+        local env=__LhEEiV__(getValue __LhEEiV__{taskFile} env "  ")
+        sed -e "s/\\__LhEEiV__{INNER_PIPELINE_RUN_NAME}/__LhEEiV__{innerPipelineRunName}/" \\
+            -e "s/\\__LhEEiV__{ENV}/__LhEEiV__{env}/" \\
+            -e "s/\\__LhEEiV__{DEPLOY_SUCCESS_WEBHOOK}/__LhEEiV__{deploySuccessWebhook}/" \\
+            __LhEEiV__{templateFile} \\
+        | awk '{print "    "__LhEEiV__0}' >> __LhEEiV__{output}
       }
       
       #-----------------------------------------------------
       set -ex
       
-      mkdir __5Z33ka__{pipelineDir} -p
+      mkdir __LhEEiV__{pipelineDir} -p
       
-      for file in __5Z33ka__(find __5Z33ka__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
-        output=__5Z33ka__{pipelineDir}/__5Z33ka__(basename __5Z33ka__file)
+      for file in __LhEEiV__(find __LhEEiV__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__LhEEiV__{pipelineDir}/__LhEEiV__(basename __LhEEiV__file)
         
-        validateConfig __5Z33ka__file
+        validateConfig __LhEEiV__file
       
-        pipelineHeader __5Z33ka__file
+        pipelineHeader __LhEEiV__file
       
-        pipelineTasks __5Z33ka__file
+        pipelineTasks __LhEEiV__file
       done
       EOFEOFEOFEOF
-      sed -i '/__5Z33ka__/s/__5Z33ka__/$/g' convert.sh
+      sed -i '/__LhEEiV__/s/__LhEEiV__/$/g' convert.sh
       sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output '$(params.deploy-success-webhook)'
       $kubectl apply -f ~/output

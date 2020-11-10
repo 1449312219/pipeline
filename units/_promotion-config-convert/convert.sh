@@ -60,6 +60,7 @@ function pipelineTasks() {
     case $task in
       env-deploy ) envDeployTask $file;;
       manual-test ) manualTestTask $file;;
+      env-lock-release ) envLockReleaseTask $file;;
       * ) commonTask $file;;
     esac
   done
@@ -117,6 +118,19 @@ function getValue() {
       s/^${prefix}  (.*)/\1/p;
     }
   }" ${file}
+}
+function addValue() {
+  local taskFile=$1
+  local prefix=$2
+  local name=$3
+  local value=$4
+  sed -i "/^${prefix}params:/a\\${prefix}- name: ${name}\n${prefix}  value: ${value}" ${taskFile}
+}
+
+function envLockReleaseTask() {
+  local taskFile=$1
+  addValue ${taskFile} "  " owner-name '"$(params.job-id)"'
+  commonTask ${taskFile}
 }
 
 function commonTask() {

@@ -114,6 +114,8 @@ spec:
       params:
       - name: lock-name
         value: $(tasks.env-lock-name.results.output)
+      - name: owner-name
+        value: $(params.job-id)
       - name: await-count
         value: $(params.await-count)
       - name: await-interval
