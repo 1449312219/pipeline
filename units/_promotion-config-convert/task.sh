@@ -22,6 +22,9 @@ spec:
   - name: deploy-success-webhook
     description: 部署成功通知地址, 用于需部署后测试的任务
     default: ""
+  - name: namespace
+    description: 部署promotion-pipeline到指定命名空间, 默认为当前ns
+    default: ""
   workspaces:
   - name: resources
     description: 存储资源, 将扫描其内配置
@@ -35,6 +38,11 @@ spec:
       ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+      pipelinerunNs="$(params.namespace)"
+      if test -n "$pipelinerunNs"; then
+        namespace=$pipelinerunNs
+      fi
 
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
       

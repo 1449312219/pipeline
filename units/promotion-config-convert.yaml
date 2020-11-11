@@ -17,6 +17,9 @@ spec:
   - name: deploy-success-webhook
     description: 部署成功通知地址, 用于需部署后测试的任务
     default: ""
+  - name: namespace
+    description: 部署promotion-pipeline到指定命名空间, 默认为当前ns
+    default: ""
   workspaces:
   - name: resources
     description: 存储资源, 将扫描其内配置
@@ -30,6 +33,11 @@ spec:
       ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+      pipelinerunNs="$(params.namespace)"
+      if test -n "$pipelinerunNs"; then
+        namespace=$pipelinerunNs
+      fi
 
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
       
@@ -45,9 +53,9 @@ spec:
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__aEUMON__(params.job-id)"
+        value: "__IKwjat__(params.job-id)"
       - name: generate-name
-        value: env-deploy-__aEUMON__{INNER_PIPELINE_RUN_NAME}
+        value: env-deploy-__IKwjat__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -55,64 +63,64 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __aEUMON__(params.pipelines-claim)
-            subPath: __aEUMON__(params.job-id)
+              claimName: __IKwjat__(params.pipelines-claim)
+            subPath: __IKwjat__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__aEUMON__(params.job-id)"
+            value: "__IKwjat__(params.job-id)"
           - name: pipelines-claim
-            value: "__aEUMON__(params.pipelines-claim)"
+            value: "__IKwjat__(params.pipelines-claim)"
           - name: env
-            value: "__aEUMON__{ENV}"
+            value: "__IKwjat__{ENV}"
           - name: promotion-name
-            value: "__aEUMON__(params.promotion-name)"
+            value: "__IKwjat__(params.promotion-name)"
           - name: env-version
-            value: "__aEUMON__(params.env-version)"
+            value: "__IKwjat__(params.env-version)"
           - name: repo-full-name
-            value: "__aEUMON__(params.repo-full-name)"
+            value: "__IKwjat__(params.repo-full-name)"
           - name: repo-ref
-            value: "__aEUMON__(params.repo-ref)"
+            value: "__IKwjat__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__aEUMON__(params.manifest-repo-full-name)"
+            value: "__IKwjat__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __aEUMON__(params.manifest-repo-url)
+            value: __IKwjat__(params.manifest-repo-url)
           - name: git-server-http
-            value: __aEUMON__(params.git-server-http)
+            value: __IKwjat__(params.git-server-http)
           - name: issue-id
-            value: "__aEUMON__(params.issue-id)"
+            value: "__IKwjat__(params.issue-id)"
           - name: deploy-webhook
-            value: "__aEUMON__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__IKwjat__{DEPLOY_SUCCESS_WEBHOOK}"
       - name: return-task
         value: env-lock-name
       EOFEOFEOFEOF
-      sed -i '/__aEUMON__/s/__aEUMON__/$/g' env-deploy-task-template.yaml
+      sed -i '/__IKwjat__/s/__IKwjat__/$/g' env-deploy-task-template.yaml
       cat <<EOFEOFEOFEOF > env-release-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: env-release
       params:
       - name: job-id
-        value: "__Fc9xuF__(params.job-id)"
+        value: "__k5ryME__(params.job-id)"
       - name: env
-        value: __Fc9xuF__{ENV}
+        value: __k5ryME__{ENV}
       - name: promotion-name
-        value: "__Fc9xuF__(params.promotion-name)"
+        value: "__k5ryME__(params.promotion-name)"
       - name: env-version
-        value: "__Fc9xuF__(params.env-version)"
+        value: "__k5ryME__(params.env-version)"
       EOFEOFEOFEOF
-      sed -i '/__Fc9xuF__/s/__Fc9xuF__/$/g' env-release-task-template.yaml
+      sed -i '/__k5ryME__/s/__k5ryME__/$/g' env-release-task-template.yaml
       cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__AfZ95m__(params.job-id)"
+        value: "__16LASz__(params.job-id)"
       - name: generate-name
-        value: manual-test-__AfZ95m__{INNER_PIPELINE_RUN_NAME}
+        value: manual-test-__16LASz__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -120,47 +128,47 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __AfZ95m__(params.pipelines-claim)
-            subPath: __AfZ95m__(params.job-id)
+              claimName: __16LASz__(params.pipelines-claim)
+            subPath: __16LASz__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__AfZ95m__(params.job-id)"
+            value: "__16LASz__(params.job-id)"
           - name: pipelines-claim
-            value: "__AfZ95m__(params.pipelines-claim)"
+            value: "__16LASz__(params.pipelines-claim)"
           - name: env
-            value: "__AfZ95m__{ENV}"
+            value: "__16LASz__{ENV}"
           - name: promotion-name
-            value: "__AfZ95m__(params.promotion-name)"
+            value: "__16LASz__(params.promotion-name)"
           - name: env-version
-            value: "__AfZ95m__(params.env-version)"
+            value: "__16LASz__(params.env-version)"
           - name: repo-full-name
-            value: "__AfZ95m__(params.repo-full-name)"
+            value: "__16LASz__(params.repo-full-name)"
           - name: repo-ref
-            value: "__AfZ95m__(params.repo-ref)"
+            value: "__16LASz__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__AfZ95m__(params.manifest-repo-full-name)"
+            value: "__16LASz__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __AfZ95m__(params.manifest-repo-url)
+            value: __16LASz__(params.manifest-repo-url)
           - name: git-server-http
-            value: __AfZ95m__(params.git-server-http)
+            value: __16LASz__(params.git-server-http)
           - name: issue-id
-            value: "__AfZ95m__(params.issue-id)"
+            value: "__16LASz__(params.issue-id)"
           - name: deploy-webhook
-            value: "__AfZ95m__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__16LASz__{DEPLOY_SUCCESS_WEBHOOK}"
       EOFEOFEOFEOF
-      sed -i '/__AfZ95m__/s/__AfZ95m__/$/g' manual-test-task-template.yaml
+      sed -i '/__16LASz__/s/__16LASz__/$/g' manual-test-task-template.yaml
       cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
       apiVersion: tekton.dev/v1beta1
       kind: Pipeline
       metadata:
-        name: __ZrdWOG__{PROMOTION_NAME}
+        name: __6KwjNL__{PROMOTION_NAME}
         labels:
           promotion-pipelines/custom-config: "true"
         annotations:
-          promotion-pipelines/branch-pattern: __ZrdWOG__{BRANCH_PATTERN}
+          promotion-pipelines/branch-pattern: __6KwjNL__{BRANCH_PATTERN}
       spec:
         params:
         - name: job-id
@@ -196,29 +204,29 @@ spec:
         - name: pipeline
           description: 流水线数据目录
       EOFEOFEOFEOF
-      sed -i '/__ZrdWOG__/s/__ZrdWOG__/$/g' promotion-pipeline-header-template.yaml
+      sed -i '/__6KwjNL__/s/__6KwjNL__/$/g' promotion-pipeline-header-template.yaml
       cat <<EOFEOFEOFEOF > convert.sh
       PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
       ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
       ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
       MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
       
-      configDir=__cncrTU__1  #存储项目中资源配置
+      configDir=__rwsysy__1  #存储项目中资源配置
       shift
       
-      pipelineDir=__cncrTU__1  #pipeline输出目录
+      pipelineDir=__rwsysy__1  #pipeline输出目录
       shift
       output="" #存储生成的pipeline文件
       
       tmpDir="./"  #存储临时文件
       
-      deploySuccessWebhook=__cncrTU__1
+      deploySuccessWebhook=__rwsysy__1
       
       #-----------------------------------------------------
       
       function validateConfig() {
-        local configFile=__cncrTU__1
-        if egrep "^ +taskSpec:" __cncrTU__{configFile}; then
+        local configFile=__rwsysy__1
+        if egrep "^ +taskSpec:" __rwsysy__{configFile}; then
           echo '[taskSpec] cannot exist !' >&2
           return 1
         fi
@@ -227,194 +235,194 @@ spec:
       #-----------------------------------------------------
       
       function pipelineHeader() {
-        local configFile=__cncrTU__1
+        local configFile=__rwsysy__1
         
-        local pipelineName=__cncrTU__(basename __cncrTU__configFile) \\
-           && pipelineName=__cncrTU__{configFile#*pipeline.} \\
-           && pipelineName=__cncrTU__{pipelineName%.yaml*}
+        local pipelineName=__rwsysy__(basename __rwsysy__configFile) \\
+           && pipelineName=__rwsysy__{configFile#*pipeline.} \\
+           && pipelineName=__rwsysy__{pipelineName%.yaml*}
         
-        local branchPattern=__cncrTU__(sed -nr '/^branchPattern: .+__cncrTU__/ {s/^branchPattern: (.+)__cncrTU__/\\1/p;q}' __cncrTU__{configFile})
-        if test -z "__cncrTU__{branchPattern}"; then
+        local branchPattern=__rwsysy__(sed -nr '/^branchPattern: .+__rwsysy__/ {s/^branchPattern: (.+)__rwsysy__/\\1/p;q}' __rwsysy__{configFile})
+        if test -z "__rwsysy__{branchPattern}"; then
           echo '[branchPattern] not specified !' >&2
           return 1
         fi
         
-        sed -e "s/\\__cncrTU__{PROMOTION_NAME}/__cncrTU__{pipelineName}/" \\
-            -e "s/\\__cncrTU__{BRANCH_PATTERN}/__cncrTU__{branchPattern}/" \\
-            __cncrTU__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __cncrTU__{output}
+        sed -e "s/\\__rwsysy__{PROMOTION_NAME}/__rwsysy__{pipelineName}/" \\
+            -e "s/\\__rwsysy__{BRANCH_PATTERN}/__rwsysy__{branchPattern}/" \\
+            __rwsysy__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __rwsysy__{output}
       }
       
       #-----------------------------------------------------
       
       function pipelineTasks() {
-        echo "  tasks:" >> __cncrTU__{output}
+        echo "  tasks:" >> __rwsysy__{output}
         
-        local configFile=__cncrTU__1
+        local configFile=__rwsysy__1
         
-        local TEMP_PREFIX="__cncrTU__{tmpDir}/.tmp.pipeline-task-"
+        local TEMP_PREFIX="__rwsysy__{tmpDir}/.tmp.pipeline-task-"
         
-        splitTasks __cncrTU__{configFile} __cncrTU__{TEMP_PREFIX} tasks
+        splitTasks __rwsysy__{configFile} __rwsysy__{TEMP_PREFIX} tasks
         
         local file=""
-        for file in __cncrTU__{TEMP_PREFIX}*; do
-          local task=__cncrTU__(getTaskType __cncrTU__file)
-          case __cncrTU__task in
-            env-deploy ) envDeployTask __cncrTU__file;;
-            manual-test ) manualTestTask __cncrTU__file;;
-            env-release ) envReleaseTask __cncrTU__file;;
-            * ) commonTask __cncrTU__file;;
+        for file in __rwsysy__{TEMP_PREFIX}*; do
+          local task=__rwsysy__(getTaskType __rwsysy__file)
+          case __rwsysy__task in
+            env-deploy ) envDeployTask __rwsysy__file;;
+            manual-test ) manualTestTask __rwsysy__file;;
+            env-release ) envReleaseTask __rwsysy__file;;
+            * ) commonTask __rwsysy__file;;
           esac
         done
         
-        rm __cncrTU__{TEMP_PREFIX}* -f
+        rm __rwsysy__{TEMP_PREFIX}* -f
       }
       
       function pipelineFinally() {
-        local configFile=__cncrTU__1
+        local configFile=__rwsysy__1
         
-        if grep "^finally:" 2>&1 >/dev/null __cncrTU__{configFile}; then
-          echo "  finally:" >> __cncrTU__{output}
+        if grep "^finally:" 2>&1 >/dev/null __rwsysy__{configFile}; then
+          echo "  finally:" >> __rwsysy__{output}
         else
           return 0
         fi
         
-        local TEMP_PREFIX="__cncrTU__{tmpDir}/.tmp.pipeline-finally-task-"
+        local TEMP_PREFIX="__rwsysy__{tmpDir}/.tmp.pipeline-finally-task-"
         
-        splitTasks __cncrTU__{configFile} __cncrTU__{TEMP_PREFIX} finally
+        splitTasks __rwsysy__{configFile} __rwsysy__{TEMP_PREFIX} finally
         
         local file=""
-        for file in __cncrTU__{TEMP_PREFIX}*; do
-          local task=__cncrTU__(getTaskType __cncrTU__file)
-          case __cncrTU__task in
+        for file in __rwsysy__{TEMP_PREFIX}*; do
+          local task=__rwsysy__(getTaskType __rwsysy__file)
+          case __rwsysy__task in
             env-deploy ) return 1;;
             manual-test ) return 1;;
-            env-release ) envReleaseTask __cncrTU__file;;
-            * ) commonTask __cncrTU__file;;
+            env-release ) envReleaseTask __rwsysy__file;;
+            * ) commonTask __rwsysy__file;;
           esac
         done
         
-        rm __cncrTU__{TEMP_PREFIX}* -f
+        rm __rwsysy__{TEMP_PREFIX}* -f
       }
       
       #-----------------------------------------------------
       
       #拆分tasks到独立文件
       function splitTasks() {
-        local configFile=__cncrTU__1
-        local tempPreifx=__cncrTU__2
-        local section=__cncrTU__3
+        local configFile=__rwsysy__1
+        local tempPreifx=__rwsysy__2
+        local section=__rwsysy__3
         
         local i=0
         local file=
         while IFS=~ read line; do
-          if echo "__cncrTU__line"|grep ^- 2>&1 >/dev/null; then
-            i=__cncrTU__(( __cncrTU__i + 1 ))
-            file=__cncrTU__{tempPreifx}__cncrTU__i
-            touch __cncrTU__file
+          if echo "__rwsysy__line"|grep ^- 2>&1 >/dev/null; then
+            i=__rwsysy__(( __rwsysy__i + 1 ))
+            file=__rwsysy__{tempPreifx}__rwsysy__i
+            touch __rwsysy__file
           fi
-          echo "__cncrTU__line" >> __cncrTU__{file}
+          echo "__rwsysy__line" >> __rwsysy__{file}
         done <<EOF
-      __cncrTU__(sed -nr "/^__cncrTU__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __cncrTU__{configFile})
+      __rwsysy__(sed -nr "/^__rwsysy__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __rwsysy__{configFile})
       EOF
       }
       
       function getTaskType() {
-        local taskFile=__cncrTU__1
-        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __cncrTU__{taskFile}
+        local taskFile=__rwsysy__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __rwsysy__{taskFile}
       }
       function getContent() {
-        local file=__cncrTU__1
-        local key=__cncrTU__2
+        local file=__rwsysy__1
+        local key=__rwsysy__2
         
-        local hasKey=__cncrTU__3
+        local hasKey=__rwsysy__3
         local args=
-        if test "__cncrTU__hasKey" == "true"; then
-          args="/^  __cncrTU__key:/{p;d} /^- __cncrTU__key:/{s/^-(.*)/ \\1/p;d}"
+        if test "__rwsysy__hasKey" == "true"; then
+          args="/^  __rwsysy__key:/{p;d} /^- __rwsysy__key:/{s/^-(.*)/ \\1/p;d}"
         fi
-        sed -nr "/^[- ] __cncrTU__key:/,/^  [a-zA-Z0-9]/{__cncrTU__args /^  [- ]/p}" __cncrTU__file
+        sed -nr "/^[- ] __rwsysy__key:/,/^  [a-zA-Z0-9]/{__rwsysy__args /^  [- ]/p}" __rwsysy__file
       }
       function getValue() {
-        local file=__cncrTU__1
-        local name=__cncrTU__2
-        local prefix="__cncrTU__3"
-        sed -nr "/^__cncrTU__{prefix}- name: __cncrTU__{name}/,/^__cncrTU__{prefix}[^ ]/ {
-          /^__cncrTU__{prefix}  value: [^|]/ {
+        local file=__rwsysy__1
+        local name=__rwsysy__2
+        local prefix="__rwsysy__3"
+        sed -nr "/^__rwsysy__{prefix}- name: __rwsysy__{name}/,/^__rwsysy__{prefix}[^ ]/ {
+          /^__rwsysy__{prefix}  value: [^|]/ {
             s/^ +value: (.*)/\\1/p;
             q;
           }
-          /^__cncrTU__{prefix}  value: |/ {
+          /^__rwsysy__{prefix}  value: |/ {
             s/^ +value: (.*)/\\1/p;
           }
-          /^__cncrTU__{prefix}    / {
-            s/^__cncrTU__{prefix}  (.*)/\\1/p;
+          /^__rwsysy__{prefix}    / {
+            s/^__rwsysy__{prefix}  (.*)/\\1/p;
           }
-        }" __cncrTU__{file}
+        }" __rwsysy__{file}
       }
       function addValue() {
-        local taskFile=__cncrTU__1
-        local prefix=__cncrTU__2
-        local name=__cncrTU__3
-        local value=__cncrTU__4
-        sed -i "/^__cncrTU__{prefix}params:/a\\\\__cncrTU__{prefix}- name: __cncrTU__{name}\\n__cncrTU__{prefix}  value: __cncrTU__{value}" __cncrTU__{taskFile}
+        local taskFile=__rwsysy__1
+        local prefix=__rwsysy__2
+        local name=__rwsysy__3
+        local value=__rwsysy__4
+        sed -i "/^__rwsysy__{prefix}params:/a\\\\__rwsysy__{prefix}- name: __rwsysy__{name}\\n__rwsysy__{prefix}  value: __rwsysy__{value}" __rwsysy__{taskFile}
       }
       
       function commonTask() {
-        local taskFile=__cncrTU__1
-        if getContent __cncrTU__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+        local taskFile=__rwsysy__1
+        if getContent __rwsysy__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
           echo '[kind] cannot be specified in [taskRef] !' >&2
           return 1
         fi
-        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __cncrTU__{taskFile} \\
-        | awk '{print "  "__cncrTU__0}' >> __cncrTU__{output}
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __rwsysy__{taskFile} \\
+        | awk '{print "  "__rwsysy__0}' >> __rwsysy__{output}
       }
       
       function envReleaseTask() {
-        deployedTestTask __cncrTU__1 __cncrTU__{ENV_RELEASE_TASK_TEMPLATE}
+        deployedTestTask __rwsysy__1 __rwsysy__{ENV_RELEASE_TASK_TEMPLATE}
       }
       
       function envDeployTask() {
-        deployedTestTask __cncrTU__1 __cncrTU__{ENV_DEPLOY_TASK_TEMPLATE}
+        deployedTestTask __rwsysy__1 __rwsysy__{ENV_DEPLOY_TASK_TEMPLATE}
       }
       
       function manualTestTask() {
-        deployedTestTask __cncrTU__1 __cncrTU__{MANUAL_TEST_TASK_TEMPLATE}
+        deployedTestTask __rwsysy__1 __rwsysy__{MANUAL_TEST_TASK_TEMPLATE}
       }
       
       function deployedTestTask() {
-        local taskFile=__cncrTU__1
-        local templateFile=__cncrTU__2
+        local taskFile=__rwsysy__1
+        local templateFile=__rwsysy__2
         
-        local name=__cncrTU__(getContent __cncrTU__{taskFile} name true)
-        local innerPipelineRunName=__cncrTU__{name#*: }
+        local name=__rwsysy__(getContent __rwsysy__{taskFile} name true)
+        local innerPipelineRunName=__rwsysy__{name#*: }
         
-        echo "__cncrTU__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __cncrTU__{output}
-        getContent __cncrTU__{taskFile} runAfter true | awk '{print "  "__cncrTU__0}' >> __cncrTU__{output}
+        echo "__rwsysy__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __rwsysy__{output}
+        getContent __rwsysy__{taskFile} runAfter true | awk '{print "  "__rwsysy__0}' >> __rwsysy__{output}
         
-        local env=__cncrTU__(getValue __cncrTU__{taskFile} env "  ")
-        sed -e "s/\\__cncrTU__{INNER_PIPELINE_RUN_NAME}/__cncrTU__{innerPipelineRunName}/" \\
-            -e "s/\\__cncrTU__{ENV}/__cncrTU__{env}/" \\
-            -e "s/\\__cncrTU__{DEPLOY_SUCCESS_WEBHOOK}/__cncrTU__{deploySuccessWebhook}/" \\
-            __cncrTU__{templateFile} \\
-        | awk '{print "    "__cncrTU__0}' >> __cncrTU__{output}
+        local env=__rwsysy__(getValue __rwsysy__{taskFile} env "  ")
+        sed -e "s/\\__rwsysy__{INNER_PIPELINE_RUN_NAME}/__rwsysy__{innerPipelineRunName}/" \\
+            -e "s/\\__rwsysy__{ENV}/__rwsysy__{env}/" \\
+            -e "s/\\__rwsysy__{DEPLOY_SUCCESS_WEBHOOK}/__rwsysy__{deploySuccessWebhook}/" \\
+            __rwsysy__{templateFile} \\
+        | awk '{print "    "__rwsysy__0}' >> __rwsysy__{output}
       }
       
       #-----------------------------------------------------
       set -ex
       
-      mkdir __cncrTU__{pipelineDir} -p
+      mkdir __rwsysy__{pipelineDir} -p
       
-      for file in __cncrTU__(find __cncrTU__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
-        output=__cncrTU__{pipelineDir}/__cncrTU__(basename __cncrTU__file)
+      for file in __rwsysy__(find __rwsysy__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__rwsysy__{pipelineDir}/__rwsysy__(basename __rwsysy__file)
         
-        validateConfig __cncrTU__file
+        validateConfig __rwsysy__file
       
-        pipelineHeader __cncrTU__file
+        pipelineHeader __rwsysy__file
       
-        pipelineTasks __cncrTU__file
+        pipelineTasks __rwsysy__file
         
-        pipelineFinally __cncrTU__file
+        pipelineFinally __rwsysy__file
       done
       EOFEOFEOFEOF
-      sed -i '/__cncrTU__/s/__cncrTU__/$/g' convert.sh
+      sed -i '/__rwsysy__/s/__rwsysy__/$/g' convert.sh
       sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output '$(params.deploy-success-webhook)'
       $kubectl apply -f ~/output
