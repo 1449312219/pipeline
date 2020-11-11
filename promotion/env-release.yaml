@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: env-release
+spec:
+  params:
+  - name: url
+    default: https://kubernetes.default
+
+  - name: job-id
+    description: 任务ID,串联起所有子流水线
+
+  - name: env
+
+  - name: promotion-name
+    description: promotion name
+  - name: env-version
+    description: env version, 用于关联具体env
+
+  steps:
+    - name: release
+      image: lachlanevenson/k8s-kubectl
+      imagePullPolicy: IfNotPresent 
+      script: |
+        url=$(params.url)
+        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+
+        lockName='$(params.promotion-name)'.'$(params.env-version)'.'$(params.env)'.env-deploy
+        lockName=env-lock.${lockName}
+        ownerName='$(params.job-id)'
+        
+        $kubectl delete endpoints -l \ promotion-pipelines/env-lock-cond.lock-name="${lockName}",\
+        promotion-pipelines/env-lock-cond.owner-name="${ownerName}"

@@ -1,5 +1,6 @@
 PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
 ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
+ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
 
 configDir=$1  #存储项目中资源配置
@@ -60,7 +61,7 @@ function pipelineTasks() {
     case $task in
       env-deploy ) envDeployTask $file;;
       manual-test ) manualTestTask $file;;
-      env-lock-release ) envLockReleaseTask $file;;
+      env-release ) envReleaseTask $file;;
       * ) commonTask $file;;
     esac
   done
@@ -87,7 +88,7 @@ function pipelineFinally() {
     case $task in
       env-deploy ) return 1;;
       manual-test ) return 1;;
-      env-lock-release ) envLockReleaseTask $file;;
+      env-release ) envReleaseTask $file;;
       * ) commonTask $file;;
     esac
   done
@@ -157,12 +158,6 @@ function addValue() {
   sed -i "/^${prefix}params:/a\\${prefix}- name: ${name}\n${prefix}  value: ${value}" ${taskFile}
 }
 
-function envLockReleaseTask() {
-  local taskFile=$1
-  addValue ${taskFile} "  " owner-name '"$(params.job-id)"'
-  commonTask ${taskFile}
-}
-
 function commonTask() {
   local taskFile=$1
   if getContent ${taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
@@ -171,6 +166,10 @@ function commonTask() {
   fi
   sed -r '/^  taskRef:/a\    kind: ClusterTask' ${taskFile} \
   | awk '{print "  "$0}' >> ${output}
+}
+
+function envReleaseTask() {
+  deployedTestTask $1 ${ENV_RELEASE_TASK_TEMPLATE}
 }
 
 function envDeployTask() {

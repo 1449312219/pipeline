@@ -1,0 +1,12 @@
+taskRef:
+  kind: ClusterTask
+  name: env-release
+params:
+- name: job-id
+  value: "$(params.job-id)"
+- name: env
+  value: ${ENV}
+- name: promotion-name
+  value: "$(params.promotion-name)"
+- name: env-version
+  value: "$(params.env-version)"

@@ -3335,7 +3335,7 @@ fontsize=16
     <coordinates>
       <x>800</x>
       <y>2560</y>
-      <w>170</w>
+      <w>140</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -3345,7 +3345,7 @@ halign=left
 fontsize=15
 
 -
-/以env-lock-release释放/
+/以env-release释放/
 /以使环境可用/</panel_attributes>
     <additional_attributes/>
   </element>
@@ -3721,7 +3721,7 @@ group=7</panel_attributes>
     <coordinates>
       <x>460</x>
       <y>980</y>
-      <w>530</w>
+      <w>490</w>
       <h>130</h>
     </coordinates>
     <panel_attributes>lw=.1
@@ -3734,7 +3734,7 @@ fontsize=16
 /  pipelineRef: env-deploy/
 /  params.env: params.env/
 -
-/c. taskRef.name=env-lock-release  =&gt; 处理成ClusterTask + params参数/
+/c. taskRef.name=env-release  =&gt; 处理成ClusterTask + params参数/
 /   'owner-name : &lt;job-id&gt;': params.owner-name/
 -
 group=10</panel_attributes>
@@ -3888,7 +3888,7 @@ group=10</panel_attributes>
     <coordinates>
       <x>460</x>
       <y>1230</y>
-      <w>520</w>
+      <w>490</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>lw=.1
@@ -3899,7 +3899,7 @@ fontsize=16
 /a. taskRef.name=env-deploy =&gt; error/
 /b. taskRef.name=manual-test =&gt; error/
 -
-/c. taskRef.name=env-lock-release =&gt; 处理成ClusterTask + params参数/
+/c. taskRef.name=env-release =&gt; 处理成ClusterTask + params参数/
 /d. other  =&gt; 处理成CluasterTask/
 group=10</panel_attributes>
     <additional_attributes/>
