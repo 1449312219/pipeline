@@ -2253,7 +2253,7 @@ group=3</panel_attributes>
     <coordinates>
       <x>530</x>
       <y>2210</y>
-      <w>400</w>
+      <w>460</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2262,7 +2262,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/由branch 找到promotion-name, 以触发特定pipelinerun/
+/由branch 找到项目ns内promotion-name, 以触发特定pipelinerun/
 group=3</panel_attributes>
     <additional_attributes/>
   </element>

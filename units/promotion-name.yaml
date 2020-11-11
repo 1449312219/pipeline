@@ -7,6 +7,10 @@ spec:
     - name: url
       default: https://kubernetes.default
 
+    - name: namespace
+      description: 查找指定命名空间下的promotion-pipelines, 默认为当前ns
+      default: ""
+      
     - name: branch
 
   results:
@@ -24,6 +28,11 @@ spec:
       ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+      
+      pipelinerunNs="$(params.namespace)"
+      if test -n "$pipelinerunNs"; then
+        namespace=$pipelinerunNs
+      fi
       
       kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
       

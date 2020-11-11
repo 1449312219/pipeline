@@ -118,6 +118,8 @@ spec:
       kind: ClusterTask
       name: promotion-name
     params:
+    - name: namespace
+      value: "$(tasks.params.results.promotion-pipeline-namespace)"
     - name: branch
       value: $(params.repo-branch)
 
@@ -148,6 +150,8 @@ spec:
     params:
     - name: span-id
       value: "$(params.job-id)"
+    - name: namespace
+      value: "$(tasks.params.results.promotion-pipeline-namespace)"
     - name: name
       value: $(context.pipelineRun.name)-trigger-$(tasks.get-promotion-name.results.output)
     - name: spec
