@@ -52,7 +52,7 @@ function pipelineTasks() {
   
   local TEMP_PREFIX="${tmpDir}/.tmp.pipeline-task-"
   
-  splitTasks ${configFile} ${TEMP_PREFIX}
+  splitTasks ${configFile} ${TEMP_PREFIX} tasks
   
   local file=""
   for file in ${TEMP_PREFIX}*; do
@@ -68,10 +68,40 @@ function pipelineTasks() {
   rm ${TEMP_PREFIX}* -f
 }
 
+function pipelineFinally() {
+  local configFile=$1
+  
+  if grep "^finally:" 2>&1 >/dev/null ${configFile}; then
+    echo "  finally:" >> ${output}
+  else
+    return 0
+  fi
+  
+  local TEMP_PREFIX="${tmpDir}/.tmp.pipeline-finally-task-"
+  
+  splitTasks ${configFile} ${TEMP_PREFIX} finally
+  
+  local file=""
+  for file in ${TEMP_PREFIX}*; do
+    local task=$(getTaskType $file)
+    case $task in
+      env-deploy ) return 1;;
+      manual-test ) return 1;;
+      env-lock-release ) envLockReleaseTask $file;;
+      * ) commonTask $file;;
+    esac
+  done
+  
+  rm ${TEMP_PREFIX}* -f
+}
+
+#-----------------------------------------------------
+
 #拆分tasks到独立文件
 function splitTasks() {
   local configFile=$1
   local tempPreifx=$2
+  local section=$3
   
   local i=0
   local file=
@@ -83,7 +113,7 @@ function splitTasks() {
     fi
     echo "$line" >> ${file}
   done <<EOF
-$(sed -nr '/^tasks:/,/^[a-zA-Z0-9]/ {/^[- ]/p}' ${configFile})
+$(sed -nr "/^${section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" ${configFile})
 EOF
 }
 
@@ -182,4 +212,6 @@ for file in $(find ${configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); 
   pipelineHeader $file
 
   pipelineTasks $file
+  
+  pipelineFinally $file
 done
