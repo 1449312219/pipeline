@@ -36,7 +36,7 @@ spec:
       token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
-      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
       
       
       if test "$(params.repo-branch)" != "$(params.expect-branch)"; then
