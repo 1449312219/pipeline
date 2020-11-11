@@ -68,7 +68,8 @@ spec:
       - name: manifest-repo-url
         description: 资源仓库URL
       - name: manifest-repo-full-name
-        description: 资源仓库名称   
+        description: 资源仓库名称  
+      - name: promotion-pipeline-namespace
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
@@ -78,6 +79,8 @@ spec:
           echo -n '$(params.repo-url)' | sed "s/.git$/${manifestRepoSuffix}.git/" \
           > $(results.manifest-repo-url.path)
           echo -n '$(params.repo-full-name)'${manifestRepoSuffix} > $(results.manifest-repo-full-name.path)
+          
+          echo -n promotion-pipeline-'$(params.repo-full-name)' | tr A-Z/ a-z- > $(results.promotion-pipeline-namespace.path)
     workspaces:
     - name: pipelines
       workspace: pipelines
@@ -102,6 +105,8 @@ spec:
       value: $(params.repo-branch)
     - name: deploy-success-webhook
       value: "xxxxxxxxxxxxx"
+    - name: namespace
+      value: "$(tasks.params.results.promotion-pipeline-namespace)"
     workspaces:
     - name: resources
       workspace: pipelines
