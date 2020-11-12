@@ -873,7 +873,7 @@ group=9</panel_attributes>
     <coordinates>
       <x>480</x>
       <y>5100</y>
-      <w>390</w>
+      <w>540</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -883,8 +883,8 @@ halign=left
 fontsize=15
 
 -
-/flux-git-path:  &lt;name&gt;-&lt;env-version&gt;/&lt;env&gt;/
-/env-namespace:  &lt;repo&gt;-&lt;name&gt;-&lt;env-version&gt;-&lt;env&gt;/
+/flux-git-path:  &lt;promotion-name&gt;-&lt;env-version&gt;/&lt;env&gt;/
+/env-namespace:  promotion-pipeline-&lt;promotion-name&gt;-&lt;env-version&gt;-&lt;env&gt;/
 /flux-clsuter-role:  pipeline:init-flux-env:&lt;repo&gt;-flux/
 group=9</panel_attributes>
     <additional_attributes/>
@@ -939,7 +939,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/待独占锁侯, 判断k8s内是否已存在env-namespace/
+/待独占锁后, 判断k8s内是否已存在env-namespace/
 group=9</panel_attributes>
     <additional_attributes/>
   </element>
@@ -995,7 +995,7 @@ fontsize=15
 
 -
 /仅在 不存在 "任一期望" ns时继续/
-/lock名:  &lt;project&gt;.&lt;name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-init/
+/lock名:  &lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-init/
 /owner名:  env-init/
 group=9</panel_attributes>
     <additional_attributes/>
@@ -4006,7 +4006,7 @@ fontsize=16
     <coordinates>
       <x>520</x>
       <y>360</y>
-      <w>560</w>
+      <w>460</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -4015,7 +4015,7 @@ style=autoresize
 valign=center
 halign=center
 fontsize=18
-/promotion-pipeline-&lt;owner&gt;-&lt;project&gt;-&lt;purpose&gt;-&lt;version&gt;-&lt;env&gt;/</panel_attributes>
+/promotion-pipeline-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -4273,5 +4273,21 @@ fg=red
 /promotion-name:  &lt;owner&gt;-&lt;project&gt;-&lt;promotion-pipeline-name&gt;/
 group=3</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>380</y>
+      <w>310</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.9
+fontsize=14
+fg=red
+m1=/&lt;owner&gt;-&lt;project&gt;-&lt;promotion-pipeline-name&gt;/
+m1pos=-25,1</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
   </element>
 </diagram>

@@ -53,7 +53,7 @@ spec:
             echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
           
-          parseToNameSpace $(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
+          parseToNameSpace promotion-pipeline-$(params.promotion-name)-$(params.env-version)-$(params.env) \
           > $(results.env-namespace.path)
           
           
