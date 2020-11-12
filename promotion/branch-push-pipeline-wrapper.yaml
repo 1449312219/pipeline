@@ -83,7 +83,7 @@ spec:
           
           echo -n promotion-pipeline-'$(params.repo-full-name)' | tr A-Z/ a-z- > $(results.promotion-pipeline-namespace.path)
           
-          echo -n '$(params.repo-full-name)-' | tr tr A-Z/ a-z- > $(results.promotion-name-prefix.path)
+          echo -n '$(params.repo-full-name)-' | tr A-Z/ a-z- > $(results.promotion-name-prefix.path)
     workspaces:
     - name: pipelines
       workspace: pipelines
