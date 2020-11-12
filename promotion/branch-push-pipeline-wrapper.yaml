@@ -97,7 +97,7 @@ spec:
     - fetch-repo
     taskRef:
       kind: ClusterTask
-      name: promotion-config-convert
+      name: promotion-pipeline-config-convert
     params:
     - name: scan-path
       value: $(params.job-id)/temporary/project-repo
