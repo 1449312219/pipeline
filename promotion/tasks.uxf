@@ -2217,7 +2217,7 @@ group=3</panel_attributes>
     <coordinates>
       <x>360</x>
       <y>2280</y>
-      <w>140</w>
+      <w>190</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2226,7 +2226,7 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/promotion-name/
+/promotion-pipeline-name/
 group=3</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2235,7 +2235,7 @@ group=3</panel_attributes>
     <coordinates>
       <x>360</x>
       <y>2250</y>
-      <w>150</w>
+      <w>160</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2244,16 +2244,16 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/get-promotion-name/
+/get-promotion-pipeline/
 group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>500</x>
-      <y>2270</y>
-      <w>460</w>
+      <x>550</x>
+      <y>2280</y>
+      <w>480</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2262,26 +2262,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=16
-/由branch 找到项目ns内promotion-name, 以触发特定pipelinerun/
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>510</x>
-      <y>2270</y>
-      <w>240</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lw=.16
-style=autoresize
-valign=center
-halign=left
-fontsize=15
-
--
-/promotion-name =&gt; pipeline name/
+/由branch 找到项目ns内promotion-pipeline, 以触发特定pipelinerun/
 group=3</panel_attributes>
     <additional_attributes/>
   </element>

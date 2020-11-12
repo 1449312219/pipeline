@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: promotion-name
+  name: promotion-pipeline-name
 spec:
   params:
     - name: url
@@ -15,7 +15,7 @@ spec:
 
   results:
   - name: output
-    description: 存储branch最匹配的promotion-name (==pattern > 最长pattern > 最早pattern)
+    description: 存储branch最匹配的promotion-pipeline (==pattern > 最长pattern > 最早pattern)
 
   steps:
   - name: find
