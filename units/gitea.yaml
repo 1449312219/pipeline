@@ -140,7 +140,7 @@ spec:
                   \"title\": \"$title\",
                   \"body\": \"$body\", 
                   \"assignees\": [ $assignees ] }")
-          sh -c "$url" | jq -r .id
+          sh -c "$url" | jq -r .number
         }
 
         function getIssueId() {
