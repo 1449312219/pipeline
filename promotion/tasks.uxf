@@ -2704,9 +2704,9 @@ group=10</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>1100</y>
-      <w>120</w>
+      <w>160</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2714,9 +2714,9 @@ lw=.9
 fontsize=12
 fg=red
 
-/pipeline name/
+/promotion-pipeline name/
 group=10</panel_attributes>
-    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+    <additional_attributes>70.0;20.0;80.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
