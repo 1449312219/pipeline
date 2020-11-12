@@ -4,59 +4,69 @@ metadata:
   name: env-lock
 spec:
   params:
-    - name: url
-      default: https://kubernetes.default
+  - name: url
+    default: https://kubernetes.default
 
-    - name: lock-name
-    
-    - name: owner-name
-      description: 锁拥有者
+  - name: namespace
+    description: endpoint namespace, 默认为当前命名空间
+    default: ""
 
-    - name: await-count
-      default: '0'
-      description: 未能创建时,是否等待. 0,不等待,异常退出.
-    - name: await-interval
-      default: '15'
-      description: 等待时间. (单位:秒)
+  - name: lock-name
+
+  - name: owner-name
+    description: 锁拥有者
+
+  - name: await-count
+    default: '0'
+    description: 未能创建时,是否等待. 0,不等待,异常退出.
+  - name: await-interval
+    default: '15'
+    description: 等待时间. (单位:秒)
 
   check:
     image: 10.1.40.43:5000/lachlanevenson/k8s-kubectl
     imagePullPolicy: IfNotPresent 
     script: |
-        url=$(params.url)
-        ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-
-        kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
-        
-        
-        awaitCount=0
-        function doAwait() {
-          if test $awaitCount -ge $(params.await-count); then
-            exit 1
-          fi
-          awaitCount=$(($awaitCount+1))
-          sleep $(params.await-interval)
-        }
-        
-        name=env-lock.$(params.lock-name)
-        manifest='apiVersion: v1
-        kind: Endpoints
-        metadata:
-          name: '${name}'
-          annotations:
-            control-plane.alpha.kubernetes.io/leader: "true"
-          labels:
-             promotion-pipelines/env-lock-cond.lock-name: '"${name}"'
-             promotion-pipelines/env-lock-cond.owner-name: $(params.owner-name)'
-
-        function doCreate() {
-          $kubectl create -f - <<EOF
-        $manifest
-        EOF
-        }
-                
-        until doCreate; do
-          doAwait
-        done
+      url=$(params.url)
+      ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+      namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+      
+      
+      pipelinerunNs="$(params.namespace)"
+      if test -n "$pipelinerunNs"; then
+        namespace=$pipelinerunNs
+      fi
+      
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+      
+      
+      awaitCount=0
+      function doAwait() {
+        if test $awaitCount -ge $(params.await-count); then
+          exit 1
+        fi
+        awaitCount=$(($awaitCount+1))
+        sleep $(params.await-interval)
+      }
+      
+      name=env-lock.$(params.lock-name)
+      manifest='apiVersion: v1
+      kind: Endpoints
+      metadata:
+        name: '${name}'
+        annotations:
+          control-plane.alpha.kubernetes.io/leader: "true"
+        labels:
+          promotion-pipelines/env-lock-cond.lock-name: '"${name}"'
+          promotion-pipelines/env-lock-cond.owner-name: $(params.owner-name)'
+      
+      function doCreate() {
+        $kubectl create -f - <<EOF
+      $manifest
+      EOF
+      }
+      
+      until doCreate; do
+        doAwait
+      done

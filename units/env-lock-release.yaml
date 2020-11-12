@@ -4,13 +4,16 @@ metadata:
   name: env-lock-release
 spec:
   params:
-    - name: url
-      default: https://kubernetes.default
+  - name: url
+    default: https://kubernetes.default
 
-    - name: lock-name
-      description:  删除指定名称的endpoint
-    - name: owner-name
-      description:  删除指定名称的endpoint
+  - name: namespace
+    description: endpoint namespace, 默认为当前命名空间
+    default: ""
+  - name: lock-name
+    description:  删除指定名称的endpoint
+  - name: owner-name
+    description:  删除指定名称的endpoint
 
   steps:
     - name: release
@@ -21,9 +24,15 @@ spec:
         ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
         namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-
+        
+        
+        pipelinerunNs="$(params.namespace)"
+        if test -n "$pipelinerunNs"; then
+          namespace=$pipelinerunNs
+        fi
+        
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
-
+        
         
         lockName=env-lock.$(params.lock-name)
         ownerName=$(params.owner-name)
