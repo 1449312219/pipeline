@@ -22,7 +22,10 @@ spec:
   - name: deploy-success-webhook
     description: 部署成功通知地址, 用于需部署后测试的任务
     default: ""
-  - name: namespace
+  - name: promotion-pipelines-namespace
+    description: promotion-pipelines 环境命名空间, 默认为当前ns
+    default: ""
+  - name: promotion-pipeline-namespace
     description: 部署promotion-pipeline到指定命名空间, 默认为当前ns
     default: ""
   workspaces:
@@ -39,12 +42,18 @@ spec:
       token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
-      pipelinerunNs="$(params.namespace)"
-      if test -n "$pipelinerunNs"; then
-        namespace=$pipelinerunNs
+
+      promotionPipelinesNs="$(params.promotion-pipelines-namespace)"
+      promotionPipelineNs="$(params.promotion-pipeline-namespace)"
+      
+      if test -z "$promotionPipelinesNs"; then
+        promotionPipelinesNs=${namespace}
+      fi
+      if test -z "$promotionPipelineNs"; then
+        promotionPipelineNs=${namespace}
       fi
 
-      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token"
       
       
       if test "$(params.repo-branch)" != "$(params.expect-branch)"; then
@@ -95,6 +104,6 @@ done
 printFile ${scriptDir}/convert.sh
 
 scanPath='$(workspaces.resources.path)/$(params.scan-path)'
-execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\'
+execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\' \"'${promotionPipelinesNs}'\"
 
-echo '      $kubectl apply -f ~/output'
+echo '      $kubectl apply -f ~/output -n ${promotionPipelineNs}'

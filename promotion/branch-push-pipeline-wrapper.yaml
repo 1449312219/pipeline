@@ -105,7 +105,7 @@ spec:
       value: $(params.repo-branch)
     - name: deploy-success-webhook
       value: "xxxxxxxxxxxxx"
-    - name: namespace
+    - name: promotion-pipeline-namespace
       value: "$(tasks.params.results.promotion-pipeline-namespace)"
     workspaces:
     - name: resources

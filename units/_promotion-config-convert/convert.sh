@@ -13,6 +13,9 @@ output="" #存储生成的pipeline文件
 tmpDir="./"  #存储临时文件
 
 deploySuccessWebhook=$1
+shift
+
+promotionPipelinesNamespace=$1
 
 #-----------------------------------------------------
 
@@ -192,6 +195,7 @@ function deployedTestTask() {
   
   local env=$(getValue ${taskFile} env "  ")
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
+      -e "s/\${NAMESPACE}/${promotionPipelinesNamespace}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
       ${templateFile} \

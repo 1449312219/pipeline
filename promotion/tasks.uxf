@@ -2571,7 +2571,7 @@ group=6</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>320</x>
-      <y>1010</y>
+      <y>970</y>
       <w>220</w>
       <h>40</h>
     </coordinates>
@@ -2589,7 +2589,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>290</x>
-      <y>1050</y>
+      <y>1010</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -2607,7 +2607,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>420</x>
-      <y>1050</y>
+      <y>1010</y>
       <w>370</w>
       <h>40</h>
     </coordinates>
@@ -2625,7 +2625,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>1050</y>
+      <y>1010</y>
       <w>290</w>
       <h>60</h>
     </coordinates>
@@ -2644,7 +2644,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>420</x>
-      <y>1120</y>
+      <y>1080</y>
       <w>130</w>
       <h>40</h>
     </coordinates>
@@ -2662,7 +2662,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>1120</y>
+      <y>1080</y>
       <w>270</w>
       <h>80</h>
     </coordinates>
@@ -2682,7 +2682,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>420</x>
-      <y>1210</y>
+      <y>1170</y>
       <w>230</w>
       <h>40</h>
     </coordinates>
@@ -2700,7 +2700,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>1210</y>
+      <y>1170</y>
       <w>480</w>
       <h>120</h>
     </coordinates>
@@ -2723,7 +2723,7 @@ group=10</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>590</x>
-      <y>1080</y>
+      <y>1040</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -2740,7 +2740,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>1320</y>
+      <y>1280</y>
       <w>420</w>
       <h>180</h>
     </coordinates>
@@ -2767,9 +2767,9 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>1610</y>
+      <y>1580</y>
       <w>440</w>
-      <h>90</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
@@ -2778,6 +2778,7 @@ halign=left
 fontsize=16
 /d. taskRef.name=manual-test  =&gt; 构建pipelinerun-apply task/
 -.
+/  namespace:  &lt;promotion-pipelines&gt;/
 /  pipelineRef: manual-test/
 /  params.env: params.env/
 -
@@ -2788,7 +2789,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>1690</y>
+      <y>1670</y>
       <w>240</w>
       <h>40</h>
     </coordinates>
@@ -2805,7 +2806,7 @@ group=10</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>0</x>
-      <y>960</y>
+      <y>920</y>
       <w>1120</w>
       <h>30</h>
     </coordinates>
@@ -3372,7 +3373,7 @@ group=5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>150</x>
-      <y>610</y>
+      <y>570</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -3390,7 +3391,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>260</x>
-      <y>610</y>
+      <y>570</y>
       <w>280</w>
       <h>40</h>
     </coordinates>
@@ -3408,7 +3409,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>280</x>
-      <y>610</y>
+      <y>570</y>
       <w>210</w>
       <h>60</h>
     </coordinates>
@@ -3427,7 +3428,7 @@ group=7</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>230</x>
-      <y>570</y>
+      <y>530</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -3445,7 +3446,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>830</x>
-      <y>580</y>
+      <y>540</y>
       <w>170</w>
       <h>150</h>
     </coordinates>
@@ -3470,7 +3471,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>260</x>
-      <y>840</y>
+      <y>800</y>
       <w>350</w>
       <h>60</h>
     </coordinates>
@@ -3489,7 +3490,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>260</x>
-      <y>780</y>
+      <y>740</y>
       <w>440</w>
       <h>40</h>
     </coordinates>
@@ -3507,7 +3508,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>280</x>
-      <y>780</y>
+      <y>740</y>
       <w>140</w>
       <h>60</h>
     </coordinates>
@@ -3526,7 +3527,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>260</x>
-      <y>670</y>
+      <y>630</y>
       <w>510</w>
       <h>40</h>
     </coordinates>
@@ -3544,7 +3545,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>280</x>
-      <y>670</y>
+      <y>630</y>
       <w>360</w>
       <h>100</h>
     </coordinates>
@@ -3566,7 +3567,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>290</x>
-      <y>860</y>
+      <y>820</y>
       <w>310</w>
       <h>60</h>
     </coordinates>
@@ -3585,7 +3586,7 @@ group=7</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>650</x>
-      <y>700</y>
+      <y>660</y>
       <w>30</w>
       <h>90</h>
     </coordinates>
@@ -3598,7 +3599,7 @@ group=7</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>650</x>
-      <y>680</y>
+      <y>640</y>
       <w>200</w>
       <h>70</h>
     </coordinates>
@@ -3611,7 +3612,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>660</x>
-      <y>720</y>
+      <y>680</y>
       <w>270</w>
       <h>60</h>
     </coordinates>
@@ -3629,7 +3630,7 @@ group=7</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>800</x>
-      <y>580</y>
+      <y>540</y>
       <w>50</w>
       <h>80</h>
     </coordinates>
@@ -3642,7 +3643,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>550</y>
+      <y>510</y>
       <w>220</w>
       <h>60</h>
     </coordinates>
@@ -3660,7 +3661,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>980</x>
-      <y>650</y>
+      <y>610</y>
       <w>90</w>
       <h>40</h>
     </coordinates>
@@ -3677,7 +3678,7 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>680</x>
-      <y>570</y>
+      <y>530</y>
       <w>130</w>
       <h>60</h>
     </coordinates>
@@ -3696,7 +3697,7 @@ group=7</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>0</x>
-      <y>510</y>
+      <y>470</y>
       <w>1120</w>
       <h>30</h>
     </coordinates>
@@ -3707,7 +3708,7 @@ group=7</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>860</x>
-      <y>640</y>
+      <y>600</y>
       <w>140</w>
       <h>50</h>
     </coordinates>
@@ -3720,9 +3721,9 @@ group=7</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>1490</y>
+      <y>1450</y>
       <w>490</w>
-      <h>130</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
@@ -3731,6 +3732,7 @@ halign=left
 fontsize=16
 /b. taskRef.name=env-deploy  =&gt; 构建pipelinerun-apply task/
 -.
+/  namespace:  &lt;promotion-pipelines&gt;/
 /  pipelineRef: env-deploy/
 /  params.env: params.env/
 -
@@ -3744,7 +3746,7 @@ group=10</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>430</x>
-      <y>1330</y>
+      <y>1290</y>
       <w>500</w>
       <h>170</h>
     </coordinates>
@@ -3868,7 +3870,7 @@ group=6</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>1700</y>
+      <y>1680</y>
       <w>300</w>
       <h>60</h>
     </coordinates>
@@ -3887,7 +3889,7 @@ group=10</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>1740</y>
+      <y>1730</y>
       <w>490</w>
       <h>100</h>
     </coordinates>
@@ -3919,9 +3921,9 @@ lw=.6</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>210</x>
+      <x>200</x>
       <y>160</y>
-      <w>180</w>
+      <w>200</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -3930,7 +3932,7 @@ style=autoresize
 valign=center
 halign=center
 fontsize=18
-/promotion-pipelines/</panel_attributes>
+/&lt;promotion-pipelines&gt;/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3970,16 +3972,16 @@ fontsize=18
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>390</x>
       <y>160</y>
-      <w>160</w>
+      <w>150</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
 r2=/*/
 r2pos=15,3</panel_attributes>
-    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
@@ -4209,5 +4211,19 @@ group=3</panel_attributes>
 lw=.1
 group=3</panel_attributes>
     <additional_attributes>10.0;10.0;100.0;20.0;120.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>110</x>
+      <y>180</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+lw=.1
+r1=/可自定义/
+r1pos=-70,10</panel_attributes>
+    <additional_attributes>60.0;30.0;100.0;10.0</additional_attributes>
   </element>
 </diagram>
