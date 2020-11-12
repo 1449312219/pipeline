@@ -104,6 +104,7 @@ done
 printFile ${scriptDir}/convert.sh
 
 scanPath='$(workspaces.resources.path)/$(params.scan-path)'
-execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\' \"'${promotionPipelinesNs}'\"
+execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\' \
+\"'${promotionPipelinesNs}'\" \"'${promotionPipelineNs}'\"
 
 echo '      $kubectl apply -f ~/output -n ${promotionPipelineNs}'

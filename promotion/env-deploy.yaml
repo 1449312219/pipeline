@@ -11,6 +11,9 @@ spec:
 
   - name: env
 
+  - name: promotion-pipeline-namespace
+    description: 用于创建lock
+
   - name: promotion-name
     description: promotion name
   - name: env-version
@@ -112,6 +115,8 @@ spec:
     conditions:
     - conditionRef: env-lock
       params:
+      - name: lock-namespace
+        value: $(params.promotion-pipeline-namespace)
       - name: lock-name
         value: $(tasks.env-lock-name.results.output)
       - name: owner-name

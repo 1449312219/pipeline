@@ -7,7 +7,7 @@ spec:
   - name: url
     default: https://kubernetes.default
 
-  - name: namespace
+  - name: lock-namespace
     description: endpoint namespace, 默认为当前命名空间
     default: ""
 
@@ -33,7 +33,7 @@ spec:
       namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
       
       
-      pipelinerunNs="$(params.namespace)"
+      pipelinerunNs="$(params.lock-namespace)"
       if test -n "$pipelinerunNs"; then
         namespace=$pipelinerunNs
       fi

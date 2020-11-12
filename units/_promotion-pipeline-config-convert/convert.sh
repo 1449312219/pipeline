@@ -16,6 +16,7 @@ deploySuccessWebhook=$1
 shift
 
 promotionPipelinesNamespace=$1
+promotionPipelineNamespace=$2
 
 #-----------------------------------------------------
 
@@ -195,7 +196,8 @@ function deployedTestTask() {
   
   local env=$(getValue ${taskFile} env "  ")
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
-      -e "s/\${NAMESPACE}/${promotionPipelinesNamespace}/" \
+      -e "s/\${PROMOTION_PIPELINES_NAMESPACE}/${promotionPipelinesNamespace}/" \
+      -e "s/\${PROMOTION_PIPELINE_NAMESPACE}/${promotionPipelineNamespace}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_SUCCESS_WEBHOOK}/${deploySuccessWebhook}/" \
       ${templateFile} \

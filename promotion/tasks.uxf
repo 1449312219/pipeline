@@ -3007,7 +3007,7 @@ group=5</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>3550</y>
+      <y>3560</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -3025,7 +3025,7 @@ group=5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>3520</y>
+      <y>3530</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -3045,13 +3045,13 @@ group=5</panel_attributes>
       <x>370</x>
       <y>3240</y>
       <w>30</w>
-      <h>350</h>
+      <h>360</h>
     </coordinates>
     <panel_attributes>lt=..&gt;&gt;
 lw=.6
 // 等待
 group=5</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;330.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;340.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
@@ -3114,7 +3114,7 @@ group=5</panel_attributes>
       <x>470</x>
       <y>3400</y>
       <w>420</w>
-      <h>120</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lw=.16
 style=autoresize
@@ -3124,6 +3124,7 @@ fontsize=15
 
 -
 /由env-lock cond实现环境独占/
+/namespace:  promotion-pipeline-&lt;owner&gt;-&lt;project&gt;/
 /lock名:  &lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.env-deploy/
 /owner名:  &lt;job-id&gt;/
 -.
@@ -3135,7 +3136,7 @@ group=5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>3540</y>
+      <y>3550</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -3153,7 +3154,7 @@ group=5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>470</x>
-      <y>3540</y>
+      <y>3550</y>
       <w>490</w>
       <h>60</h>
     </coordinates>
@@ -3172,7 +3173,7 @@ group=5</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>3560</y>
+      <y>3570</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -3185,7 +3186,7 @@ group=5</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>260</x>
-      <y>3550</y>
+      <y>3560</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
@@ -3198,7 +3199,7 @@ group=5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>140</x>
-      <y>3540</y>
+      <y>3550</y>
       <w>130</w>
       <h>40</h>
     </coordinates>
@@ -3317,9 +3318,9 @@ fontsize=16
   <element>
     <id>Text</id>
     <coordinates>
-      <x>800</x>
+      <x>750</x>
       <y>3130</y>
-      <w>140</w>
+      <w>330</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -3329,7 +3330,7 @@ halign=left
 fontsize=15
 
 -
-/以env-release释放/
+/以env-release释放&lt;promotion-pipelines&gt;内lock/
 /以使环境可用/</panel_attributes>
     <additional_attributes/>
   </element>

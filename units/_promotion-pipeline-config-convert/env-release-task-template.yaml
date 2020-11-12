@@ -6,6 +6,8 @@ params:
   value: "$(params.job-id)"
 - name: env
   value: ${ENV}
+- name: promotion-pipeline-namespace
+  value: ${PROMOTION_PIPELINE_NAMESPACE}
 - name: promotion-name
   value: "$(params.promotion-name)"
 - name: env-version

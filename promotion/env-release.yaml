@@ -12,6 +12,9 @@ spec:
 
   - name: env
 
+  - name: promotion-pipeline-namespace
+    description: 用于删除lock
+
   - name: promotion-name
     description: promotion name
   - name: env-version
@@ -25,8 +28,9 @@ spec:
         url=$(params.url)
         ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-        namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-
+        #namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+        namespace='$(params.promotion-pipeline-namespace)'
+        
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
 
         lockName='$(params.promotion-name)'.'$(params.env-version)'.'$(params.env)'.env-deploy

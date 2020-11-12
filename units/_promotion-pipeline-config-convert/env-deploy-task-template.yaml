@@ -5,7 +5,7 @@ params:
 - name: span-id
   value: "$(params.job-id)"
 - name: namespace
-  value: ${NAMESPACE}
+  value: ${PROMOTION_PIPELINES_NAMESPACE}
 - name: generate-name
   value: env-deploy-${INNER_PIPELINE_RUN_NAME}
 - name: spec
@@ -27,6 +27,8 @@ params:
       value: "$(params.pipelines-claim)"
     - name: env
       value: "${ENV}"
+    - name: promotion-pipeline-namespace
+      value: "${PROMOTION_PIPELINE_NAMESPACE}"
     - name: promotion-name
       value: "$(params.promotion-name)"
     - name: env-version
