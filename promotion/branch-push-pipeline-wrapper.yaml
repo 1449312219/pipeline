@@ -70,6 +70,7 @@ spec:
       - name: manifest-repo-full-name
         description: 资源仓库名称  
       - name: promotion-pipeline-namespace
+      - name: promotion-name-prefix
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
@@ -81,6 +82,8 @@ spec:
           echo -n '$(params.repo-full-name)'${manifestRepoSuffix} > $(results.manifest-repo-full-name.path)
           
           echo -n promotion-pipeline-'$(params.repo-full-name)' | tr A-Z/ a-z- > $(results.promotion-pipeline-namespace.path)
+          
+          echo -n '$(params.repo-full-name)-' | tr tr A-Z/ a-z- > $(results.promotion-name-prefix.path)
     workspaces:
     - name: pipelines
       workspace: pipelines
@@ -170,7 +173,7 @@ spec:
         - name: pipelines-claim
           value: "$(tasks.params.results.pipelines-claim)"
         - name: promotion-name
-          value: "$(tasks.get-promotion-pipeline-name.results.output)"
+          value: "$(tasks.params.results.promotion-name-prefix)$(tasks.get-promotion-pipeline-name.results.output)"
         - name: env-version
           value: "$(params.env-version)"
         - name: repo-full-name
