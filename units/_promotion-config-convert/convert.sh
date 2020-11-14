@@ -30,7 +30,7 @@ function pipelineHeader() {
   local configFile=$1
   
   local pipelineName=$(basename $configFile) \
-     && pipelineName=${configFile#*pipeline.} \
+     && pipelineName=${configFile#*pipeline.promotion-} \
      && pipelineName=${pipelineName%.yaml*}
   
   local branchPattern=$(sed -nr '/^branchPattern: .+$/ {s/^branchPattern: (.+)$/\1/p;q}' ${configFile})

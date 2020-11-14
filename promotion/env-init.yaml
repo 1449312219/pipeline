@@ -52,8 +52,7 @@ spec:
             # [a-z0-9]([-a-z0-9]*[a-z0-9])?
             echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
-          
-          parseToNameSpace $(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
+          parseToNameSpace promotion-pipeline-$(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
           > $(results.env-namespace.path)
           
           
