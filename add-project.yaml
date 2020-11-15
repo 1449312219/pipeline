@@ -1,0 +1,203 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: add-project
+spec:
+  params:
+  - name: owner
+    description: 项目所有者
+  - name: type
+    description: 所有者类型 (user/org)
+    default: org
+    
+  - name: robot
+    description: "项目robot名称, 默认:owner-repo-robot"
+    default: ""
+
+  - name: repo-name
+    description: 项目仓库名称
+  - name: repo-description
+    description: 项目描述
+    default: ""
+  - name: repo-manifest-suffix
+    description: 项目资源仓库后缀
+    default: -manifest
+
+  - name: webhooks
+    description: | 
+      webhook配置, 可指定多行, 每行一条配置
+      格式: notifyUrl branchFilter events(逗号分隔)
+
+  - name: git-server-http
+    description: git server host (如:http://localhost:30280)
+
+
+  workspaces:
+  - name: owner-user-token
+    description: 存储仓库拥有者gitea user token (于/token文件)
+
+
+  tasks:
+  - name: create-repo
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: createRepo
+    - name: args
+      value: |
+        $(params.owner) $(params.type) $(params.repo-name) '$(params.repo-description)'
+        $(params.owner) $(params.type) $(params.repo-name)$(params.repo-manifest-suffix) 'manifests'
+    workspaces:
+    - name: token
+      workspace: owner-user-token
+
+  - name: params
+    taskSpec:
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          repoFullName='$(params.owner)/$(params.repo-name)'
+          manifestRepoName='$(params.repo-name)$(params.repo-manifest-suffix)'
+          
+          while read line; do
+            if test -z "$line"; then
+              continue
+            fi
+            echo ${repoFullName} ${line} >> $(results.webhook-args.path)
+          done <<EOF
+          $(params.webhooks)
+          EOF
+          
+          while read name ssh; do
+            if test -z "$name"; then
+              continue
+            fi
+            if test "$name" == "${manifestRepoName}"; then
+              echo -n ${ssh} > $(results.manifest-repo-ssh-url.path)
+              break
+            fi
+          done <<EOF
+          $(params.repo-urls)
+          EOF
+          
+          robot='$(params.robot)'
+          if test -z "${robot}"; then
+            robot='$(params.owner)-$(params.repo-name)-robot'
+          fi
+          echo -n ${robot} > $(results.robot-name.path)
+          
+          head -n 20 /dev/urandom | sha256sum | awk '{print $1}' \
+          |tr e-n E-N | xargs -i echo -n {}. > $(results.robot-password.path)
+      results:
+      - name: webhook-args
+      - name: manifest-repo-ssh-url
+      - name: robot-name
+      - name: robot-password
+      params:
+      - name: owner
+      - name: repo-name
+      - name: repo-manifest-suffix
+      - name: webhooks
+      - name: repo-urls
+      - name: robot
+    params:
+    - name: owner
+      value: $(params.owner)
+    - name: repo-name
+      value: $(params.repo-name)
+    - name: repo-manifest-suffix
+      value: $(params.repo-manifest-suffix)
+    - name: webhooks
+      value: $(params.webhooks)
+    - name: repo-urls
+      value: $(tasks.create-repo.results.repo-url)
+    - name: robot
+      value: $(params.robot)
+
+  - name: add-webhook
+    runAfter:
+    - create-repo
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: createWebHook
+    - name: args
+      value: $(tasks.params.results.webhook-args)
+    workspaces:
+    - name: token
+      workspace: owner-user-token
+
+  - name: create-robot
+    runAfter:
+    - create-repo
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: createUser
+    - name: args
+      value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password)
+    workspaces:
+    - name: token
+      workspace: owner-user-token
+    
+  - name: create-robot-token
+    runAfter:
+    - create-robot
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: createToken
+    - name: args
+      value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password) pipeline
+    workspaces:
+    - name: token
+      workspace: owner-user-token
+
+  - name: robot-secret-init
+    runAfter:
+    - create-robot-token
+    taskRef:
+      kind: ClusterTask
+      name: robot-secret-init
+    params:
+    - name: robot-name
+      value: $(tasks.params.results.robot-name)
+    - name: robot-token
+      value: $(tasks.create-robot-token.results.output)
+    - name: git-server-ssh
+      value: $(tasks.params.results.manifest-repo-ssh-url)
+
+  - name: add-collaborator
+    runAfter:
+    - create-robot
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: addCollaborator
+    - name: args
+      value: |
+        $(params.owner)/$(params.repo-name) $(tasks.params.results.robot-name)
+        $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(tasks.params.results.robot-name)
+    workspaces:
+    - name: token
+      workspace: owner-user-token
