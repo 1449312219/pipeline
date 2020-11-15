@@ -4961,7 +4961,7 @@ fontsize=15
 /params:  /
 /  git-server-http/
 /  owner, type,  repo-name/
-/  owner-user-token/
+/  repo-owner-oken/
 -..
 /默认robot:  &lt;repo-name&gt;-robot/</panel_attributes>
     <additional_attributes/>

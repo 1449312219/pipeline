@@ -33,7 +33,7 @@ spec:
 
 
   workspaces:
-  - name: owner-user-token
+  - name: repo-owner-token
     description: 存储仓库拥有者gitea user token (于/token文件)
 
 
@@ -53,7 +53,7 @@ spec:
         $(params.owner) $(params.type) $(params.repo-name)$(params.repo-manifest-suffix) 'manifests'
     workspaces:
     - name: token
-      workspace: owner-user-token
+      workspace: repo-owner-token
 
   - name: params
     taskSpec:
@@ -133,7 +133,7 @@ spec:
       value: $(tasks.params.results.webhook-args)
     workspaces:
     - name: token
-      workspace: owner-user-token
+      workspace: repo-owner-token
 
   - name: create-robot
     runAfter:
@@ -150,7 +150,7 @@ spec:
       value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password)
     workspaces:
     - name: token
-      workspace: owner-user-token
+      workspace: repo-owner-token
     
   - name: create-robot-token
     runAfter:
@@ -167,7 +167,7 @@ spec:
       value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password) pipeline
     workspaces:
     - name: token
-      workspace: owner-user-token
+      workspace: repo-owner-token
 
   - name: robot-secret-init
     runAfter:
@@ -200,4 +200,4 @@ spec:
         $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(tasks.params.results.robot-name)
     workspaces:
     - name: token
-      workspace: owner-user-token
+      workspace: repo-owner-token
