@@ -18,7 +18,8 @@ spec:
     - name: args
       description: |
         传于gitea相应请求, 可支持循环
-        createUser:  name password email
+        createUser:  userName password email
+        createToken:  userName password tokenName
         createRepo:  owner type(user/org) repoName repoDescription
         addCollaborator:  repoFullName userName permission
         addPublicKey:  title key
@@ -80,7 +81,23 @@ spec:
           echo $(grep '<p>' .createUser.result)
           return $(cat .createUser.result|wc -l)
         }
-
+        
+        function createToken() {
+          local userName=$1
+          local password=$2
+          local tokenName=$3
+          
+          local auth=$(echo -n ${userName}:${password} | base64)
+          
+          local server=$(params.git-server)
+          curl -X POST ${server}/api/v1/users/${userName}/tokens \
+          -H "accept: application/json" \
+          -H "authorization: Basic ${auth}" \
+          -H "Content-Type: application/json" \
+          -d "{ \"name\": \"${tokenName}\"}" -f \
+          | jq -r .sha1 
+        }
+        
         function url() {
           method=$1
           path=$2
@@ -100,7 +117,7 @@ spec:
                 -d \'$data\' \
                 -f
         }
-
+        
         function createRepo() {
           local owner=$1
           local type=$2
