@@ -169,12 +169,12 @@ spec:
     - name: token
       workspace: repo-owner-token
 
-  - name: robot-secret-init
+  - name: init-robot-secret
     runAfter:
     - create-robot-token
     taskRef:
       kind: ClusterTask
-      name: robot-secret-init
+      name: init-robot-secret
     params:
     - name: robot-name
       value: $(tasks.params.results.robot-name)

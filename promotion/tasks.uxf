@@ -5219,7 +5219,7 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/robot-secret-init/</panel_attributes>
+/init-robot-secret/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -5253,7 +5253,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=15
-/robot-secret-init/</panel_attributes>
+/init-robot-secret/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
