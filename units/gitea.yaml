@@ -60,8 +60,9 @@ spec:
       - name: output
         mountPath: /volumes/output
       script: |
+        set -ex
         set -o pipefail
-
+        
         export PATH=$PATH:/volumes/output
         
         function createUser() {
@@ -104,13 +105,13 @@ spec:
           server=$(params.git-server)
           token=$(cat $(workspaces.token.path)/token)
           data=$3
-
+         
           if echo $path | grep ? 2>&1 >/dev/null; then
             path="$path&access_token=$token"
           else
             path=$path?access_token=$token
           fi
-        
+          
           echo "curl -X $method" \
                 \"$server/api/v1$path\" \
                 -H \"accept: application/json\" -H \"Content-Type: application/json\" \
@@ -123,26 +124,28 @@ spec:
           local type=$2
           local name=$3
           local description=$4
-
+          
           local path
           if test "$type" == "user"; then
             path=/admin/users/${owner}/repos
           else
             path=/orgs/${owner}/repos
           fi
-
+          
           url=$(url POST $path "{
                   \"name\": \"$name\",
                   \"default_branch\": \"master\",
                   \"private\": false,
                   \"auto_init\": true,
                   \"description\": \"$description\" }")
-          local content=$(sh -c "$url")
-
+                  
+          local content
+          content=$(sh -c "$url")
+          
           echo $name $(echo $content | jq -r .ssh_url) >> $(results.repo-url.path)
           echo $content | jq -r .id
         }
-
+        
         function addCollaborator() {
           repoFullName=$1
           name=$2
@@ -151,7 +154,7 @@ spec:
                   \"permission\": \"$permission\" }")
           sh -c "$url" | jq -r .id
         }
-
+        
         function addPublicKey() {
           title=$1
           key=$2
@@ -166,7 +169,7 @@ spec:
           title=$2
           body=$3
           assignees=$4  #(echo $3|sed 's|"|\\"|g')
-
+          
           if test "$(params.idempotent)" == "true"; then
             if getIssueId "$repoFullName" "$title"; then
               return
@@ -178,13 +181,13 @@ spec:
                   \"assignees\": [ $assignees ] }")
           sh -c "$url" | jq -r .number
         }
-
+        
         function getIssueId() {
           repoFullName=$1
           title=$2
           url=$(url GET /repos/$repoFullName/issues?type=issues\&q=$title)
           res=$(sh -c "$url")
-
+          
           if test $(echo $res | jq length) -eq 1; then
             res=$(echo $res | jq -r .[0])
             if test $(echo $res | jq -r .title) == $title; then
@@ -202,7 +205,7 @@ spec:
           url=$(url POST /repos/$repoFullName/issues/$issue/comments "{ \"body\": \"$body\" }")
           sh -c "$url" | jq -r .id
         }
- 
+        
         function addDeployKey() {
           repoFullName=$1
           title=$2
@@ -210,7 +213,7 @@ spec:
           url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": true }")
           sh -c "$url" | jq -r .id
         }
-
+        
         function createWebHook() {
           repoFullName=$1
           notifyUrl=$2
@@ -227,7 +230,7 @@ spec:
                   \"active\": true }")
           sh -c "$url" | jq -r .id
         }
-
+        
         while read args; do
           if test -n "$args"; then
             eval $(params.cmd) $args | xargs -I {} echo -n {}" " >> $(results.output.path) 
@@ -237,3 +240,4 @@ spec:
         done <<EOF
         $(params.args)
         EOF
+        sed -i -r 's/ +$//' $(results.output.path) 
