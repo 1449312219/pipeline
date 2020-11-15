@@ -76,4 +76,12 @@ spec:
         value: $(params.repo-url)
 
       - name: git-server-http
-        value: $(params.git-server)
+        value: $(params.git-server-http)
+        
+      workspaces:
+      - name: pipelines
+        persistentVolumeClaim:
+          claimName: pipeline-all-workspaces-pvc
+      - name: gitea-user-token
+        secret:
+          SecretName: gitea-user-token

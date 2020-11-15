@@ -47,7 +47,8 @@ spec:
   - name: repo-name
     value: ${repoName}
   - name: webhooks
-    value: www.baidu.com
+    value: |
+      http://branch-push.${namespace}:8080 * push
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:
