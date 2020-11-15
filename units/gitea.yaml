@@ -88,7 +88,7 @@ spec:
           local password=$2
           local tokenName=$3
           
-          local auth=$(echo -n ${userName}:${password} | base64)
+          local auth=$(echo -n ${userName}:${password} | base64 | awk '{printf $0}')
           
           local server=$(params.git-server)
           curl -X POST ${server}/api/v1/users/${userName}/tokens \
