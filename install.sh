@@ -21,8 +21,8 @@ $kubectl apply -f ./promotion -R
 $kubectl apply -f ./init
 
 
-# security
-$kubectl create -f ./security -R --dry-run=client -o yaml \
+# config (security)
+$kubectl create -f ./config -R --dry-run=client -o yaml \
 | sed -e "s/\${NAMESPACE}/${namespace}/g" \
       -e "s/\${PROJECT_NAME}/${repoName}/g" \
 | $kubectl apply -f -
