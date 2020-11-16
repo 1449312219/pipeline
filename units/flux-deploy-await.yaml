@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: flux-deploy-await
+spec:
+  params:
+  - name: expect-images
+    description: 待部署的images, 以空格/换行分隔多个
+  - name: deployed-namespace
+    description: 待部署到的命名空间
+  
+  - name: await-count
+    default: '0'
+    description: 未能创建时,是否等待. 0,不等待,异常退出.
+  - name: await-interval
+    default: '15'
+    description: 等待时
+
+  volumes:
+  - name: share
+    emptyDir: {}
+
+  steps:
+  - name: jq
+    image: 10.1.40.43:5000/stedolan/jq
+    volumeMounts:
+    - name: share
+      mountPath: /volumes/share
+    script: |
+      cd /volumes/share
+      cp /usr/local/bin/jq .
+     
+  - name: await
+    image: 10.1.40.43:5000/fluxctl:1.20.1
+    volumeMounts:
+    - name: share
+      mountPath: /volumes/share
+    script: |
+      set -ex
+      set -o pipefail
+        
+      export PATH=$PATH:/volumes/share
+      
+      awaitCount=0
+      function doAwait() {
+        if test $awaitCount -ge $(params.await-count); then
+          return 1
+        fi
+        awaitCount=$(($awaitCount+1))
+        sleep $(params.await-interval)
+      }
+      
+      expectImages='$(params.expect-images)'
+      deployedNamespace='$(params.deployed-namespace)'
+      fluxctl="fluxctl --k8s-fwd-ns=${deployedNamespace} --k8s-fwd-labels=name=flux"
+      function checkAllDeployed() {
+        $fluxctl list-workloads -a -o json \
+        | jq -r .[].Containers[].Current.ID > .result.deployedImages
+        
+        for image in ${expectImages}; do
+          if grep "^${image}$" .result.deployedImages; then
+            continue
+          else
+            return 1
+          fi
+        done
+      }
+      
+      while true; do
+        if checkAllDeployed; then
+          exit 0
+        fi
+        doAwait
+      done
