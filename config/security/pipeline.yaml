@@ -6,12 +6,14 @@ rules:
 - apiGroups:
   - tekton.dev
   resources:
+  - pipelines
   - pipelineruns
   - taskruns
   verbs:
   - create
   - list
   - get
+  - patch
 - apiGroups:
   - ''
   resources:
@@ -22,7 +24,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: prmotion-pipelines:pipeline:core
+  name: prmotion-pipelines:pipeline
 rules:
 - apiGroups:
   - ''
