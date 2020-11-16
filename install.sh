@@ -39,6 +39,7 @@ metadata:
 spec:
   pipelineRef:
     name: add-project
+  serviceAccountName: add-project
   params:    
   - name: owner
     value: ${owner}
