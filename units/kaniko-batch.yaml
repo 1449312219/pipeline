@@ -41,16 +41,20 @@ spec:
         echo no Dockerfile
         exit 1
       fi
-
+      
+      destPrefix='$(params.dest-prefix)'
+      destSuffix='$(params.dest-suffix)'
+      
       for i in $files; do
         dir=$(dirname $i)
 
         project=$(basename $dir)
         if [[ $project == . ]]; then
           project=
+          destPrefix=$(echo ${destPrefix}|sed -r 's/[/-:]+$//')
         fi
 
-        destination=$(params.dest-prefix)${project}$(params.dest-suffix)
+        destination=${destPrefix}${project}${destSuffix}
 
         /kaniko/executor \
         --context=$(workspaces.source.path)/$dir \
