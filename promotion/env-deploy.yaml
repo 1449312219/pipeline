@@ -120,29 +120,30 @@ spec:
         value: $(params.await-count)
       - name: await-interval
         value: $(params.await-interval)
-    taskSpec:
-      steps:
-      - image: busybox:1.31
-        command:
-        - echo
-#    taskRef:
-#      name: kaniko
-#    workspaces:
-#    - name: source
-#      workspace: workspace
-#    params:
-#    - name: destination
-#     value: 10.1.40.43:5000/busybox:$(params.repo-ref)
+    taskRef:
+      kind: ClusterTask
+      name: kaniko-batch
+    workspaces:
+    - name: source
+      workspace: pipeline
+      subPath: temporary/project-repo
+    params:
+    - name: dest-prefix
+      value: 10.1.40.43:5000/$(params.repo-full-name)/
+    - name: dest-suffix
+      value: ":$(params.repo-ref)"
       
   - name: await-deploy-success
     runAfter:
     - tag-deploy-images
     taskRef:
       kind: ClusterTask
-      name: padding
+      name: flux-deploy-await
     params:
-    - name: padding-name
-      value: $(params.promotion-name).$(params.env-version).$(params.env).deploy.env-deploy
+    - name: expect-images
+      value: $(tasks.tag-deploy-images.results.image-names)
+    - name: deployed-namespace
+      value: $(context.pipelineRun.namespace)-$(params.promotion-name)-$(params.env-version)-$(params.env)
     - name: await-count
       value: $(params.await-count)
     - name: await-interval
