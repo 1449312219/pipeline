@@ -10,6 +10,8 @@ namespace=$6
 
 
 namespace=promotion-promotion-${namespace}
+repoStandardName=${owner}-${repoName}
+
 
 kubectl create ns ${namespace}
 kubectl="kubectl -n ${namespace}"
@@ -24,7 +26,7 @@ $kubectl apply -f ./init
 # config (security)
 $kubectl create -f ./config -R --dry-run=client -o yaml \
 | sed -e "s/\${NAMESPACE}/${namespace}/g" \
-      -e "s/\${PROJECT_NAME}/${repoName}/g" \
+      -e "s/\${PROJECT_STANDARD_NAME}/${repoStandardName}/g" \
 | $kubectl apply -f -
 
 
