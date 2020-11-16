@@ -10,6 +10,7 @@ params:
   value: |
     pipelineRef:
       name: env-deploy
+    serviceAccountName: pipeline
     workspaces:
     - name: pipeline 
       persistentVolumeClaim:

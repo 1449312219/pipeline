@@ -10,6 +10,7 @@ params:
   value: |
     pipelineRef:
       name: manual-test
+    serviceAccountName: pipeline
     workspaces:
     - name: pipeline 
       persistentVolumeClaim:
