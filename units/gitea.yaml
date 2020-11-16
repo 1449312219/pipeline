@@ -23,7 +23,7 @@ spec:
         createRepo:  owner type(user/org) repoName repoDescription
         addCollaborator:  repoFullName userName permission
         addPublicKey:  title key
-        addDeployKey:  repoFullName title key
+        addDeployKey:  repoFullName title key readOnly
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
         createComment:  repoFullName issueId body
@@ -210,7 +210,8 @@ spec:
           repoFullName=$1
           title=$2
           key=$3
-          url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": true }")
+          readOnly=${4:-false}
+          url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": \"$readOnly\" }")
           sh -c "$url" | jq -r .id
         }
         
