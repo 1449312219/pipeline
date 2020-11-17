@@ -32,11 +32,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: pipeline:env-init:flux-init
+  name: prmotion-pipelines:env-init:flux-init
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: pipeline:env-init:flux-init
+  name: prmotion-pipelines:env-init:flux-init
 subjects:
 - kind: ServiceAccount
   name: env-init
@@ -46,7 +46,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: pipeline:env-init:${PROJECT_STANDARD_NAME}-flux
+  name: prmotion-pipelines:env-init:${PROJECT_STANDARD_NAME}-flux
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
@@ -55,11 +55,11 @@ aggregationRule:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: pipeline:env-init:flux-projects
+  name: prmotion-pipelines:env-init:${PROJECT_STANDARD_NAME}-flux
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: pipeline:env-init:flux-projects
+  name: prmotion-pipelines:env-init:${PROJECT_STANDARD_NAME}-flux
 subjects:
 - kind: ServiceAccount
   name: env-init

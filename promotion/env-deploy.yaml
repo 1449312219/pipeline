@@ -63,7 +63,7 @@ spec:
         serviceAccountName: pipeline
         serviceAccountNames:
         - taskName: init-flux-env
-          serviceAccountName: init-flux-env
+          serviceAccountName: env-init
         workspaces:
         - name: workspace
           persistentVolumeClaim:

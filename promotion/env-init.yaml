@@ -60,7 +60,7 @@ spec:
             local value=$1
             echo $value | tr / - | xargs echo -n
           }
-          parseToCluserRoleName pipeline:init-flux-env:$(params.repo-full-name)-flux \
+          parseToCluserRoleName promotion-pipelines:env-init:$(params.repo-full-name)-flux \
           > $(results.flux-cluster-role.path)
       params:
       - name: promotion-name
