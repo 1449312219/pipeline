@@ -27,12 +27,11 @@ $kubectl apply -f ./init
 $kubectl create -f ./config -R --dry-run=client -o yaml \
 | sed -e "s/\${NAMESPACE}/${namespace}/g" \
       -e "s/\${PROJECT_STANDARD_NAME}/${repoStandardName}/g" \
+      -e "s/\${GITEA_USER_TOKEN}/${repoOwnerToken}/g" \
 | $kubectl apply -f -
 
 
 # init
-$kubectl create secret generic repo-owner-token --from-literal=token=${repoOwnerToken}
-
 $kubectl apply -f - <<EOF
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
@@ -55,7 +54,7 @@ spec:
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:
-  - name: repo-owner-token
+  - name: gitea-user-token
     secret:
-      SecretName: repo-owner-token
+      SecretName: gitea-user-token
 EOF

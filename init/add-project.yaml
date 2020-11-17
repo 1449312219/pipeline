@@ -33,9 +33,11 @@ spec:
 
 
   workspaces:
-  - name: repo-owner-token
-    description: 存储仓库拥有者gitea user token (于/token文件)
-
+  - name: gitea-user-token
+    description: |
+      gitea user token (于/token文件)
+      初始时为 存储仓库拥有者token
+      待robot创建完成后, 将token替换为robot token
 
   tasks:
   - name: create-repo
@@ -53,7 +55,7 @@ spec:
         $(params.owner) $(params.type) $(params.repo-name)$(params.repo-manifest-suffix) 'manifests'
     workspaces:
     - name: token
-      workspace: repo-owner-token
+      workspace: gitea-user-token
 
   - name: params
     taskSpec:
@@ -133,7 +135,7 @@ spec:
       value: $(tasks.params.results.webhook-args)
     workspaces:
     - name: token
-      workspace: repo-owner-token
+      workspace: gitea-user-token
 
   - name: create-robot
     runAfter:
@@ -150,7 +152,7 @@ spec:
       value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password)
     workspaces:
     - name: token
-      workspace: repo-owner-token
+      workspace: gitea-user-token
     
   - name: create-robot-token
     runAfter:
@@ -167,7 +169,7 @@ spec:
       value: $(tasks.params.results.robot-name) $(tasks.params.results.robot-password) pipeline
     workspaces:
     - name: token
-      workspace: repo-owner-token
+      workspace: gitea-user-token
 
   - name: init-robot-secret
     runAfter:
@@ -182,7 +184,24 @@ spec:
       value: $(tasks.create-robot-token.results.output)
     - name: git-server-ssh
       value: $(tasks.params.results.manifest-repo-ssh-url)
-
+      
+  - name: add-robot-public-key
+    runAfter:
+    - init-robot-secret
+    taskRef:
+      kind: ClusterTask
+      name: gitea
+    params:
+    - name: git-server
+      value: $(params.git-server-http)
+    - name: cmd
+      value: addPublicKey
+    - name: args
+      value: pipeline '$(tasks.init-robot-secret.results.public-key)'
+    workspaces:
+    - name: token
+      workspace: gitea-user-token
+      
   - name: add-collaborator
     runAfter:
     - create-robot
@@ -200,4 +219,4 @@ spec:
         $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(tasks.params.results.robot-name)
     workspaces:
     - name: token
-      workspace: repo-owner-token
+      workspace: gitea-user-token

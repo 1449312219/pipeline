@@ -3,5 +3,5 @@ kind: Secret
 metadata:
   name: gitea-user-token
 type: Opaque
-data:
+stringData:
   token: ${GITEA_USER_TOKEN}
