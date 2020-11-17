@@ -794,7 +794,7 @@ group=9</panel_attributes>
     <coordinates>
       <x>480</x>
       <y>6400</y>
-      <w>590</w>
+      <w>380</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -805,7 +805,7 @@ fontsize=15
 
 -
 /flux-git-path:  &lt;promotion-name&gt;-&lt;env-version&gt;/&lt;env&gt;/
-/env-namespace:  promotion-pipeline-&lt;repo&gt;-&lt;promotion-name&gt;-&lt;env-version&gt;-&lt;env&gt;/
+/env-namespace:  &lt;promotion-pipeline-env&gt;/
 /flux-clsuter-role:  pipeline:init-flux-env:&lt;repo&gt;-flux/
 group=9</panel_attributes>
     <additional_attributes/>
@@ -3764,7 +3764,7 @@ group=10</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
+      <x>310</x>
       <y>1610</y>
       <w>320</w>
       <h>40</h>
@@ -3781,7 +3781,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>410</x>
+      <x>310</x>
       <y>1650</y>
       <w>250</w>
       <h>60</h>
@@ -3800,7 +3800,7 @@ fontsize=16
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
+      <x>310</x>
       <y>1740</y>
       <w>620</w>
       <h>40</h>
@@ -3817,7 +3817,7 @@ fontsize=18
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
+      <x>580</x>
       <y>1640</y>
       <w>40</w>
       <h>120</h>
@@ -3833,7 +3833,7 @@ r2pos=1,30</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>410</x>
+      <x>310</x>
       <y>1780</y>
       <w>200</w>
       <h>60</h>
@@ -3850,10 +3850,22 @@ fontsize=16
     <additional_attributes/>
   </element>
   <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>1560</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+lw=.1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
     <id>Text</id>
     <coordinates>
-      <x>160</x>
-      <y>1580</y>
+      <x>340</x>
+      <y>1550</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -3867,68 +3879,20 @@ fontsize=16
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <id>Text</id>
     <coordinates>
       <x>430</x>
-      <y>1560</y>
-      <w>30</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-lw=.1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>440</x>
-      <y>1550</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/add-project.sh/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>560</x>
-      <y>1550</y>
-      <w>250</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.1
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/完善gitea环境 (资源库,webhook)/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>50</x>
-      <y>1630</y>
-      <w>280</w>
-      <h>80</h>
+      <y>1540</y>
+      <w>300</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
 valign=center
 halign=left
 fontsize=15
-
--
 /ClusterTask, 基础pipeline, eventlistener/
-/便于后续升级/</panel_attributes>
+/完善gitea环境 (仓库,资源库,robot,webhook)/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3952,7 +3916,7 @@ fontsize=15
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>730</x>
+      <x>630</x>
       <y>1750</y>
       <w>160</w>
       <h>40</h>
@@ -3992,18 +3956,6 @@ halign=center
 fontsize=22
 /namespace/</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>150</x>
-      <y>1590</y>
-      <w>30</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-lw=.1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -5330,6 +5282,57 @@ valign=center
 halign=left
 fontsize=15
 /add-robot-public-key/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>240</x>
+      <y>1610</y>
+      <w>70</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lw=.1
+style=autoresize
+valign=center
+halign=left
+fontsize=15
+/默认 =&gt;/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>590</x>
+      <y>1690</y>
+      <w>300</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lw=.1
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+/  ...-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt; /</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>780</x>
+      <y>6440</y>
+      <w>310</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=12
+fg=red
+/默认: &lt;current-ns&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;/
+group=9</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

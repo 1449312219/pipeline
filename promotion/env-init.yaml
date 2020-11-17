@@ -52,7 +52,7 @@ spec:
             # [a-z0-9]([-a-z0-9]*[a-z0-9])?
             echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
           }
-          parseToNameSpace promotion-pipeline-$(params.repo-full-name)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
+          parseToNameSpace $(params.namespace-prefix)-$(params.promotion-name)-$(params.env-version)-$(params.env) \
           > $(results.env-namespace.path)
           
           
@@ -66,6 +66,7 @@ spec:
       - name: promotion-name
       - name: env-version
       - name: env
+      - name: namespace-prefix
       - name: repo-full-name
       results:
       - name: monitored-git-path
@@ -81,6 +82,8 @@ spec:
       value: $(params.env-version)
     - name: env
       value: $(params.env)
+    - name: namespace-prefix
+      value: $(context.pipelineRun.namespace)
     - name: repo-full-name
       value: $(params.repo-full-name)
 

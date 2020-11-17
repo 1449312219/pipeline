@@ -6,10 +6,8 @@ type=$2
 repoName=$3
 repoOwnerToken=$4
 gitServerHttp=$5
-namespace=$6
 
-
-namespace=promotion-promotion-${namespace}
+namespace=${6:-promotion-promotion-${owner}-${repoName}}
 repoStandardName=${owner}-${repoName}
 
 
