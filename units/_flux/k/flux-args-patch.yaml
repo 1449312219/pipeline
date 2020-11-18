@@ -1,16 +1,16 @@
 
 - op: add
-  path: /spec/template/spec/containers/1/args/-
+  path: /spec/template/spec/containers/0/args/-
   value: --registry-insecure-host=HTTP_REGISTRYS_PLACEHOLDER
 
 - op: add
-  path: /spec/template/spec/containers/1/args/-
+  path: /spec/template/spec/containers/0/args/-
   value: --k8s-allow-namespace=NAMESPACE_PLACEHOLDER
 
 - op: add
-  path: /spec/template/spec/containers/1/args/-
+  path: /spec/template/spec/containers/0/args/-
   value: --k8s-default-namespace=NAMESPACE_PLACEHOLDER
 
 - op: add
-  path: /spec/template/spec/containers/1/args/-
+  path: /spec/template/spec/containers/0/args/-
   value: --git-label=ENV_PLACEHOLDER-flux

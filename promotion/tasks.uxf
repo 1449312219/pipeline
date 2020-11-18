@@ -973,7 +973,7 @@ group=9</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>470</x>
-      <y>6820</y>
+      <y>6830</y>
       <w>200</w>
       <h>40</h>
     </coordinates>
@@ -1861,39 +1861,6 @@ fontsize=15
 /gitea-comment-notify/
 group=6</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>480</x>
-      <y>6820</y>
-      <w>180</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lw=.16
-style=autoresize
-valign=center
-halign=left
-fontsize=15
-
--
-/flux部署项目实例后 通知/
-group=9</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>350</x>
-      <y>6830</y>
-      <w>30</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;&gt;
-lw=.1
-// 通知
-group=9</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>

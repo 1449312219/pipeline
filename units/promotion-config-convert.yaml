@@ -14,9 +14,6 @@ spec:
   - name: expect-branch
     description: 期望git仓库分支, 仅为期望分支时生成pipeline
     default: master
-  - name: deploy-success-webhook
-    description: 部署成功通知地址, 用于需部署后测试的任务
-    default: ""
   workspaces:
   - name: resources
     description: 存储资源, 将扫描其内配置
@@ -45,9 +42,9 @@ spec:
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__MMQdIi__(params.job-id)"
+        value: "__ZwH1eX__(params.job-id)"
       - name: generate-name
-        value: env-deploy-__MMQdIi__{INNER_PIPELINE_RUN_NAME}
+        value: env-deploy-__ZwH1eX__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -56,64 +53,62 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __MMQdIi__(params.pipelines-claim)
-            subPath: __MMQdIi__(params.job-id)
+              claimName: __ZwH1eX__(params.pipelines-claim)
+            subPath: __ZwH1eX__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__MMQdIi__(params.job-id)"
+            value: "__ZwH1eX__(params.job-id)"
           - name: pipelines-claim
-            value: "__MMQdIi__(params.pipelines-claim)"
+            value: "__ZwH1eX__(params.pipelines-claim)"
           - name: env
-            value: "__MMQdIi__{ENV}"
+            value: "__ZwH1eX__{ENV}"
           - name: promotion-name
-            value: "__MMQdIi__(params.promotion-name)"
+            value: "__ZwH1eX__(params.promotion-name)"
           - name: env-version
-            value: "__MMQdIi__(params.env-version)"
+            value: "__ZwH1eX__(params.env-version)"
           - name: repo-full-name
-            value: "__MMQdIi__(params.repo-full-name)"
+            value: "__ZwH1eX__(params.repo-full-name)"
           - name: repo-ref
-            value: "__MMQdIi__(params.repo-ref)"
+            value: "__ZwH1eX__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__MMQdIi__(params.manifest-repo-full-name)"
+            value: "__ZwH1eX__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __MMQdIi__(params.manifest-repo-url)
+            value: __ZwH1eX__(params.manifest-repo-url)
           - name: git-server-http
-            value: __MMQdIi__(params.git-server-http)
+            value: __ZwH1eX__(params.git-server-http)
           - name: issue-id
-            value: "__MMQdIi__(params.issue-id)"
-          - name: deploy-webhook
-            value: "__MMQdIi__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__ZwH1eX__(params.issue-id)"
       - name: return-task
         value: env-lock-name
       EOFEOFEOFEOF
-      sed -i '/__MMQdIi__/s/__MMQdIi__/$/g' env-deploy-task-template.yaml
+      sed -i '/__ZwH1eX__/s/__ZwH1eX__/$/g' env-deploy-task-template.yaml
       cat <<EOFEOFEOFEOF > env-release-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: env-release
       params:
       - name: job-id
-        value: "__H5NjI6__(params.job-id)"
+        value: "__cF8Obs__(params.job-id)"
       - name: env
-        value: __H5NjI6__{ENV}
+        value: __cF8Obs__{ENV}
       - name: promotion-name
-        value: "__H5NjI6__(params.promotion-name)"
+        value: "__cF8Obs__(params.promotion-name)"
       - name: env-version
-        value: "__H5NjI6__(params.env-version)"
+        value: "__cF8Obs__(params.env-version)"
       EOFEOFEOFEOF
-      sed -i '/__H5NjI6__/s/__H5NjI6__/$/g' env-release-task-template.yaml
+      sed -i '/__cF8Obs__/s/__cF8Obs__/$/g' env-release-task-template.yaml
       cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__5stUrL__(params.job-id)"
+        value: "__g6o0OH__(params.job-id)"
       - name: generate-name
-        value: manual-test-__5stUrL__{INNER_PIPELINE_RUN_NAME}
+        value: manual-test-__g6o0OH__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -122,47 +117,45 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __5stUrL__(params.pipelines-claim)
-            subPath: __5stUrL__(params.job-id)
+              claimName: __g6o0OH__(params.pipelines-claim)
+            subPath: __g6o0OH__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__5stUrL__(params.job-id)"
+            value: "__g6o0OH__(params.job-id)"
           - name: pipelines-claim
-            value: "__5stUrL__(params.pipelines-claim)"
+            value: "__g6o0OH__(params.pipelines-claim)"
           - name: env
-            value: "__5stUrL__{ENV}"
+            value: "__g6o0OH__{ENV}"
           - name: promotion-name
-            value: "__5stUrL__(params.promotion-name)"
+            value: "__g6o0OH__(params.promotion-name)"
           - name: env-version
-            value: "__5stUrL__(params.env-version)"
+            value: "__g6o0OH__(params.env-version)"
           - name: repo-full-name
-            value: "__5stUrL__(params.repo-full-name)"
+            value: "__g6o0OH__(params.repo-full-name)"
           - name: repo-ref
-            value: "__5stUrL__(params.repo-ref)"
+            value: "__g6o0OH__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__5stUrL__(params.manifest-repo-full-name)"
+            value: "__g6o0OH__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __5stUrL__(params.manifest-repo-url)
+            value: __g6o0OH__(params.manifest-repo-url)
           - name: git-server-http
-            value: __5stUrL__(params.git-server-http)
+            value: __g6o0OH__(params.git-server-http)
           - name: issue-id
-            value: "__5stUrL__(params.issue-id)"
-          - name: deploy-webhook
-            value: "__5stUrL__{DEPLOY_SUCCESS_WEBHOOK}"
+            value: "__g6o0OH__(params.issue-id)"
       EOFEOFEOFEOF
-      sed -i '/__5stUrL__/s/__5stUrL__/$/g' manual-test-task-template.yaml
+      sed -i '/__g6o0OH__/s/__g6o0OH__/$/g' manual-test-task-template.yaml
       cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
       apiVersion: tekton.dev/v1beta1
       kind: Pipeline
       metadata:
-        name: __dWRVmW__{PROMOTION_NAME}
+        name: __c4aAWh__{PROMOTION_NAME}
         labels:
           promotion-pipelines/custom-config: "true"
         annotations:
-          promotion-pipelines/branch-pattern: __dWRVmW__{BRANCH_PATTERN}
+          promotion-pipelines/branch-pattern: __c4aAWh__{BRANCH_PATTERN}
       spec:
         params:
         - name: job-id
@@ -198,29 +191,27 @@ spec:
         - name: pipeline
           description: 流水线数据目录
       EOFEOFEOFEOF
-      sed -i '/__dWRVmW__/s/__dWRVmW__/$/g' promotion-pipeline-header-template.yaml
+      sed -i '/__c4aAWh__/s/__c4aAWh__/$/g' promotion-pipeline-header-template.yaml
       cat <<EOFEOFEOFEOF > convert.sh
       PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
       ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
       ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
       MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
       
-      configDir=__KwYl5I__1  #存储项目中资源配置
+      configDir=__ScLgoY__1  #存储项目中资源配置
       shift
       
-      pipelineDir=__KwYl5I__1  #pipeline输出目录
+      pipelineDir=__ScLgoY__1  #pipeline输出目录
       shift
       output="" #存储生成的pipeline文件
       
       tmpDir="./"  #存储临时文件
       
-      deploySuccessWebhook=__KwYl5I__1
-      
       #-----------------------------------------------------
       
       function validateConfig() {
-        local configFile=__KwYl5I__1
-        if egrep "^ +taskSpec:" __KwYl5I__{configFile}; then
+        local configFile=__ScLgoY__1
+        if egrep "^ +taskSpec:" __ScLgoY__{configFile}; then
           echo '[taskSpec] cannot exist !' >&2
           return 1
         fi
@@ -229,194 +220,193 @@ spec:
       #-----------------------------------------------------
       
       function pipelineHeader() {
-        local configFile=__KwYl5I__1
+        local configFile=__ScLgoY__1
         
-        local pipelineName=__KwYl5I__(basename __KwYl5I__configFile) \\
-           && pipelineName=__KwYl5I__{configFile#*pipeline.promotion-} \\
-           && pipelineName=__KwYl5I__{pipelineName%.yaml*}
+        local pipelineName=__ScLgoY__(basename __ScLgoY__configFile) \\
+           && pipelineName=__ScLgoY__{configFile#*pipeline.promotion-} \\
+           && pipelineName=__ScLgoY__{pipelineName%.yaml*}
         
-        local branchPattern=__KwYl5I__(sed -nr '/^branchPattern: .+__KwYl5I__/ {s/^branchPattern: (.+)__KwYl5I__/\\1/p;q}' __KwYl5I__{configFile})
-        if test -z "__KwYl5I__{branchPattern}"; then
+        local branchPattern=__ScLgoY__(sed -nr '/^branchPattern: .+__ScLgoY__/ {s/^branchPattern: (.+)__ScLgoY__/\\1/p;q}' __ScLgoY__{configFile})
+        if test -z "__ScLgoY__{branchPattern}"; then
           echo '[branchPattern] not specified !' >&2
           return 1
         fi
         
-        sed -e "s/\\__KwYl5I__{PROMOTION_NAME}/__KwYl5I__{pipelineName}/" \\
-            -e "s/\\__KwYl5I__{BRANCH_PATTERN}/__KwYl5I__{branchPattern}/" \\
-            __KwYl5I__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __KwYl5I__{output}
+        sed -e "s/\\__ScLgoY__{PROMOTION_NAME}/__ScLgoY__{pipelineName}/" \\
+            -e "s/\\__ScLgoY__{BRANCH_PATTERN}/__ScLgoY__{branchPattern}/" \\
+            __ScLgoY__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __ScLgoY__{output}
       }
       
       #-----------------------------------------------------
       
       function pipelineTasks() {
-        echo "  tasks:" >> __KwYl5I__{output}
+        echo "  tasks:" >> __ScLgoY__{output}
         
-        local configFile=__KwYl5I__1
+        local configFile=__ScLgoY__1
         
-        local TEMP_PREFIX="__KwYl5I__{tmpDir}/.tmp.pipeline-task-"
+        local TEMP_PREFIX="__ScLgoY__{tmpDir}/.tmp.pipeline-task-"
         
-        splitTasks __KwYl5I__{configFile} __KwYl5I__{TEMP_PREFIX} tasks
+        splitTasks __ScLgoY__{configFile} __ScLgoY__{TEMP_PREFIX} tasks
         
         local file=""
-        for file in __KwYl5I__{TEMP_PREFIX}*; do
-          local task=__KwYl5I__(getTaskType __KwYl5I__file)
-          case __KwYl5I__task in
-            env-deploy ) envDeployTask __KwYl5I__file;;
-            manual-test ) manualTestTask __KwYl5I__file;;
-            env-release ) envReleaseTask __KwYl5I__file;;
-            * ) commonTask __KwYl5I__file;;
+        for file in __ScLgoY__{TEMP_PREFIX}*; do
+          local task=__ScLgoY__(getTaskType __ScLgoY__file)
+          case __ScLgoY__task in
+            env-deploy ) envDeployTask __ScLgoY__file;;
+            manual-test ) manualTestTask __ScLgoY__file;;
+            env-release ) envReleaseTask __ScLgoY__file;;
+            * ) commonTask __ScLgoY__file;;
           esac
         done
         
-        rm __KwYl5I__{TEMP_PREFIX}* -f
+        rm __ScLgoY__{TEMP_PREFIX}* -f
       }
       
       function pipelineFinally() {
-        local configFile=__KwYl5I__1
+        local configFile=__ScLgoY__1
         
-        if grep "^finally:" 2>&1 >/dev/null __KwYl5I__{configFile}; then
-          echo "  finally:" >> __KwYl5I__{output}
+        if grep "^finally:" 2>&1 >/dev/null __ScLgoY__{configFile}; then
+          echo "  finally:" >> __ScLgoY__{output}
         else
           return 0
         fi
         
-        local TEMP_PREFIX="__KwYl5I__{tmpDir}/.tmp.pipeline-finally-task-"
+        local TEMP_PREFIX="__ScLgoY__{tmpDir}/.tmp.pipeline-finally-task-"
         
-        splitTasks __KwYl5I__{configFile} __KwYl5I__{TEMP_PREFIX} finally
+        splitTasks __ScLgoY__{configFile} __ScLgoY__{TEMP_PREFIX} finally
         
         local file=""
-        for file in __KwYl5I__{TEMP_PREFIX}*; do
-          local task=__KwYl5I__(getTaskType __KwYl5I__file)
-          case __KwYl5I__task in
+        for file in __ScLgoY__{TEMP_PREFIX}*; do
+          local task=__ScLgoY__(getTaskType __ScLgoY__file)
+          case __ScLgoY__task in
             env-deploy ) return 1;;
             manual-test ) return 1;;
-            env-release ) envReleaseTask __KwYl5I__file;;
-            * ) commonTask __KwYl5I__file;;
+            env-release ) envReleaseTask __ScLgoY__file;;
+            * ) commonTask __ScLgoY__file;;
           esac
         done
         
-        rm __KwYl5I__{TEMP_PREFIX}* -f
+        rm __ScLgoY__{TEMP_PREFIX}* -f
       }
       
       #-----------------------------------------------------
       
       #拆分tasks到独立文件
       function splitTasks() {
-        local configFile=__KwYl5I__1
-        local tempPreifx=__KwYl5I__2
-        local section=__KwYl5I__3
+        local configFile=__ScLgoY__1
+        local tempPreifx=__ScLgoY__2
+        local section=__ScLgoY__3
         
         local i=0
         local file=
         while IFS=~ read line; do
-          if echo "__KwYl5I__line"|grep ^- 2>&1 >/dev/null; then
-            i=__KwYl5I__(( __KwYl5I__i + 1 ))
-            file=__KwYl5I__{tempPreifx}__KwYl5I__i
-            touch __KwYl5I__file
+          if echo "__ScLgoY__line"|grep ^- 2>&1 >/dev/null; then
+            i=__ScLgoY__(( __ScLgoY__i + 1 ))
+            file=__ScLgoY__{tempPreifx}__ScLgoY__i
+            touch __ScLgoY__file
           fi
-          echo "__KwYl5I__line" >> __KwYl5I__{file}
+          echo "__ScLgoY__line" >> __ScLgoY__{file}
         done <<EOF
-      __KwYl5I__(sed -nr "/^__KwYl5I__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __KwYl5I__{configFile})
+      __ScLgoY__(sed -nr "/^__ScLgoY__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __ScLgoY__{configFile})
       EOF
       }
       
       function getTaskType() {
-        local taskFile=__KwYl5I__1
-        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __KwYl5I__{taskFile}
+        local taskFile=__ScLgoY__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __ScLgoY__{taskFile}
       }
       function getContent() {
-        local file=__KwYl5I__1
-        local key=__KwYl5I__2
+        local file=__ScLgoY__1
+        local key=__ScLgoY__2
         
-        local hasKey=__KwYl5I__3
+        local hasKey=__ScLgoY__3
         local args=
-        if test "__KwYl5I__hasKey" == "true"; then
-          args="/^  __KwYl5I__key:/{p;d} /^- __KwYl5I__key:/{s/^-(.*)/ \\1/p;d}"
+        if test "__ScLgoY__hasKey" == "true"; then
+          args="/^  __ScLgoY__key:/{p;d} /^- __ScLgoY__key:/{s/^-(.*)/ \\1/p;d}"
         fi
-        sed -nr "/^[- ] __KwYl5I__key:/,/^  [a-zA-Z0-9]/{__KwYl5I__args /^  [- ]/p}" __KwYl5I__file
+        sed -nr "/^[- ] __ScLgoY__key:/,/^  [a-zA-Z0-9]/{__ScLgoY__args /^  [- ]/p}" __ScLgoY__file
       }
       function getValue() {
-        local file=__KwYl5I__1
-        local name=__KwYl5I__2
-        local prefix="__KwYl5I__3"
-        sed -nr "/^__KwYl5I__{prefix}- name: __KwYl5I__{name}/,/^__KwYl5I__{prefix}[^ ]/ {
-          /^__KwYl5I__{prefix}  value: [^|]/ {
+        local file=__ScLgoY__1
+        local name=__ScLgoY__2
+        local prefix="__ScLgoY__3"
+        sed -nr "/^__ScLgoY__{prefix}- name: __ScLgoY__{name}/,/^__ScLgoY__{prefix}[^ ]/ {
+          /^__ScLgoY__{prefix}  value: [^|]/ {
             s/^ +value: (.*)/\\1/p;
             q;
           }
-          /^__KwYl5I__{prefix}  value: |/ {
+          /^__ScLgoY__{prefix}  value: |/ {
             s/^ +value: (.*)/\\1/p;
           }
-          /^__KwYl5I__{prefix}    / {
-            s/^__KwYl5I__{prefix}  (.*)/\\1/p;
+          /^__ScLgoY__{prefix}    / {
+            s/^__ScLgoY__{prefix}  (.*)/\\1/p;
           }
-        }" __KwYl5I__{file}
+        }" __ScLgoY__{file}
       }
       function addValue() {
-        local taskFile=__KwYl5I__1
-        local prefix=__KwYl5I__2
-        local name=__KwYl5I__3
-        local value=__KwYl5I__4
-        sed -i "/^__KwYl5I__{prefix}params:/a\\\\__KwYl5I__{prefix}- name: __KwYl5I__{name}\\n__KwYl5I__{prefix}  value: __KwYl5I__{value}" __KwYl5I__{taskFile}
+        local taskFile=__ScLgoY__1
+        local prefix=__ScLgoY__2
+        local name=__ScLgoY__3
+        local value=__ScLgoY__4
+        sed -i "/^__ScLgoY__{prefix}params:/a\\\\__ScLgoY__{prefix}- name: __ScLgoY__{name}\\n__ScLgoY__{prefix}  value: __ScLgoY__{value}" __ScLgoY__{taskFile}
       }
       
       function commonTask() {
-        local taskFile=__KwYl5I__1
-        if getContent __KwYl5I__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+        local taskFile=__ScLgoY__1
+        if getContent __ScLgoY__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
           echo '[kind] cannot be specified in [taskRef] !' >&2
           return 1
         fi
-        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __KwYl5I__{taskFile} \\
-        | awk '{print "  "__KwYl5I__0}' >> __KwYl5I__{output}
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __ScLgoY__{taskFile} \\
+        | awk '{print "  "__ScLgoY__0}' >> __ScLgoY__{output}
       }
       
       function envReleaseTask() {
-        deployedTestTask __KwYl5I__1 __KwYl5I__{ENV_RELEASE_TASK_TEMPLATE}
+        deployedTestTask __ScLgoY__1 __ScLgoY__{ENV_RELEASE_TASK_TEMPLATE}
       }
       
       function envDeployTask() {
-        deployedTestTask __KwYl5I__1 __KwYl5I__{ENV_DEPLOY_TASK_TEMPLATE}
+        deployedTestTask __ScLgoY__1 __ScLgoY__{ENV_DEPLOY_TASK_TEMPLATE}
       }
       
       function manualTestTask() {
-        deployedTestTask __KwYl5I__1 __KwYl5I__{MANUAL_TEST_TASK_TEMPLATE}
+        deployedTestTask __ScLgoY__1 __ScLgoY__{MANUAL_TEST_TASK_TEMPLATE}
       }
       
       function deployedTestTask() {
-        local taskFile=__KwYl5I__1
-        local templateFile=__KwYl5I__2
+        local taskFile=__ScLgoY__1
+        local templateFile=__ScLgoY__2
         
-        local name=__KwYl5I__(getContent __KwYl5I__{taskFile} name true)
-        local innerPipelineRunName=__KwYl5I__{name#*: }
+        local name=__ScLgoY__(getContent __ScLgoY__{taskFile} name true)
+        local innerPipelineRunName=__ScLgoY__{name#*: }
         
-        echo "__KwYl5I__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __KwYl5I__{output}
-        getContent __KwYl5I__{taskFile} runAfter true | awk '{print "  "__KwYl5I__0}' >> __KwYl5I__{output}
+        echo "__ScLgoY__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __ScLgoY__{output}
+        getContent __ScLgoY__{taskFile} runAfter true | awk '{print "  "__ScLgoY__0}' >> __ScLgoY__{output}
         
-        local env=__KwYl5I__(getValue __KwYl5I__{taskFile} env "  ")
-        sed -e "s/\\__KwYl5I__{INNER_PIPELINE_RUN_NAME}/__KwYl5I__{innerPipelineRunName}/" \\
-            -e "s/\\__KwYl5I__{ENV}/__KwYl5I__{env}/" \\
-            -e "s/\\__KwYl5I__{DEPLOY_SUCCESS_WEBHOOK}/__KwYl5I__{deploySuccessWebhook}/" \\
-            __KwYl5I__{templateFile} \\
-        | awk '{print "    "__KwYl5I__0}' >> __KwYl5I__{output}
+        local env=__ScLgoY__(getValue __ScLgoY__{taskFile} env "  ")
+        sed -e "s/\\__ScLgoY__{INNER_PIPELINE_RUN_NAME}/__ScLgoY__{innerPipelineRunName}/" \\
+            -e "s/\\__ScLgoY__{ENV}/__ScLgoY__{env}/" \\
+            __ScLgoY__{templateFile} \\
+        | awk '{print "    "__ScLgoY__0}' >> __ScLgoY__{output}
       }
       
       #-----------------------------------------------------
       set -ex
       
-      mkdir __KwYl5I__{pipelineDir} -p
+      mkdir __ScLgoY__{pipelineDir} -p
       
-      for file in __KwYl5I__(find __KwYl5I__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
-        output=__KwYl5I__{pipelineDir}/__KwYl5I__(basename __KwYl5I__file)
+      for file in __ScLgoY__(find __ScLgoY__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__ScLgoY__{pipelineDir}/__ScLgoY__(basename __ScLgoY__file)
         
-        validateConfig __KwYl5I__file
+        validateConfig __ScLgoY__file
       
-        pipelineHeader __KwYl5I__file
+        pipelineHeader __ScLgoY__file
       
-        pipelineTasks __KwYl5I__file
+        pipelineTasks __ScLgoY__file
         
-        pipelineFinally __KwYl5I__file
+        pipelineFinally __ScLgoY__file
       done
       EOFEOFEOFEOF
-      sed -i '/__KwYl5I__/s/__KwYl5I__/$/g' convert.sh
-      sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output '$(params.deploy-success-webhook)'
+      sed -i '/__ScLgoY__/s/__ScLgoY__/$/g' convert.sh
+      sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output
       $kubectl apply -f ~/output

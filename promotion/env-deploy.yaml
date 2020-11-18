@@ -33,9 +33,6 @@ spec:
   - name: git-server-http
     description: git server host (如:http://localhost:30280)
 
-  - name: deploy-webhook
-    description: 部署成功后通知
-
   - name: await-count
     default: '1440'
   - name: await-interval
@@ -90,8 +87,6 @@ spec:
           value: $(params.manifest-repo-full-name)
         - name: git-server-http
           value: $(params.git-server-http)
-        - name: webhook
-          value: $(params.deploy-webhook)
           
   - name: env-lock-name
     taskSpec:

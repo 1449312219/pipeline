@@ -15,7 +15,6 @@ spec:
     - name: git-url
     - name: git-paths
       default: '""'
-    - name: webhook
     - name: envs
     - name: namespaces
       default: default
@@ -123,7 +122,7 @@ done)
           eval ns=\\$\$namespaces\$i
           eval path=\\$\paths\$i
 
-          ./install.sh \$(params.git-url) \$path  \$(params.webhook) \$env \$ns \
+          ./install.sh \$(params.git-url) \$path \$env \$ns \
                        \$(params.manifest-gen) \$(params.cluster-role) \$(params.http-registry) > .logs
 
           cat .logs

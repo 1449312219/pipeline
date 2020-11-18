@@ -42,7 +42,5 @@ params:
       value: $(params.git-server-http)
     - name: issue-id
       value: "$(params.issue-id)"
-    - name: deploy-webhook
-      value: "${DEPLOY_SUCCESS_WEBHOOK}"
 - name: return-task
   value: env-lock-name

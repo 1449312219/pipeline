@@ -10,7 +10,6 @@ spec:
     - name: git-url
     - name: git-paths
       default: '""'
-    - name: webhook
     - name: envs
     - name: namespaces
       default: default
@@ -95,19 +94,19 @@ spec:
         cat > flux-args-patch.yaml <<EOF
         
         - op: add
-          path: /spec/template/spec/containers/1/args/-
+          path: /spec/template/spec/containers/0/args/-
           value: --registry-insecure-host=HTTP_REGISTRYS_PLACEHOLDER
         
         - op: add
-          path: /spec/template/spec/containers/1/args/-
+          path: /spec/template/spec/containers/0/args/-
           value: --k8s-allow-namespace=NAMESPACE_PLACEHOLDER
         
         - op: add
-          path: /spec/template/spec/containers/1/args/-
+          path: /spec/template/spec/containers/0/args/-
           value: --k8s-default-namespace=NAMESPACE_PLACEHOLDER
         
         - op: add
-          path: /spec/template/spec/containers/1/args/-
+          path: /spec/template/spec/containers/0/args/-
           value: --git-label=ENV_PLACEHOLDER-flux
         EOF
         cat > flux-role.yaml <<EOF
@@ -242,7 +241,7 @@ spec:
           eval ns=\$$namespaces$i
           eval path=\$\paths$i
 
-          ./install.sh $(params.git-url) $path  $(params.webhook) $env $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
+          ./install.sh $(params.git-url) $path $env $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
 
           cat .logs
           echo $env $(tail -n 1 .logs) >> $(results.ssh-key.path)

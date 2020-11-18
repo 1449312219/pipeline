@@ -19,9 +19,6 @@ spec:
   - name: expect-branch
     description: 期望git仓库分支, 仅为期望分支时生成pipeline
     default: master
-  - name: deploy-success-webhook
-    description: 部署成功通知地址, 用于需部署后测试的任务
-    default: ""
   workspaces:
   - name: resources
     description: 存储资源, 将扫描其内配置
@@ -87,6 +84,6 @@ done
 printFile ${scriptDir}/convert.sh
 
 scanPath='$(workspaces.resources.path)/$(params.scan-path)'
-execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' \''$(params.deploy-success-webhook)'\'
+execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output'
 
 echo '      $kubectl apply -f ~/output'
