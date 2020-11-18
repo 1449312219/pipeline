@@ -2,12 +2,11 @@ set -ex
 
 gitUrl=$1
 gitPaths=${2:-""}
-webhook=$3
-env=$4
-ns=${5:-default}
-manifestGen=${6:-true}
-clusterRole=${7:-flux}
-httpRegistry=${8:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
+env=$3
+ns=${4:-default}
+manifestGen=${5:-true}
+clusterRole=${6:-flux}
+httpRegistry=${7:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
 
 
 # 创建命名空间
@@ -36,9 +35,7 @@ type ssh-keyscan 2>/dev/null \
 # 生成 flux + fluxcloud 资源文件
 kubectl apply -k k --dry-run=client -o yaml \
 | sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1${httpRegistry}/\2| }" \
-         -e "s|WEBHOOK_URL_PLACEHOLDER|${webhook}|" \
          -e "s|ENV_PLACEHOLDER|${env}|" \
-         -e "s|GITHUB_URL_PLACEHOLDER|${gitUrl}|" \
          -e "s|NAMESPACE_PLACEHOLDER|${ns}|" \
          -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|${clusterRole}|" \
          -e "s|HTTP_REGISTRYS_PLACEHOLDER|${httpRegistry}|" \

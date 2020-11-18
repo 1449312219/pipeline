@@ -6,7 +6,6 @@ resources:
 
 patchesStrategicMerge:
 - flux-ssh-config-patch.yaml
-- fluxcloud-patch.yaml
 patchesJson6902:
 - target:
     group: apps

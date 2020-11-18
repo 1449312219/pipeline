@@ -3120,8 +3120,8 @@ group=5</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>150</x>
-      <y>1970</y>
+      <x>180</x>
+      <y>1980</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -3132,14 +3132,14 @@ valign=center
 halign=center
 fontsize=15
 _/clusterTask/_
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>260</x>
-      <y>1970</y>
+      <x>290</x>
+      <y>1980</y>
       <w>280</w>
       <h>40</h>
     </coordinates>
@@ -3150,14 +3150,14 @@ valign=center
 halign=left
 fontsize=17
 /1. 不存在指定namespace, 自动创建/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>280</x>
-      <y>1970</y>
+      <x>310</x>
+      <y>1980</y>
       <w>210</w>
       <h>60</h>
     </coordinates>
@@ -3169,14 +3169,14 @@ fontsize=16
 
 -
 /需赋予namespaces get权限/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>230</x>
-      <y>1930</y>
+      <x>260</x>
+      <y>1940</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -3187,16 +3187,16 @@ valign=center
 halign=center
 fontsize=18
 /flux/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>830</x>
-      <y>1940</y>
-      <w>170</w>
-      <h>150</h>
+      <x>760</x>
+      <y>1970</y>
+      <w>130</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
@@ -3206,19 +3206,17 @@ fontsize=16
 /参数/
 -
 /gitUrl,  gitPaths/
-//
-*/webhook,  additional/*
-/env/
+*/env/*
 /ns, manifestGen/
 */clusterRole/*
 /httpRegistry/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>260</x>
+      <x>290</x>
       <y>2200</y>
       <w>350</w>
       <h>60</h>
@@ -3231,13 +3229,13 @@ halign=left
 fontsize=17
 /4. git-user: robot/
 /    git-email: robot@users.noreply.github.com/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>260</x>
+      <x>290</x>
       <y>2140</y>
       <w>440</w>
       <h>40</h>
@@ -3249,13 +3247,13 @@ valign=center
 halign=left
 fontsize=17
 /3. 每次执行此Tsak时, 由ssh-keyscan获取git-server 公钥/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>280</x>
+      <x>310</x>
       <y>2140</y>
       <w>140</w>
       <h>60</h>
@@ -3268,15 +3266,15 @@ fontsize=16
 
 -
 /∴ gitUrl需为SSH/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>260</x>
-      <y>2030</y>
-      <w>510</w>
+      <x>290</x>
+      <y>2040</y>
+      <w>260</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -3285,17 +3283,17 @@ style=autoresize
 valign=center
 halign=left
 fontsize=17
-/2. 在指定namespace内, 部署flux, fluxcloud(监听/发布flux部署事件)/
-group=7</panel_attributes>
+/2. 在指定namespace内, 部署flux/
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>280</x>
-      <y>2030</y>
+      <x>310</x>
+      <y>2040</y>
       <w>360</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lw=.1
 style=autoresize
@@ -3305,16 +3303,15 @@ fontsize=16
 
 -
 /flux:  Secret,Deployment,Service,ServiceAccount/
-/fluxcloud:  Deployment/
 -..
 /需赋予相应资源get,create权限/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>290</x>
+      <x>320</x>
       <y>2220</y>
       <w>310</w>
       <h>60</h>
@@ -3327,40 +3324,40 @@ fontsize=16
 
 -
 /每次执行此Task时, 自动生成用户公私钥对/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
+      <x>670</x>
       <y>2060</y>
       <w>30</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.1
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>2040</y>
-      <w>200</w>
+      <x>670</x>
+      <y>2050</y>
+      <w>110</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.1
-group=7</panel_attributes>
-    <additional_attributes>10.0;50.0;170.0;10.0;180.0;20.0</additional_attributes>
+group=62</panel_attributes>
+    <additional_attributes>10.0;50.0;80.0;10.0;90.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>660</x>
-      <y>2080</y>
+      <x>690</x>
+      <y>2090</y>
       <w>270</w>
       <h>60</h>
     </coordinates>
@@ -3371,45 +3368,14 @@ halign=left
 fontsize=16
 /已移除由fluxctl install生成的默认role/
 /而绑定此指定role/
-group=7</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>800</x>
-      <y>1940</y>
-      <w>50</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.1
-group=7</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>670</x>
-      <y>1910</y>
-      <w>220</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lw=.1
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/flux部署服务实例成功后回调/
-/回调请求附加数据/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>980</x>
-      <y>2010</y>
+      <x>900</x>
+      <y>2020</y>
       <w>90</w>
       <h>40</h>
     </coordinates>
@@ -3419,26 +3385,7 @@ valign=center
 halign=left
 fontsize=16
 /flux git-tag/
-group=7</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>680</x>
-      <y>1930</y>
-      <w>130</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lw=.1
-style=autoresize
-valign=center
-halign=left
-fontsize=14
-
--
-/于additional报文头/
-group=7</panel_attributes>
+group=62</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3455,15 +3402,15 @@ group=7</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>860</x>
-      <y>2000</y>
-      <w>140</w>
-      <h>50</h>
+      <x>790</x>
+      <y>2020</y>
+      <w>130</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.1
-group=7</panel_attributes>
-    <additional_attributes>10.0;20.0;20.0;10.0;120.0;30.0</additional_attributes>
+group=62</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;110.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
