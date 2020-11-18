@@ -40,6 +40,9 @@ spec:
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
+          echo -n $(params.promotion-name)-$(params.env-version)-$(params.env)-flux \
+          > $(results.git-label.path)
+          
           echo -n $(params.promotion-name)-$(params.env-version)/$(params.env) \
           > $(results.monitored-git-path.path)
           
@@ -66,6 +69,8 @@ spec:
       - name: namespace-prefix
       - name: repo-full-name
       results:
+      - name: git-label
+        description: flux git tag
       - name: monitored-git-path
         description: flux将监视的资源仓库目录, 用以存放当前环境配置
       - name: env-namespace
@@ -167,14 +172,14 @@ spec:
       kind: ClusterTask
       name: flux
     params:
+    - name: git-labels
+      value: $(tasks.params.results.git-label)
     - name: git-url
       value: $(params.manifest-repo-url)
-    - name: envs
-      value: $(tasks.params.results.env-namespace)
-    - name: namespaces
-      value: $(tasks.params.results.env-namespace)
     - name: git-paths
       value: $(tasks.params.results.monitored-git-path)
+    - name: namespaces
+      value: $(tasks.params.results.env-namespace)
     - name: cluster-role
       value: $(tasks.params.results.flux-cluster-role)
     - name: http-registry
@@ -185,8 +190,8 @@ spec:
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
-          while read env key; do
-            test -n "$env" && echo $(params.project) $env \"$key\" >> $(results.args.path) || true
+          while read label key; do
+            test -n "$label" && echo $(params.project) $label \"$key\" >> $(results.args.path) || true
           done <<EOF
           $(params.keys)
           EOF
