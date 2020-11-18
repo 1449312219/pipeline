@@ -216,7 +216,7 @@ spec:
     - name: args
       value: |
         $(params.owner)/$(params.repo-name) $(tasks.params.results.robot-name)
-        $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(tasks.params.results.robot-name)
+        $(params.owner)/$(params.repo-name)$(params.repo-manifest-suffix) $(tasks.params.results.robot-name) admin
     workspaces:
     - name: token
       workspace: gitea-user-token

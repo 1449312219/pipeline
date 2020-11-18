@@ -4775,7 +4775,7 @@ fontsize=16
     <coordinates>
       <x>540</x>
       <y>550</y>
-      <w>110</w>
+      <w>260</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -4785,7 +4785,7 @@ halign=left
 fontsize=15
 
 -
-/赋于robot权限/</panel_attributes>
+/赋于robot权限 (资源仓库:admin权限)/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
