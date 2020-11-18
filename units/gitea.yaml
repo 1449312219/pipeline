@@ -211,7 +211,7 @@ spec:
           title=$2
           key=$3
           readOnly=${4:-false}
-          url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": \"$readOnly\" }")
+          url=$(url POST /repos/$repoFullName/keys "{ \"title\": \"$title\", \"key\": \"$key\", \"read_only\": $readOnly }")
           sh -c "$url" | jq -r .id
         }
         
