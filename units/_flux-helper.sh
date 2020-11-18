@@ -12,10 +12,10 @@ spec:
     - name: apiserver-url
       default: https://kubernetes.default
 
+    - name: git-labels
     - name: git-url
     - name: git-paths
       default: '""'
-    - name: envs
     - name: namespaces
       default: default
     - name: manifest-gen
@@ -110,23 +110,23 @@ done)
             i=\$(expr \$i + 1)
           done
         }
-        size=\$(toArrayLength "\$(params.envs)")
-        toArray envs "\$(params.envs)"
+        size=\$(toArrayLength "\$(params.git-labels)")
+        toArray gitLabels "\$(params.git-labels)"
         toArray namespaces "\$(params.namespaces)"
         toArray paths "\$(params.git-paths)"
 
 
         i=0
         while test \$i -lt \$size; do
-          eval env=\\$\$envs\$i
+          eval gitLabel=\\$\$gitLabels\$i
           eval ns=\\$\$namespaces\$i
           eval path=\\$\paths\$i
 
-          ./install.sh \$(params.git-url) \$path \$env \$ns \
+          ./install.sh \$gitLabel \$(params.git-url) \$path \$ns \
                        \$(params.manifest-gen) \$(params.cluster-role) \$(params.http-registry) > .logs
 
           cat .logs
-          echo \$env \$(tail -n 1 .logs) >> \$(results.ssh-key.path)
+          echo \$gitLabel \$(tail -n 1 .logs) >> \$(results.ssh-key.path)
 
           i=\$(expr \$i + 1)
         done

@@ -1661,7 +1661,7 @@ fontsize=15
 -
 /查询promotion-pipeline-&lt;owner&gt;-&lt;project&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;内/
 /Deployments, DaemonSets, StatefulSets, CronJobs/
-group=61</panel_attributes>
+group=6</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3098,8 +3098,7 @@ lw=.6
 valign=center
 halign=center
 fontsize=15
-_/clusterTask/_
-group=62</panel_attributes>
+_/clusterTask/_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3116,8 +3115,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=17
-/1. 不存在指定namespace, 自动创建/
-group=62</panel_attributes>
+/1. 不存在指定namespace, 自动创建/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3135,8 +3133,7 @@ halign=left
 fontsize=16
 
 -
-/需赋予namespaces get权限/
-group=62</panel_attributes>
+/需赋予namespaces get权限/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3153,31 +3150,7 @@ lw=.8
 valign=center
 halign=center
 fontsize=18
-/flux/
-group=62</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>760</x>
-      <y>1970</y>
-      <w>130</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lw=.1
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/参数/
--
-/gitUrl,  gitPaths/
-*/env/*
-/ns, manifestGen/
-*/clusterRole/*
-/httpRegistry/
-group=62</panel_attributes>
+/flux/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3195,8 +3168,7 @@ valign=center
 halign=left
 fontsize=17
 /4. git-user: robot/
-/    git-email: robot@users.noreply.github.com/
-group=62</panel_attributes>
+/    git-email: robot@users.noreply.github.com/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3213,8 +3185,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=17
-/3. 每次执行此Tsak时, 由ssh-keyscan获取git-server 公钥/
-group=62</panel_attributes>
+/3. 每次执行此Tsak时, 由ssh-keyscan获取git-server 公钥/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3232,8 +3203,7 @@ halign=left
 fontsize=16
 
 -
-/∴ gitUrl需为SSH/
-group=62</panel_attributes>
+/∴ gitUrl需为SSH/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3250,8 +3220,7 @@ style=autoresize
 valign=center
 halign=left
 fontsize=17
-/2. 在指定namespace内, 部署flux/
-group=62</panel_attributes>
+/2. 在指定namespace内, 部署flux/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3271,8 +3240,7 @@ fontsize=16
 -
 /flux:  Secret,Deployment,Service,ServiceAccount/
 -..
-/需赋予相应资源get,create权限/
-group=62</panel_attributes>
+/需赋予相应资源get,create权限/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3290,8 +3258,7 @@ halign=left
 fontsize=16
 
 -
-/每次执行此Task时, 自动生成用户公私钥对/
-group=62</panel_attributes>
+/每次执行此Task时, 自动生成用户公私钥对/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3303,8 +3270,7 @@ group=62</panel_attributes>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=.
-lw=.1
-group=62</panel_attributes>
+lw=.1</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
@@ -3316,8 +3282,7 @@ group=62</panel_attributes>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=..
-lw=.1
-group=62</panel_attributes>
+lw=.1</panel_attributes>
     <additional_attributes>10.0;50.0;80.0;10.0;90.0;20.0</additional_attributes>
   </element>
   <element>
@@ -3334,25 +3299,7 @@ valign=center
 halign=left
 fontsize=16
 /已移除由fluxctl install生成的默认role/
-/而绑定此指定role/
-group=62</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>900</x>
-      <y>2020</y>
-      <w>90</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lw=.1
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/flux git-tag/
-group=62</panel_attributes>
+/而绑定此指定role/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -3365,19 +3312,6 @@ group=62</panel_attributes>
     </coordinates>
     <panel_attributes>lw=.6</panel_attributes>
     <additional_attributes>10.0;10.0;1100.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>790</x>
-      <y>2020</y>
-      <w>130</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.1
-group=62</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0;110.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
@@ -5220,5 +5154,28 @@ lw=.3
 // 等待
 group=5</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>760</x>
+      <y>1950</y>
+      <w>120</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lw=.1
+style=autoresize
+valign=center
+halign=left
+fontsize=16
+/参数/
+-
+*/gitLabel/*
+/gitUrl,  gitPaths/
+/ns/
+/manifestGen/
+*/clusterRole/*
+/httpRegistry/</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

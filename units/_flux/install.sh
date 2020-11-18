@@ -1,8 +1,8 @@
 set -ex
 
-gitUrl=$1
-gitPaths=${2:-""}
-env=$3
+gitLabel=$1
+gitUrl=$2
+gitPaths=${3:-""}
 ns=${4:-default}
 manifestGen=${5:-true}
 clusterRole=${6:-flux}
@@ -35,7 +35,7 @@ type ssh-keyscan 2>/dev/null \
 # 生成 flux + fluxcloud 资源文件
 kubectl apply -k k --dry-run=client -o yaml \
 | sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1${httpRegistry}/\2| }" \
-         -e "s|ENV_PLACEHOLDER|${env}|" \
+         -e "s|GIT_LABEL_PLACEHOLDER|${gitLabel}|" \
          -e "s|NAMESPACE_PLACEHOLDER|${ns}|" \
          -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|${clusterRole}|" \
          -e "s|HTTP_REGISTRYS_PLACEHOLDER|${httpRegistry}|" \
@@ -43,7 +43,7 @@ kubectl apply -k k --dry-run=client -o yaml \
 
 
 # 打印 ssh-key
-kubectl wait -n ${ns} pod --all --for=condition=Ready --timeout=5m
+kubectl wait -n ${ns} deployments --all --for=condition=Available --timeout=5m
 key=$(./fluxctl identity --k8s-fwd-ns=${ns} --k8s-fwd-labels="name=flux")
 key=${key% *}
 echo $key

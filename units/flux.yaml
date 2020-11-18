@@ -7,10 +7,10 @@ spec:
     - name: apiserver-url
       default: https://kubernetes.default
 
+    - name: git-labels
     - name: git-url
     - name: git-paths
       default: '""'
-    - name: envs
     - name: namespaces
       default: default
     - name: manifest-gen
@@ -39,9 +39,9 @@ spec:
         cat > install.sh <<EOF
         set -ex
         
-        gitUrl=\$1
-        gitPaths=\${2:-""}
-        env=\$3
+        gitLabel=\$1
+        gitUrl=\$2
+        gitPaths=\${3:-""}
         ns=\${4:-default}
         manifestGen=\${5:-true}
         clusterRole=\${6:-flux}
@@ -74,7 +74,7 @@ spec:
         # 生成 flux + fluxcloud 资源文件
         kubectl apply -k k --dry-run=client -o yaml \\
         | sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1\${httpRegistry}/\2| }" \\
-                 -e "s|ENV_PLACEHOLDER|\${env}|" \\
+                 -e "s|GIT_LABEL_PLACEHOLDER|\${gitLabel}|" \\
                  -e "s|NAMESPACE_PLACEHOLDER|\${ns}|" \\
                  -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|\${clusterRole}|" \\
                  -e "s|HTTP_REGISTRYS_PLACEHOLDER|\${httpRegistry}|" \\
@@ -82,7 +82,7 @@ spec:
         
         
         # 打印 ssh-key
-        kubectl wait -n \${ns} pod --all --for=condition=Ready --timeout=5m
+        kubectl wait -n \${ns} deployments --all --for=condition=Available --timeout=5m
         key=\$(./fluxctl identity --k8s-fwd-ns=\${ns} --k8s-fwd-labels="name=flux")
         key=\${key% *}
         echo \$key
@@ -107,7 +107,7 @@ spec:
         
         - op: add
           path: /spec/template/spec/containers/0/args/-
-          value: --git-label=ENV_PLACEHOLDER-flux
+          value: --git-label=GIT_LABEL_PLACEHOLDER
         EOF
         cat > flux-role.yaml <<EOF
         apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -229,22 +229,22 @@ spec:
             i=$(expr $i + 1)
           done
         }
-        size=$(toArrayLength "$(params.envs)")
-        toArray envs "$(params.envs)"
+        size=$(toArrayLength "$(params.git-labels)")
+        toArray gitLabels "$(params.git-labels)"
         toArray namespaces "$(params.namespaces)"
         toArray paths "$(params.git-paths)"
 
 
         i=0
         while test $i -lt $size; do
-          eval env=\$$envs$i
+          eval gitLabel=\$$gitLabels$i
           eval ns=\$$namespaces$i
           eval path=\$\paths$i
 
-          ./install.sh $(params.git-url) $path $env $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
+          ./install.sh $gitLabel $(params.git-url) $path $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
 
           cat .logs
-          echo $env $(tail -n 1 .logs) >> $(results.ssh-key.path)
+          echo $gitLabel $(tail -n 1 .logs) >> $(results.ssh-key.path)
 
           i=$(expr $i + 1)
         done

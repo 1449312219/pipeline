@@ -13,4 +13,4 @@
 
 - op: add
   path: /spec/template/spec/containers/0/args/-
-  value: --git-label=ENV_PLACEHOLDER-flux
+  value: --git-label=GIT_LABEL_PLACEHOLDER
