@@ -110,33 +110,6 @@ spec:
           path: /spec/template/spec/containers/1/args/-
           value: --git-label=ENV_PLACEHOLDER-flux
         EOF
-        cat > fluxcloud-patch.yaml <<EOF
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: flux
-        spec:
-          template:
-            spec:
-              containers:
-              - name: fluxcloud
-                image: kongshuai78/fluxcloud:v0.3.9
-                ports:
-                - containerPort: 3032
-                env:
-                - name: GITHUB_URL
-                  value: GITHUB_URL_PLACEHOLDER
-                - name: COMMIT_TEMPLATE
-                  value: "{{ .VCSLink }}"
-                - name: EXPORTER_TYPE
-                  value: webhook
-                - name: WEBHOOK_URL
-                  value: WEBHOOK_URL_PLACEHOLDER
-                - name: ADDITIONAL
-                  value: ENV_PLACEHOLDER
-                - name: LISTEN_ADDRESS
-                  value: :3032
-        EOF
         cat > flux-role.yaml <<EOF
         apiVersion: rbac.authorization.k8s.io/v1beta1
         kind: RoleBinding
