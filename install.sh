@@ -17,7 +17,7 @@ kubectl="kubectl -n ${namespace}"
 
 # load
 $kubectl apply -f ./units
-$kubectl apply -f ./promotion -R
+$kubectl apply -f ./promotion
 $kubectl apply -f ./init
 
 

@@ -1,0 +1,412 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  name: promotion-config-convert
+spec:
+  params:
+  - name: url
+    default: https://kubernetes.default
+  - name: scan-path
+    description: 扫描指定目录内配置
+    default: ""
+  - name: repo-branch
+    description: git仓库分支
+  - name: expect-branch
+    description: 期望git仓库分支, 仅为期望分支时生成pipeline
+    default: master
+  workspaces:
+  - name: resources
+    description: 存储资源, 将扫描其内配置
+    readOnly: true
+  steps:
+  - name: build
+    image: lachlanevenson/k8s-kubectl
+    imagePullPolicy: IfNotPresent 
+    script: |
+      url=$(params.url)
+      ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+      namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+      kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
+      
+      
+      if test "$(params.repo-branch)" != "$(params.expect-branch)"; then
+        exit
+      fi
+      
+      mkdir ~/script -p && cd ~/script
+      cat <<EOFEOFEOFEOF > env-deploy-task-template.yaml
+      taskRef:
+        kind: ClusterTask
+        name: pipelinerun-apply
+      params:
+      - name: span-id
+        value: "__IbnZ2R__(params.job-id)"
+      - name: generate-name
+        value: env-deploy-__IbnZ2R__{INNER_PIPELINE_RUN_NAME}
+      - name: spec
+        value: |
+          pipelineRef:
+            name: env-deploy
+          serviceAccountName: pipeline
+          workspaces:
+          - name: pipeline 
+            persistentVolumeClaim:
+              claimName: __IbnZ2R__(params.pipelines-claim)
+            subPath: __IbnZ2R__(params.job-id)
+          - name: gitea-user-token
+            secret:
+              SecretName: gitea-user-token
+          params:
+          - name: job-id
+            value: "__IbnZ2R__(params.job-id)"
+          - name: pipelines-claim
+            value: "__IbnZ2R__(params.pipelines-claim)"
+          - name: env
+            value: "__IbnZ2R__{ENV}"
+          - name: promotion-name
+            value: "__IbnZ2R__(params.promotion-name)"
+          - name: env-version
+            value: "__IbnZ2R__(params.env-version)"
+          - name: repo-full-name
+            value: "__IbnZ2R__(params.repo-full-name)"
+          - name: repo-ref
+            value: "__IbnZ2R__(params.repo-ref)"
+          - name: manifest-repo-full-name
+            value: "__IbnZ2R__(params.manifest-repo-full-name)"
+          - name: manifest-repo-url
+            value: __IbnZ2R__(params.manifest-repo-url)
+          - name: git-server-http
+            value: __IbnZ2R__(params.git-server-http)
+          - name: issue-id
+            value: "__IbnZ2R__(params.issue-id)"
+      - name: return-task
+        value: env-lock-name
+      EOFEOFEOFEOF
+      sed -i '/__IbnZ2R__/s/__IbnZ2R__/$/g' env-deploy-task-template.yaml
+      cat <<EOFEOFEOFEOF > env-release-task-template.yaml
+      taskRef:
+        kind: ClusterTask
+        name: env-release
+      params:
+      - name: job-id
+        value: "__wDeoQU__(params.job-id)"
+      - name: env
+        value: __wDeoQU__{ENV}
+      - name: promotion-name
+        value: "__wDeoQU__(params.promotion-name)"
+      - name: env-version
+        value: "__wDeoQU__(params.env-version)"
+      EOFEOFEOFEOF
+      sed -i '/__wDeoQU__/s/__wDeoQU__/$/g' env-release-task-template.yaml
+      cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
+      taskRef:
+        kind: ClusterTask
+        name: pipelinerun-apply
+      params:
+      - name: span-id
+        value: "__KKnVSK__(params.job-id)"
+      - name: generate-name
+        value: manual-test-__KKnVSK__{INNER_PIPELINE_RUN_NAME}
+      - name: spec
+        value: |
+          pipelineRef:
+            name: manual-test
+          serviceAccountName: pipeline
+          workspaces:
+          - name: pipeline 
+            persistentVolumeClaim:
+              claimName: __KKnVSK__(params.pipelines-claim)
+            subPath: __KKnVSK__(params.job-id)
+          - name: gitea-user-token
+            secret:
+              SecretName: gitea-user-token
+          params:
+          - name: job-id
+            value: "__KKnVSK__(params.job-id)"
+          - name: pipelines-claim
+            value: "__KKnVSK__(params.pipelines-claim)"
+          - name: env
+            value: "__KKnVSK__{ENV}"
+          - name: promotion-name
+            value: "__KKnVSK__(params.promotion-name)"
+          - name: env-version
+            value: "__KKnVSK__(params.env-version)"
+          - name: repo-full-name
+            value: "__KKnVSK__(params.repo-full-name)"
+          - name: repo-ref
+            value: "__KKnVSK__(params.repo-ref)"
+          - name: manifest-repo-full-name
+            value: "__KKnVSK__(params.manifest-repo-full-name)"
+          - name: manifest-repo-url
+            value: __KKnVSK__(params.manifest-repo-url)
+          - name: git-server-http
+            value: __KKnVSK__(params.git-server-http)
+          - name: issue-id
+            value: "__KKnVSK__(params.issue-id)"
+      EOFEOFEOFEOF
+      sed -i '/__KKnVSK__/s/__KKnVSK__/$/g' manual-test-task-template.yaml
+      cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
+      apiVersion: tekton.dev/v1beta1
+      kind: Pipeline
+      metadata:
+        name: __dirzrw__{PROMOTION_NAME}
+        labels:
+          promotion-pipelines/custom-config: "true"
+        annotations:
+          promotion-pipelines/branch-pattern: __dirzrw__{BRANCH_PATTERN}
+      spec:
+        params:
+        - name: job-id
+          description: 任务ID,串联起所有子流水线
+        - name: pipelines-claim
+          description: pipelines-pvc claim, 用于传递给启动的pipelinerun
+      
+        - name: promotion-name
+          description: promotion name
+        - name: env-version
+          description: env version, 用于关联具体env
+          
+        - name: repo-full-name
+          description: git仓库名称, 用于执行gitea请求 (创建工单,评论)
+        - name: repo-branch
+          description: git仓库分支
+        - name: repo-ref
+          description: git仓库SHA
+        - name: repo-url
+          description: git仓库URL
+          
+        - name: manifest-repo-full-name
+          description: 资源仓库名称
+        - name: manifest-repo-url
+          description: 资源仓库URL
+      
+        - name: git-server-http
+          description: git server host (如:http://localhost:30280)
+        - name: issue-id
+          description: 工单ID, 用以与用户交互
+      
+        workspaces:
+        - name: pipeline
+          description: 流水线数据目录
+      EOFEOFEOFEOF
+      sed -i '/__dirzrw__/s/__dirzrw__/$/g' promotion-pipeline-header-template.yaml
+      cat <<EOFEOFEOFEOF > convert.sh
+      PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
+      ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
+      ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
+      MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
+      
+      configDir=__8CTk0k__1  #存储项目中资源配置
+      shift
+      
+      pipelineDir=__8CTk0k__1  #pipeline输出目录
+      shift
+      output="" #存储生成的pipeline文件
+      
+      tmpDir="./"  #存储临时文件
+      
+      #-----------------------------------------------------
+      
+      function validateConfig() {
+        local configFile=__8CTk0k__1
+        if egrep "^ +taskSpec:" __8CTk0k__{configFile}; then
+          echo '[taskSpec] cannot exist !' >&2
+          return 1
+        fi
+      }
+      
+      #-----------------------------------------------------
+      
+      function pipelineHeader() {
+        local configFile=__8CTk0k__1
+        
+        local pipelineName=__8CTk0k__(basename __8CTk0k__configFile) \\
+           && pipelineName=__8CTk0k__{configFile#*pipeline.promotion-} \\
+           && pipelineName=__8CTk0k__{pipelineName%.yaml*}
+        
+        local branchPattern=__8CTk0k__(sed -nr '/^branchPattern: .+__8CTk0k__/ {s/^branchPattern: (.+)__8CTk0k__/\\1/p;q}' __8CTk0k__{configFile})
+        if test -z "__8CTk0k__{branchPattern}"; then
+          echo '[branchPattern] not specified !' >&2
+          return 1
+        fi
+        
+        sed -e "s/\\__8CTk0k__{PROMOTION_NAME}/__8CTk0k__{pipelineName}/" \\
+            -e "s/\\__8CTk0k__{BRANCH_PATTERN}/__8CTk0k__{branchPattern}/" \\
+            __8CTk0k__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __8CTk0k__{output}
+      }
+      
+      #-----------------------------------------------------
+      
+      function pipelineTasks() {
+        echo "  tasks:" >> __8CTk0k__{output}
+        
+        local configFile=__8CTk0k__1
+        
+        local TEMP_PREFIX="__8CTk0k__{tmpDir}/.tmp.pipeline-task-"
+        
+        splitTasks __8CTk0k__{configFile} __8CTk0k__{TEMP_PREFIX} tasks
+        
+        local file=""
+        for file in __8CTk0k__{TEMP_PREFIX}*; do
+          local task=__8CTk0k__(getTaskType __8CTk0k__file)
+          case __8CTk0k__task in
+            env-deploy ) envDeployTask __8CTk0k__file;;
+            manual-test ) manualTestTask __8CTk0k__file;;
+            env-release ) envReleaseTask __8CTk0k__file;;
+            * ) commonTask __8CTk0k__file;;
+          esac
+        done
+        
+        rm __8CTk0k__{TEMP_PREFIX}* -f
+      }
+      
+      function pipelineFinally() {
+        local configFile=__8CTk0k__1
+        
+        if grep "^finally:" 2>&1 >/dev/null __8CTk0k__{configFile}; then
+          echo "  finally:" >> __8CTk0k__{output}
+        else
+          return 0
+        fi
+        
+        local TEMP_PREFIX="__8CTk0k__{tmpDir}/.tmp.pipeline-finally-task-"
+        
+        splitTasks __8CTk0k__{configFile} __8CTk0k__{TEMP_PREFIX} finally
+        
+        local file=""
+        for file in __8CTk0k__{TEMP_PREFIX}*; do
+          local task=__8CTk0k__(getTaskType __8CTk0k__file)
+          case __8CTk0k__task in
+            env-deploy ) return 1;;
+            manual-test ) return 1;;
+            env-release ) envReleaseTask __8CTk0k__file;;
+            * ) commonTask __8CTk0k__file;;
+          esac
+        done
+        
+        rm __8CTk0k__{TEMP_PREFIX}* -f
+      }
+      
+      #-----------------------------------------------------
+      
+      #拆分tasks到独立文件
+      function splitTasks() {
+        local configFile=__8CTk0k__1
+        local tempPreifx=__8CTk0k__2
+        local section=__8CTk0k__3
+        
+        local i=0
+        local file=
+        while IFS=~ read line; do
+          if echo "__8CTk0k__line"|grep ^- 2>&1 >/dev/null; then
+            i=__8CTk0k__(( __8CTk0k__i + 1 ))
+            file=__8CTk0k__{tempPreifx}__8CTk0k__i
+            touch __8CTk0k__file
+          fi
+          echo "__8CTk0k__line" >> __8CTk0k__{file}
+        done <<EOF
+      __8CTk0k__(sed -nr "/^__8CTk0k__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __8CTk0k__{configFile})
+      EOF
+      }
+      
+      function getTaskType() {
+        local taskFile=__8CTk0k__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __8CTk0k__{taskFile}
+      }
+      function getContent() {
+        local file=__8CTk0k__1
+        local key=__8CTk0k__2
+        
+        local hasKey=__8CTk0k__3
+        local args=
+        if test "__8CTk0k__hasKey" == "true"; then
+          args="/^  __8CTk0k__key:/{p;d} /^- __8CTk0k__key:/{s/^-(.*)/ \\1/p;d}"
+        fi
+        sed -nr "/^[- ] __8CTk0k__key:/,/^  [a-zA-Z0-9]/{__8CTk0k__args /^  [- ]/p}" __8CTk0k__file
+      }
+      function getValue() {
+        local file=__8CTk0k__1
+        local name=__8CTk0k__2
+        local prefix="__8CTk0k__3"
+        sed -nr "/^__8CTk0k__{prefix}- name: __8CTk0k__{name}/,/^__8CTk0k__{prefix}[^ ]/ {
+          /^__8CTk0k__{prefix}  value: [^|]/ {
+            s/^ +value: (.*)/\\1/p;
+            q;
+          }
+          /^__8CTk0k__{prefix}  value: |/ {
+            s/^ +value: (.*)/\\1/p;
+          }
+          /^__8CTk0k__{prefix}    / {
+            s/^__8CTk0k__{prefix}  (.*)/\\1/p;
+          }
+        }" __8CTk0k__{file}
+      }
+      function addValue() {
+        local taskFile=__8CTk0k__1
+        local prefix=__8CTk0k__2
+        local name=__8CTk0k__3
+        local value=__8CTk0k__4
+        sed -i "/^__8CTk0k__{prefix}params:/a\\\\__8CTk0k__{prefix}- name: __8CTk0k__{name}\\n__8CTk0k__{prefix}  value: __8CTk0k__{value}" __8CTk0k__{taskFile}
+      }
+      
+      function commonTask() {
+        local taskFile=__8CTk0k__1
+        if getContent __8CTk0k__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+          echo '[kind] cannot be specified in [taskRef] !' >&2
+          return 1
+        fi
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __8CTk0k__{taskFile} \\
+        | awk '{print "  "__8CTk0k__0}' >> __8CTk0k__{output}
+      }
+      
+      function envReleaseTask() {
+        deployedTestTask __8CTk0k__1 __8CTk0k__{ENV_RELEASE_TASK_TEMPLATE}
+      }
+      
+      function envDeployTask() {
+        deployedTestTask __8CTk0k__1 __8CTk0k__{ENV_DEPLOY_TASK_TEMPLATE}
+      }
+      
+      function manualTestTask() {
+        deployedTestTask __8CTk0k__1 __8CTk0k__{MANUAL_TEST_TASK_TEMPLATE}
+      }
+      
+      function deployedTestTask() {
+        local taskFile=__8CTk0k__1
+        local templateFile=__8CTk0k__2
+        
+        local name=__8CTk0k__(getContent __8CTk0k__{taskFile} name true)
+        local innerPipelineRunName=__8CTk0k__{name#*: }
+        
+        echo "__8CTk0k__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __8CTk0k__{output}
+        getContent __8CTk0k__{taskFile} runAfter true | awk '{print "  "__8CTk0k__0}' >> __8CTk0k__{output}
+        
+        local env=__8CTk0k__(getValue __8CTk0k__{taskFile} env "  ")
+        sed -e "s/\\__8CTk0k__{INNER_PIPELINE_RUN_NAME}/__8CTk0k__{innerPipelineRunName}/" \\
+            -e "s/\\__8CTk0k__{ENV}/__8CTk0k__{env}/" \\
+            __8CTk0k__{templateFile} \\
+        | awk '{print "    "__8CTk0k__0}' >> __8CTk0k__{output}
+      }
+      
+      #-----------------------------------------------------
+      set -ex
+      
+      mkdir __8CTk0k__{pipelineDir} -p
+      
+      for file in __8CTk0k__(find __8CTk0k__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__8CTk0k__{pipelineDir}/__8CTk0k__(basename __8CTk0k__file)
+        
+        validateConfig __8CTk0k__file
+      
+        pipelineHeader __8CTk0k__file
+      
+        pipelineTasks __8CTk0k__file
+        
+        pipelineFinally __8CTk0k__file
+      done
+      EOFEOFEOFEOF
+      sed -i '/__8CTk0k__/s/__8CTk0k__/$/g' convert.sh
+      sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output
+      $kubectl apply -f ~/output
