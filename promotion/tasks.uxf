@@ -1339,7 +1339,7 @@ group=6</panel_attributes>
     <coordinates>
       <x>390</x>
       <y>5960</y>
-      <w>140</w>
+      <w>110</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -1348,7 +1348,7 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/flux-deploy-await/
+/deploy-await/
 group=6</panel_attributes>
     <additional_attributes/>
   </element>
@@ -1629,7 +1629,7 @@ group=6</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>500</x>
       <y>5950</y>
       <w>110</w>
       <h>40</h>
@@ -1647,9 +1647,9 @@ group=6</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>540</x>
+      <x>510</x>
       <y>5950</y>
-      <w>560</w>
+      <w>360</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -1659,7 +1659,7 @@ halign=left
 fontsize=15
 
 -
-/查询promotion-pipeline-&lt;owner&gt;-&lt;project&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;内/
+/查询&lt;promotion-pipeline-env&gt;内/
 /Deployments, DaemonSets, StatefulSets, CronJobs/
 group=6</panel_attributes>
     <additional_attributes/>
@@ -2804,7 +2804,7 @@ group=5</panel_attributes>
     <coordinates>
       <x>390</x>
       <y>4850</y>
-      <w>140</w>
+      <w>100</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -2813,7 +2813,7 @@ lw=.6
 valign=center
 halign=center
 fontsize=16
-/flux-deploy-await/
+/deploy-await/
 group=5</panel_attributes>
     <additional_attributes/>
   </element>
@@ -2930,7 +2930,7 @@ group=5</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>490</x>
       <y>4840</y>
       <w>110</w>
       <h>40</h>
@@ -4918,9 +4918,9 @@ lw=.1
   <element>
     <id>Text</id>
     <coordinates>
-      <x>540</x>
+      <x>500</x>
       <y>4840</y>
-      <w>560</w>
+      <w>360</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lw=.16
@@ -4930,7 +4930,7 @@ halign=left
 fontsize=15
 
 -
-/查询promotion-pipeline-&lt;owner&gt;-&lt;project&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;内/
+/查询&lt;promotion-pipeline-env&gt;内/
 /Deployments, DaemonSets, StatefulSets, CronJobs/
 group=5</panel_attributes>
     <additional_attributes/>
@@ -5208,6 +5208,44 @@ fontsize=12
 fg=red
 /默认: &lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;-flux/
 group=11</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>730</x>
+      <y>4860</y>
+      <w>310</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=left
+fontsize=12
+fg=red
+/默认: &lt;current-ns&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;/
+group=5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>740</x>
+      <y>5980</y>
+      <w>310</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=top
+halign=left
+fontsize=12
+fg=red
+/默认: &lt;current-ns&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;/
+group=6</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
