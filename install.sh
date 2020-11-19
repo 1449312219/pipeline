@@ -49,7 +49,7 @@ spec:
     value: ${repoName}
   - name: webhooks
     value: |
-      http://branch-push.${namespace}:8080 * push
+      http://branch-push.${namespace}:8080 '*' push
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:
