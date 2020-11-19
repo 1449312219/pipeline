@@ -17,8 +17,9 @@ kubectl="kubectl -n ${namespace}"
 
 # load
 $kubectl apply -f ./units
-$kubectl apply -f ./promotion
 $kubectl apply -f ./init
+$kubectl apply -f ./promotion
+$kubectl apply -f ./promotion/branch-push
 
 
 # config (security)
