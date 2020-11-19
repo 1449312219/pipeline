@@ -183,6 +183,8 @@ spec:
       kind: ClusterTask
       name: gitea
     params:
+    - name: git-server
+      value: $(params.git-server-http)
     - name: cmd
       value: createComment
     - name: args
