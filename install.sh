@@ -20,6 +20,7 @@ $kubectl apply -f ./units
 $kubectl apply -f ./init
 $kubectl apply -f ./promotion
 $kubectl apply -f ./promotion/branch-push
+$kubectl apply -f ./promotion/gitea-chat
 
 
 # config (security)
@@ -50,6 +51,7 @@ spec:
   - name: webhooks
     value: |
       http://branch-push.${namespace}:8080 '*' push
+      http://gitea-chat.${namespace}:8080 '*' issue_comment
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:

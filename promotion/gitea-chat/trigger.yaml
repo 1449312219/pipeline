@@ -1,0 +1,74 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: gitea-chat
+spec:
+  serviceAccountName: trigger
+  triggers:
+  - name: pipeline
+    interceptors:
+    - cel:
+        filter: 'has(body.action) && has(body.issue) && has(body.comment) && body.comment.body.matches("^\\[[^]]+\\] ")'
+        overlays:
+        - key: title
+          expression: "body.issue.title"
+        - key: content
+          expression: "body.issue.body"
+        - key: message
+          expression: "body.comment.body"
+        - key: command
+          expression: 'body.comment.body.substring(1,body.comment.body.indexOf("]"))'
+        - key: params
+          expression: 'body.comment.body.substring(body.comment.body.indexOf("]")+1)'
+    bindings:
+    - ref: gitea-chat-params-binding
+    template:
+      name: gitea-chat
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: gitea-chat-params-binding
+spec:
+  params:
+  - name: title
+    value: $(body.title)
+  - name: content
+    value: $(body.content)
+  - name: message
+    value: $(body.message)
+  - name: command
+    value: $(body.command)
+  - name: params
+    value: $(body.params)
+---
+
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: gitea-chat
+spec:
+  params:
+  - name: title
+  - name: content
+  - name: message
+  - name: command
+  - name: params
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: gc-$(uid)
+    spec:
+      pipelineRef:
+        name: chat-$(params.command)
+      params:
+      - name: title
+        value: $(params.title)
+      - name: content
+        value: $(params.content)
+      - name: message
+        value: $(params.message)
+      - name: params
+        value: $(params.params)

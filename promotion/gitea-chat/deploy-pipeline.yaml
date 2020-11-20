@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: chat-deploy
+spec:
+  params:
+  - name: title
+    description: issue标题
+  - name: content
+    description: issue内容
+    
+  - name: message
+    description: 评论内容
+  - name: params
+    description: 截取[...]后的message
+
+  tasks:      
+  - name: params
+    taskSpec:
+      params:
+      - name: content
+      - name: message
+      results:
+      - name: pipelines-claim
+        description: pipelines-pvc claim
+      - name: manifest-repo-url
+        description: 资源仓库URL
+      - name: manifest-repo-full-name
+        description: 资源仓库名称   
+      steps:
+      - image: 10.1.40.43:5000/busybox:1.31
+        script: |
+          echo '$(params.content)'
+          echo '$(params.message)'
+    params:
+    - name: content
+      value: $(params.content)
+    - name: message
+      value: $(params.message)
