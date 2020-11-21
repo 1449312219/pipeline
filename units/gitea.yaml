@@ -27,7 +27,7 @@ spec:
         createIssue:  repoFullName title body assignees
         getIssueId:  repoFullName title
         createComment:  repoFullName issueId body
-        createWebHook:  repoFullName notifyUrl branchFilter events (多个event以逗号分隔)
+        createWebHook:  repoFullName notifyUrl branchFilter events secret (多个event以逗号分隔)
 
     - name: idempotent
       default: "false"
@@ -220,13 +220,15 @@ spec:
           notifyUrl=$2
           branchFilter=$3
           events=$(echo $4 | sed -e 's/,/\",\"/g' -e 's/^/\"/' -e 's/$/\"/')
+          secret=$5
           url=$(url POST /repos/$repoFullName/hooks "{
                   \"type\": \"gitea\",
                   \"branch_filter\": \"$branchFilter\",
                   \"events\": [ $events ],
                   \"config\": {
                     \"url\": \"$notifyUrl\",
-                    \"content_type\": \"json\"
+                    \"content_type\": \"json\",
+                    \"secret\": \"$secret\"
                   },
                   \"active\": true }")
           sh -c "$url" | jq -r .id

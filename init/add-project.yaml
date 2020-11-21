@@ -61,15 +61,19 @@ spec:
     taskSpec:
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
+        volumeMounts:
+        - name: gitea-issue-secret
+          mountPath: /volumes/gitea-issue-secret
         script: |
           repoFullName='$(params.owner)/$(params.repo-name)'
           manifestRepoName='$(params.repo-name)$(params.repo-manifest-suffix)'
           
+          giteaIssueSecret="$(cat /volumes/gitea-issue-secret/key)"
           while read line; do
             if test -z "$line"; then
               continue
             fi
-            echo ${repoFullName} ${line} >> $(results.webhook-args.path)
+            echo ${repoFullName} ${line} ${giteaIssueSecret}>> $(results.webhook-args.path)
           done <<EOF
           $(params.webhooks)
           EOF
@@ -106,6 +110,10 @@ spec:
       - name: webhooks
       - name: repo-urls
       - name: robot
+      volumes:
+      - name: gitea-issue-secret
+        secret:
+          secretName: gitea-issue-secret
     params:
     - name: owner
       value: $(params.owner)
