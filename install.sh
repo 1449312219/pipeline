@@ -10,6 +10,8 @@ gitServerHttp=$5
 namespace=${6:-promotion-promotion-${owner}-${repoName}}
 repoStandardName=${owner}-${repoName}
 
+giteaIssueSecret=$(head -n 20 /dev/urandom | md5sum | cut -c 1-32)
+
 
 kubectl create ns ${namespace}
 kubectl="kubectl -n ${namespace}"
@@ -28,6 +30,7 @@ $kubectl create -f ./config -R --dry-run=client -o yaml \
 | sed -e "s/\${NAMESPACE}/${namespace}/g" \
       -e "s/\${PROJECT_STANDARD_NAME}/${repoStandardName}/g" \
       -e "s/\${GITEA_USER_TOKEN}/${repoOwnerToken}/g" \
+      -e "s/\${GITEA_ISSUE_SECRET}/${giteaIssueSecret}/g" \
 | $kubectl apply -f -
 
 

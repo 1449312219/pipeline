@@ -8,7 +8,10 @@ spec:
   - name: pipeline
     interceptors:
     - cel:
-        filter: 'has(body.action) && has(body.issue) && has(body.comment) && body.comment.body.matches("^\\[[^]]+\\] ")'
+        filter: |
+          bool(body.secret.compareSecret("key","gitea-issue-secret"))
+          && has(body.action) && has(body.issue) && has(body.comment)
+          && body.comment.body.matches("^\\[[^]]+\\] ")
         overlays:
         - key: title
           expression: "body.issue.title"
