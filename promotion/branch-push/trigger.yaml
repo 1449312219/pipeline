@@ -8,7 +8,10 @@ spec:
   - name: pipeline
     interceptors:
     - cel:
-        filter: "body.ref.indexOf('refs/heads/') == 0 && body.before != '0000000000000000000000000000000000000000'"
+        filter: |
+          bool(body.secret.compareSecret("key","gitea-issue-secret"))
+          && body.ref.indexOf('refs/heads/') == 0 
+          && body.before != '0000000000000000000000000000000000000000'
         overlays:
         - key: branch
           expression: "body.ref.replace('refs/heads/','')"
