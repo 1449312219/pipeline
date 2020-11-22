@@ -53,8 +53,8 @@ spec:
     value: ${repoName}
   - name: webhooks
     value: |
-      http://branch-push.${namespace}:8080 '*' push
-      http://gitea-chat.${namespace}:8080 '*' issue_comment
+      http://el-branch-push.${namespace}:8080 '*' push
+      http://el-gitea-chat.${namespace}:8080 '*' issue_comment
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:
