@@ -125,7 +125,7 @@ spec:
       value: createIssue
     - name: args
       value: |
-        $(params.repo-full-name) $(tasks.get-promotion-name.results.output)-$(params.env-version)-pipeline
+        $(params.repo-full-name) $(tasks.get-promotion-name.results.output)-$(params.env-version)-pipeline 'promotionName $(tasks.get-promotion-name.results.output)\\\nenvVersion $(params.env-version)'
     - name: idempotent
       value: "true"
     workspaces:
