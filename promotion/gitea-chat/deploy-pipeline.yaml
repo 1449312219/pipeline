@@ -8,32 +8,54 @@ spec:
     description: issue标题
   - name: content
     description: issue内容
-    
   - name: message
     description: 评论内容
+
   - name: params
     description: 截取[...]后的message
 
-  tasks:      
+  tasks:    
   - name: params
     taskSpec:
-      params:
-      - name: content
-      - name: message
-      results:
-      - name: pipelines-claim
-        description: pipelines-pvc claim
-      - name: manifest-repo-url
-        description: 资源仓库URL
-      - name: manifest-repo-full-name
-        description: 资源仓库名称   
       steps:
       - image: 10.1.40.43:5000/busybox:1.31
         script: |
-          echo '$(params.content)'
-          echo '$(params.message)'
+          while read name value; do
+            if test -n "${name}"; then
+              eval ${name}=\"${value}\"
+            fi
+          done <<EOF
+          $(echo -e "$(params.content)")
+          EOF
+          #echo -n ${promotionName} > $(results.promotion-name.path)
+          #echo -n ${envVersion} > $(results.env-version.path)
+          
+          params=$(echo -e '$(params.params)' | head -n 1)
+          
+          read env id <<EOF
+          ${params}
+          EOF
+          
+          echo -n ${promotionName}-${envVersion}-${env} > $(results.name.path)
+          echo -n ${id} > $(results.id.path)
+      params:
+      - name: content
+      - name: params
+      results:
+      - name: name
+      - name: id
     params:
     - name: content
       value: $(params.content)
-    - name: message
-      value: $(params.message)
+    - name: params
+      value: $(params.params)
+      
+  - name: agree-deploy
+    taskRef:
+      kind: ClusterTask
+      name: env-selector-set
+    params:
+    - name: selector-name
+      value: $(tasks.params.results.name)
+    - name: selector
+      value: $(tasks.params.results.id)
