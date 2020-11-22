@@ -8,6 +8,7 @@ rules:
   - "triggers.tekton.dev"
   resources:
   - configmaps
+  - secrets
   - eventlisteners
   - triggerbindings
   - triggertemplates
