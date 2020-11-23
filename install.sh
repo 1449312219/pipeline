@@ -20,7 +20,7 @@ kubectl="kubectl -n ${namespace}"
 # load
 $kubectl apply -f ./units
 $kubectl apply -f ./init
-$kubectl apply -f ./promotion
+$kubectl apply -f ./promotion/core
 $kubectl apply -f ./promotion/branch-push
 $kubectl apply -f ./promotion/gitea-chat
 
