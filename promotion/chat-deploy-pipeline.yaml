@@ -27,13 +27,9 @@ spec:
           done <<EOF
           $(echo -e "$(params.content)")
           EOF
-          #echo -n ${promotionName} > $(results.promotion-name.path)
-          #echo -n ${envVersion} > $(results.env-version.path)
-          
-          params=$(echo -e '$(params.params)' | head -n 1)
           
           read env id pass <<EOF
-          ${params}
+          $(params.params)
           EOF
           
           echo -n ${promotionName}.${envVersion}.${env}.menual-test > $(results.name.path)
