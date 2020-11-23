@@ -32,18 +32,27 @@ spec:
           
           params=$(echo -e '$(params.params)' | head -n 1)
           
-          read env id <<EOF
+          read env id pass <<EOF
           ${params}
           EOF
           
           echo -n ${promotionName}.${envVersion}.${env}.menual-test > $(results.name.path)
+          
           echo -n ${id} > $(results.id.path)
+          
+          if test "${pass}" == "yes"; then
+            pass="true"
+          else
+            pass="false"
+          fi
+          echo -n ${pass} > $(results.pass.path)
       params:
       - name: content
       - name: params
       results:
       - name: name
       - name: id
+      - name: pass
     params:
     - name: content
       value: $(params.content)
@@ -59,3 +68,5 @@ spec:
       value: $(tasks.params.results.name)
     - name: selector
       value: $(tasks.params.results.id)
+    - name: pass
+      value: $(tasks.params.results.pass)

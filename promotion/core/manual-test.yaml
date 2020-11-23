@@ -104,7 +104,7 @@ spec:
       value: createComment
     - name: args
       value: |
-        $(params.repo-full-name) $(params.issue-id) '是否部署到此环境. yes / no'
+        $(params.repo-full-name) $(params.issue-id) '是否部署$(params.repo-ref) commit, 到$(params.env)环境?\\\n [deploy] $(params.env) $(params.job-id)  yes/no'
     workspaces:
     - name: token
       workspace: gitea-user-token
