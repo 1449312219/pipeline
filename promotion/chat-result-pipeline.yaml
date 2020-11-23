@@ -53,7 +53,7 @@ spec:
     - name: params
       value: $(params.params)
       
-  - name: agree-deploy
+  - name: result
     taskRef:
       kind: ClusterTask
       name: padding-set
