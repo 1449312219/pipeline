@@ -1,13 +1,14 @@
 set -ex
 set -o pipefail
 
-owner=$1
-type=$2
-repoName=$3
-repoOwnerToken=$4
-gitServerHttp=$5
+gitServerHttp=$1
+owner=$2
+type=$3
+repoName=$4
+repoOwnerToken=$5
+robotName=${6:-${owner}-${repoName}-robot}
 
-namespace=${6:-promotion-promotion-${owner}-${repoName}}
+namespace=${7:-promotion-promotion-${owner}-${repoName}}
 repoStandardName=${owner}-${repoName}
 
 giteaIssueSecret=$(head -n 20 /dev/urandom | md5sum | cut -c 1-32)
@@ -51,6 +52,8 @@ spec:
     value: ${type}
   - name: repo-name
     value: ${repoName}
+  - name: robot
+    value: ${robotName}
   - name: webhooks
     value: |
       http://el-branch-push.${namespace}:8080 '*' push
