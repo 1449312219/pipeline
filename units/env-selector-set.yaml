@@ -11,6 +11,10 @@ spec:
     
     - name: selector
       description:  选中为指定名称
+      
+    - name: pass
+      description: 是否同意. false立即结束
+      default: "true"
 
   steps:
     - name: set
@@ -21,9 +25,16 @@ spec:
         ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
         namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-
+        
         kubectl="kubectl -s=$url --certificate-authority=$ca --token=$token -n $namespace"
-
+        
         
         name=env-selector.$(params.selector-name)
-        $kubectl annotate endpoints $name selector='$(params.selector)' --overwrite
+        
+        status="pass"
+        if test '$(params.pass)' != "true"; then
+          status="fail"
+        fi
+        decision="$(params.selector) ${status}"
+        
+        $kubectl annotate endpoints ${name} selector="${decision}" --overwrite

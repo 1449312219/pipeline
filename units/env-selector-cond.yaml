@@ -49,6 +49,7 @@ spec:
           name: '$name'
           annotations:
             control-plane.alpha.kubernetes.io/leader: "true"
+            # <candidate> pass|fail
             selector: ""'          
         
         # init
@@ -68,8 +69,10 @@ spec:
         while true; do
           selector=$(getSelector)
           
-          if test "$selector" == "$(params.candidate)"; then
+          if test "${selector}" == "$(params.candidate) pass"; then
             exit
+          elif test "${selector}" == "$(params.candidate) fail"; then
+            exit 1
           fi
           
           doAwait
