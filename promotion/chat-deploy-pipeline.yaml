@@ -36,7 +36,7 @@ spec:
           ${params}
           EOF
           
-          echo -n ${promotionName}-${envVersion}-${env} > $(results.name.path)
+          echo -n ${promotionName}.${envVersion}.${env}.menual-test > $(results.name.path)
           echo -n ${id} > $(results.id.path)
       params:
       - name: content
