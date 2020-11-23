@@ -10,6 +10,7 @@ spec:
     - cel:
         filter: |
           bool(body.secret.compareSecret("key","gitea-issue-secret"))
+          && body.issue.user.login == "${ROBOT_NAME}"
           && has(body.action) && has(body.issue) && has(body.comment)
           && body.comment.body.matches("^\\[[^]]+\\] ")
         overlays:

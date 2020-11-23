@@ -22,8 +22,7 @@ kubectl="kubectl -n ${namespace}"
 $kubectl apply -f ./units
 $kubectl apply -f ./init
 $kubectl apply -f ./promotion/core
-$kubectl apply -f ./promotion/branch-push
-$kubectl apply -f ./promotion/gitea-chat
+$kubectl apply -f ./promotion
 
 
 # config (security)
@@ -32,6 +31,12 @@ $kubectl create -f ./config -R --dry-run=client -o yaml \
       -e "s/\${PROJECT_STANDARD_NAME}/${repoStandardName}/g" \
       -e "s/\${GITEA_USER_TOKEN}/${repoOwnerToken}/g" \
       -e "s/\${GITEA_ISSUE_SECRET}/${giteaIssueSecret}/g" \
+| $kubectl apply -f -
+
+
+# triggers
+$kubectl create -f ./triggers --dry-run=client -o yaml \
+| sed -e "s/\${ROBOT_NAME}/${robotName}/g" \
 | $kubectl apply -f -
 
 
