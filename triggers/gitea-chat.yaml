@@ -11,8 +11,14 @@ spec:
         filter: |
           bool(body.secret.compareSecret("key","gitea-issue-secret"))
           && body.issue.user.login == "${ROBOT_NAME}"
-          && has(body.action) && has(body.issue) && has(body.comment)
-          && body.comment.body.matches("^\\[[^]]+\\] ")
+          && has(body.action) && has(body.issue) && has(body.comment.body)
+        overlays:
+        - key: commandLine
+          expression: |
+            body.comment.body.trim().split("\r\n")[0].trim()
+    - cel:
+        filter: |
+          body.commandLine.matches("^\\[[^]]+\\] ")
         overlays:
         - key: title
           expression: "body.issue.title"
@@ -21,9 +27,9 @@ spec:
         - key: message
           expression: "body.comment.body"
         - key: command
-          expression: 'body.comment.body.substring(1,body.comment.body.indexOf("]"))'
+          expression: 'body.commandLine.substring(1,body.commandLine.indexOf("]"))'
         - key: params
-          expression: 'body.comment.body.substring(body.comment.body.indexOf("]")+1)'
+          expression: 'body.commandLine.substring(body.commandLine.indexOf("]")+1)'
     bindings:
     - ref: gitea-chat-params-binding
     template:
