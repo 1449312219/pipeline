@@ -16,7 +16,7 @@ mkdir ${monitoredPath} -p
 cpResoruces env ${monitoredPath}
 
 for f in ${monitoredPath}/*.yaml; do
-  sed -e "s/\${NAMESPACE}/${deployedNamesapce}/g" ${f}
+  sed -i -e "s/\${NAMESPACE}/${deployedNamesapce}/g" ${f}
 done
 
 

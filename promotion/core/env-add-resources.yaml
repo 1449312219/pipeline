@@ -7,10 +7,19 @@ data:
     - ../../common
     #resources:
     #- deploy.yaml
-  env-.flux.yaml: "version: 1\r\npatchUpdated:\r\n  generators:\r\n  - command: kustomize
-    build .\r\n  patchFile: resources.path"
-  env-kustomization.yaml: "apiVersion: kustomize.config.k8s.io/v1beta1\r\nkind: Kustomization\r\nbases:\r\n-
-    ../common\r\n\r\nnamespace: ${NAMESPACE}"
+  env-.flux.yaml: |
+    version: 1
+    patchUpdated:
+      generators:
+      - command: kustomize build .
+      patchFile: resources.path
+  env-kustomization.yaml: |
+    apiVersion: kustomize.config.k8s.io/v1beta1
+    kind: Kustomization
+    bases:
+    - ../common
+
+    namespace: ${NAMESPACE}
   script.sh: |
     srcRootPath=$1
     monitoredPath=$1/$2
@@ -30,7 +39,7 @@ data:
     cpResoruces env ${monitoredPath}
 
     for f in ${monitoredPath}/*.yaml; do
-      sed -e "s/\${NAMESPACE}/${deployedNamesapce}/g" ${f}
+      sed -i -e "s/\${NAMESPACE}/${deployedNamesapce}/g" ${f}
     done
 
 
