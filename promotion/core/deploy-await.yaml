@@ -8,12 +8,18 @@ spec:
     description: promotion name
   - name: env-version
     description: env version, 用于关联具体env
-    
+
   - name: env
-  
+
   - name: expect-images
     description: 待部署的images, 以空格/换行分隔多个
-  
+  - name: tag-pattern
+    description: 待部署的image tag pattern, expect-images tag均需满足
+
+  - name: cmd-timeout
+    default: '1m0s'
+    description: fluxctl命令超时时间
+
   - name: await-count
     default: '0'
     description: 未能创建时,是否等待. 0,不等待,异常退出.
@@ -21,9 +27,11 @@ spec:
     default: '15'
     description: 等待时
 
+
   volumes:
   - name: share
     emptyDir: {}
+
 
   steps:
   - name: jq
@@ -43,7 +51,7 @@ spec:
     script: |
       set -ex
       set -o pipefail
-        
+      
       export PATH=$PATH:/volumes/share
       
       awaitCount=0
@@ -60,16 +68,49 @@ spec:
         # [a-z0-9]([-a-z0-9]*[a-z0-9])?
         echo $value | tr /[A-Z]. -[a-z]- | grep '[^-].*[^-]' -o | xargs echo -n
       }
+      
       deployedNamespace=$(parseToNameSpace $(context.taskRun.namespace)-$(params.promotion-name)-$(params.env-version)-$(params.env))
+      fluxctl="fluxctl --k8s-fwd-ns=${deployedNamespace} --k8s-fwd-labels=name=flux --timeout=$(params.cmd-timeout)"
+      
+      result=.result
+      
+      
+      
+      #------------ deploy ------------#
+      
+      $fluxctl sync
+      
+      workloads=$($fluxctl list-workloads -n=${deployedNamespace} --no-headers | awk '$0~/^[^ ]/{print $1}')
+      for workload in ${workloads}; do
+        tag='glob:$(params.tag-pattern)'
+        cmd="$fluxctl policy --tag-all='${tag}' -w ${workload} -v -m 'update tag-all to ${tag}'"
+        if eval ${cmd} 2>${result}; then
+          continue
+        elif grep "fast-forwards" ${result} >/dev/null; then
+          $fluxctl sync
+          eval ${cmd}
+        else
+          exit 1
+        fi  
+      done
+      
+      $fluxctl sync
+      $fluxctl release --update-all-images --all 2>${result} \
+      || grep "no changes made in repo" ${result}
+      
+      #--------------------------------#
+      
+      
+      
+      #------------ await ------------#
       
       expectImages='$(params.expect-images)'
-      fluxctl="fluxctl --k8s-fwd-ns=${deployedNamespace} --k8s-fwd-labels=name=flux"
       function checkAllDeployed() {
-        $fluxctl list-workloads -a -o json \
-        | jq -r .[].Containers[].Current.ID > .result.deployedImages
+        $fluxctl list-workloads -n=${deployedNamespace} -o json \
+        | jq -r .[].Containers[].Current.ID >${result}
         
         for image in ${expectImages}; do
-          if grep "^${image}$" .result.deployedImages; then
+          if grep "^${image}$" ${result}; then
             continue
           else
             return 1
@@ -83,3 +124,5 @@ spec:
         fi
         doAwait
       done
+      
+      #--------------------------------#

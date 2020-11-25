@@ -143,6 +143,8 @@ spec:
       value: $(params.env)
     - name: expect-images
       value: $(tasks.tag-deploy-images.results.image-names)
+    - name: tag-pattern
+      value: $(params.repo-ref)
     - name: await-count
       value: $(params.await-count)
     - name: await-interval
