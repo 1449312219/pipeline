@@ -39,6 +39,13 @@ spec:
       初始时为 存储仓库拥有者token
       待robot创建完成后, 将token替换为robot token
 
+  - name: pipelines
+    description: |
+      存储资源仓库
+      结构: add-project/temporary/manifest-repo
+  - name: add
+    description: 存储待修改内容
+
   tasks:
   - name: create-repo
     taskRef:
@@ -161,7 +168,7 @@ spec:
     workspaces:
     - name: token
       workspace: gitea-user-token
-    
+
   - name: create-robot-token
     runAfter:
     - create-robot
@@ -192,7 +199,7 @@ spec:
       value: $(tasks.create-robot-token.results.output)
     - name: git-server-ssh
       value: $(tasks.params.results.manifest-repo-ssh-url)
-      
+
   - name: add-robot-public-key
     runAfter:
     - init-robot-secret
@@ -209,7 +216,39 @@ spec:
     workspaces:
     - name: token
       workspace: gitea-user-token
-      
+
+  - name: fetch-manifest-repo
+    runAfter:
+    - add-robot-public-key
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: pipelines
+    params:
+    - name: url
+      value: $(tasks.params.results.manifest-repo-ssh-url)
+    - name: subdirectory
+      value: add-project/temporary/manifest-repo
+    - name: deleteExisting
+      value: "true"
+  - name: init-config
+    runAfter:
+    - fetch-manifest-repo
+    taskRef:
+      kind: ClusterTask
+      name: git-add
+    workspaces:
+    - name: workspace
+      workspace: pipelines
+      subPath: add-project/temporary/manifest-repo
+    - name: add
+      workspace: add
+    params:
+    - name: message
+      value: init env configs
+
   - name: add-collaborator
     runAfter:
     - create-robot

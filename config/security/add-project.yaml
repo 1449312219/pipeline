@@ -8,7 +8,6 @@ rules:
   resources:
   - secrets
   verbs:
-  - create
   - list
   - get
   - patch

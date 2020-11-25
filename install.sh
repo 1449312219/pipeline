@@ -66,6 +66,12 @@ spec:
   - name: git-server-http
     value: ${gitServerHttp}
   workspaces:
+  - name: pipelines
+    persistentVolumeClaim:
+      claimName: pipeline-all-workspaces-pvc
+  - name: add
+    configmap:
+      name: project-init-resources
   - name: gitea-user-token
     secret:
       SecretName: gitea-user-token
