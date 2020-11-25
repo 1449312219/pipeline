@@ -5463,8 +5463,8 @@ _/pv/_</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>170</x>
-      <y>2140</y>
-      <w>120</w>
+      <y>2150</y>
+      <w>180</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -5473,14 +5473,14 @@ style=autoresize
 valign=center
 halign=center
 fontsize=18
-/env-manifest/</panel_attributes>
+/project-init-resoruces/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>180</x>
-      <y>2170</y>
+      <x>210</x>
+      <y>2180</y>
       <w>90</w>
       <h>40</h>
     </coordinates>
@@ -5650,5 +5650,39 @@ fontsize=15
     <panel_attributes>lt=.
 lw=.1</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>2150</y>
+      <w>180</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=18
+/env-add-resoruces/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>440</x>
+      <y>2180</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+_/configmap/_</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

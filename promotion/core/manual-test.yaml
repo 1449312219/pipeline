@@ -71,7 +71,7 @@ spec:
           subPath: $(params.job-id)/temporary/manifest-repo
         - name: add
           configmap:
-            name: env-manifest
+            name: env-add-resources
         - name: token
           secret:
             SecretName: gitea-user-token
