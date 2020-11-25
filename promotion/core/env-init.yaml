@@ -149,7 +149,7 @@ spec:
       workspace: add
     params:
     - name: script-params
-      value: $(tasks.params.results.monitored-git-path)
+      value: $(tasks.params.results.monitored-git-path) $(tasks.params.results.env-namespace)
     - name: message
       value: create env configs
 
