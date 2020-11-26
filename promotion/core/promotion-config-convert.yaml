@@ -42,9 +42,9 @@ spec:
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__ihmBdK__(params.job-id)"
+        value: "__xMjF8c__(params.job-id)"
       - name: generate-name
-        value: env-deploy-__ihmBdK__{INNER_PIPELINE_RUN_NAME}
+        value: env-deploy-__xMjF8c__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -53,62 +53,66 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __ihmBdK__(params.pipelines-claim)
-            subPath: __ihmBdK__(params.job-id)
+              claimName: __xMjF8c__(params.pipelines-claim)
+            subPath: __xMjF8c__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__ihmBdK__(params.job-id)"
+            value: "__xMjF8c__(params.job-id)"
           - name: pipelines-claim
-            value: "__ihmBdK__(params.pipelines-claim)"
+            value: "__xMjF8c__(params.pipelines-claim)"
           - name: env
-            value: "__ihmBdK__{ENV}"
+            value: "__xMjF8c__{ENV}"
           - name: promotion-name
-            value: "__ihmBdK__(params.promotion-name)"
+            value: "__xMjF8c__(params.promotion-name)"
           - name: env-version
-            value: "__ihmBdK__(params.env-version)"
+            value: "__xMjF8c__(params.env-version)"
           - name: repo-full-name
-            value: "__ihmBdK__(params.repo-full-name)"
+            value: "__xMjF8c__(params.repo-full-name)"
           - name: repo-ref
-            value: "__ihmBdK__(params.repo-ref)"
+            value: "__xMjF8c__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__ihmBdK__(params.manifest-repo-full-name)"
+            value: "__xMjF8c__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __ihmBdK__(params.manifest-repo-url)
+            value: __xMjF8c__(params.manifest-repo-url)
+          - name: deploy-image-names
+            value: "__xMjF8c__{DEPLOY_IMAGE_NAMES}"
+          - name: deploy-image-tag-pattern
+            value: "__xMjF8c__{DEPLOY_IMAGE_TAG_PATTERN}"
           - name: git-server-http
-            value: __ihmBdK__(params.git-server-http)
+            value: __xMjF8c__(params.git-server-http)
           - name: issue-id
-            value: "__ihmBdK__(params.issue-id)"
+            value: "__xMjF8c__(params.issue-id)"
       - name: return-task
         value: env-lock-name
       EOFEOFEOFEOF
-      sed -i '/__ihmBdK__/s/__ihmBdK__/$/g' env-deploy-task-template.yaml
+      sed -i '/__xMjF8c__/s/__xMjF8c__/$/g' env-deploy-task-template.yaml
       cat <<EOFEOFEOFEOF > env-release-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: env-release
       params:
       - name: job-id
-        value: "__RapeIO__(params.job-id)"
+        value: "__IL4uPM__(params.job-id)"
       - name: env
-        value: __RapeIO__{ENV}
+        value: __IL4uPM__{ENV}
       - name: promotion-name
-        value: "__RapeIO__(params.promotion-name)"
+        value: "__IL4uPM__(params.promotion-name)"
       - name: env-version
-        value: "__RapeIO__(params.env-version)"
+        value: "__IL4uPM__(params.env-version)"
       EOFEOFEOFEOF
-      sed -i '/__RapeIO__/s/__RapeIO__/$/g' env-release-task-template.yaml
+      sed -i '/__IL4uPM__/s/__IL4uPM__/$/g' env-release-task-template.yaml
       cat <<EOFEOFEOFEOF > image-build-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: image-build
       params:
       - name: dest-prefix
-        value: 10.1.40.43:5000/__BtRrE1__(params.repo-full-name)/
+        value: 10.1.40.43:5000/__DFkOda__(params.repo-full-name)/
       - name: dest-suffix
-        value: ":__BtRrE1__(params.repo-ref)"
+        value: ":__DFkOda__(params.repo-ref)"
       - name: insecure-registry
         value: 10.1.40.43:5000
       workspaces:
@@ -116,16 +120,16 @@ spec:
         workspace: pipeline
         subPath: temporary/project-repo
       EOFEOFEOFEOF
-      sed -i '/__BtRrE1__/s/__BtRrE1__/$/g' image-build-task-template.yaml
+      sed -i '/__DFkOda__/s/__DFkOda__/$/g' image-build-task-template.yaml
       cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__TOzyat__(params.job-id)"
+        value: "__A2EpoG__(params.job-id)"
       - name: generate-name
-        value: manual-test-__TOzyat__{INNER_PIPELINE_RUN_NAME}
+        value: manual-test-__A2EpoG__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -134,45 +138,45 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __TOzyat__(params.pipelines-claim)
-            subPath: __TOzyat__(params.job-id)
+              claimName: __A2EpoG__(params.pipelines-claim)
+            subPath: __A2EpoG__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__TOzyat__(params.job-id)"
+            value: "__A2EpoG__(params.job-id)"
           - name: pipelines-claim
-            value: "__TOzyat__(params.pipelines-claim)"
+            value: "__A2EpoG__(params.pipelines-claim)"
           - name: env
-            value: "__TOzyat__{ENV}"
+            value: "__A2EpoG__{ENV}"
           - name: promotion-name
-            value: "__TOzyat__(params.promotion-name)"
+            value: "__A2EpoG__(params.promotion-name)"
           - name: env-version
-            value: "__TOzyat__(params.env-version)"
+            value: "__A2EpoG__(params.env-version)"
           - name: repo-full-name
-            value: "__TOzyat__(params.repo-full-name)"
+            value: "__A2EpoG__(params.repo-full-name)"
           - name: repo-ref
-            value: "__TOzyat__(params.repo-ref)"
+            value: "__A2EpoG__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__TOzyat__(params.manifest-repo-full-name)"
+            value: "__A2EpoG__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __TOzyat__(params.manifest-repo-url)
+            value: __A2EpoG__(params.manifest-repo-url)
           - name: git-server-http
-            value: __TOzyat__(params.git-server-http)
+            value: __A2EpoG__(params.git-server-http)
           - name: issue-id
-            value: "__TOzyat__(params.issue-id)"
+            value: "__A2EpoG__(params.issue-id)"
       EOFEOFEOFEOF
-      sed -i '/__TOzyat__/s/__TOzyat__/$/g' manual-test-task-template.yaml
+      sed -i '/__A2EpoG__/s/__A2EpoG__/$/g' manual-test-task-template.yaml
       cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
       apiVersion: tekton.dev/v1beta1
       kind: Pipeline
       metadata:
-        name: __r1hP9D__{PROMOTION_NAME}
+        name: __OZdWkt__{PROMOTION_NAME}
         labels:
           promotion-pipelines/custom-config: "true"
         annotations:
-          promotion-pipelines/branch-pattern: __r1hP9D__{BRANCH_PATTERN}
+          promotion-pipelines/branch-pattern: __OZdWkt__{BRANCH_PATTERN}
       spec:
         params:
         - name: job-id
@@ -208,7 +212,7 @@ spec:
         - name: pipeline
           description: 流水线数据目录
       EOFEOFEOFEOF
-      sed -i '/__r1hP9D__/s/__r1hP9D__/$/g' promotion-pipeline-header-template.yaml
+      sed -i '/__OZdWkt__/s/__OZdWkt__/$/g' promotion-pipeline-header-template.yaml
       cat <<EOFEOFEOFEOF > convert.sh
       PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
       IMAGE_BUILD_TASK_TEMPLATE="image-build-task-template.yaml"
@@ -216,10 +220,10 @@ spec:
       ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
       MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
       
-      configDir=__hURgSn__1  #存储项目中资源配置
+      configDir=__DEDh8p__1  #存储项目中资源配置
       shift
       
-      pipelineDir=__hURgSn__1  #pipeline输出目录
+      pipelineDir=__DEDh8p__1  #pipeline输出目录
       shift
       output="" #存储生成的pipeline文件
       
@@ -228,8 +232,8 @@ spec:
       #-----------------------------------------------------
       
       function validateConfig() {
-        local configFile=__hURgSn__1
-        if egrep "^ +taskSpec:" __hURgSn__{configFile}; then
+        local configFile=__DEDh8p__1
+        if egrep "^ +taskSpec:" __DEDh8p__{configFile}; then
           echo '[taskSpec] cannot exist !' >&2
           return 1
         fi
@@ -238,196 +242,200 @@ spec:
       #-----------------------------------------------------
       
       function pipelineHeader() {
-        local configFile=__hURgSn__1
+        local configFile=__DEDh8p__1
         
-        local pipelineName=__hURgSn__(basename __hURgSn__configFile) \\
-           && pipelineName=__hURgSn__{configFile#*pipeline.promotion-} \\
-           && pipelineName=__hURgSn__{pipelineName%.yaml*}
+        local pipelineName=__DEDh8p__(basename __DEDh8p__configFile) \\
+           && pipelineName=__DEDh8p__{configFile#*pipeline.promotion-} \\
+           && pipelineName=__DEDh8p__{pipelineName%.yaml*}
         
-        local branchPattern=__hURgSn__(sed -nr '/^branchPattern: .+__hURgSn__/ {s/^branchPattern: (.+)__hURgSn__/\\1/p;q}' __hURgSn__{configFile})
-        if test -z "__hURgSn__{branchPattern}"; then
+        local branchPattern=__DEDh8p__(sed -nr '/^branchPattern: .+__DEDh8p__/ {s/^branchPattern: (.+)__DEDh8p__/\\1/p;q}' __DEDh8p__{configFile})
+        if test -z "__DEDh8p__{branchPattern}"; then
           echo '[branchPattern] not specified !' >&2
           return 1
         fi
         
-        sed -e "s/\\__hURgSn__{PROMOTION_NAME}/__hURgSn__{pipelineName}/" \\
-            -e "s/\\__hURgSn__{BRANCH_PATTERN}/__hURgSn__{branchPattern}/" \\
-            __hURgSn__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __hURgSn__{output}
+        sed -e "s/\\__DEDh8p__{PROMOTION_NAME}/__DEDh8p__{pipelineName}/" \\
+            -e "s/\\__DEDh8p__{BRANCH_PATTERN}/__DEDh8p__{branchPattern}/" \\
+            __DEDh8p__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __DEDh8p__{output}
       }
       
       #-----------------------------------------------------
       
       function pipelineTasks() {
-        echo "  tasks:" >> __hURgSn__{output}
+        echo "  tasks:" >> __DEDh8p__{output}
         
-        local configFile=__hURgSn__1
+        local configFile=__DEDh8p__1
         
-        local TEMP_PREFIX="__hURgSn__{tmpDir}/.tmp.pipeline-task-"
+        local TEMP_PREFIX="__DEDh8p__{tmpDir}/.tmp.pipeline-task-"
         
-        splitTasks __hURgSn__{configFile} __hURgSn__{TEMP_PREFIX} tasks
+        splitTasks __DEDh8p__{configFile} __DEDh8p__{TEMP_PREFIX} tasks
         
         local file=""
-        for file in __hURgSn__{TEMP_PREFIX}*; do
-          local task=__hURgSn__(getTaskType __hURgSn__file)
-          case __hURgSn__task in
-            image-build ) imageBuildTask __hURgSn__file;;
-            env-deploy ) envDeployTask __hURgSn__file;;
-            manual-test ) manualTestTask __hURgSn__file;;
-            env-release ) envReleaseTask __hURgSn__file;;
-            * ) commonTask __hURgSn__file;;
+        for file in __DEDh8p__{TEMP_PREFIX}*; do
+          local task=__DEDh8p__(getTaskType __DEDh8p__file)
+          case __DEDh8p__task in
+            image-build ) imageBuildTask __DEDh8p__file;;
+            env-deploy ) envDeployTask __DEDh8p__file;;
+            manual-test ) manualTestTask __DEDh8p__file;;
+            env-release ) envReleaseTask __DEDh8p__file;;
+            * ) commonTask __DEDh8p__file;;
           esac
         done
         
-        rm __hURgSn__{TEMP_PREFIX}* -f
+        rm __DEDh8p__{TEMP_PREFIX}* -f
       }
       
       function pipelineFinally() {
-        local configFile=__hURgSn__1
+        local configFile=__DEDh8p__1
         
-        if grep "^finally:" 2>&1 >/dev/null __hURgSn__{configFile}; then
-          echo "  finally:" >> __hURgSn__{output}
+        if grep "^finally:" 2>&1 >/dev/null __DEDh8p__{configFile}; then
+          echo "  finally:" >> __DEDh8p__{output}
         else
           return 0
         fi
         
-        local TEMP_PREFIX="__hURgSn__{tmpDir}/.tmp.pipeline-finally-task-"
+        local TEMP_PREFIX="__DEDh8p__{tmpDir}/.tmp.pipeline-finally-task-"
         
-        splitTasks __hURgSn__{configFile} __hURgSn__{TEMP_PREFIX} finally
+        splitTasks __DEDh8p__{configFile} __DEDh8p__{TEMP_PREFIX} finally
         
         local file=""
-        for file in __hURgSn__{TEMP_PREFIX}*; do
-          local task=__hURgSn__(getTaskType __hURgSn__file)
-          case __hURgSn__task in
+        for file in __DEDh8p__{TEMP_PREFIX}*; do
+          local task=__DEDh8p__(getTaskType __DEDh8p__file)
+          case __DEDh8p__task in
             image-build ) return 1;;
             env-deploy ) return 1;;
             manual-test ) return 1;;
-            env-release ) envReleaseTask __hURgSn__file;;
-            * ) commonTask __hURgSn__file;;
+            env-release ) envReleaseTask __DEDh8p__file;;
+            * ) commonTask __DEDh8p__file;;
           esac
         done
         
-        rm __hURgSn__{TEMP_PREFIX}* -f
+        rm __DEDh8p__{TEMP_PREFIX}* -f
       }
       
       #-----------------------------------------------------
       
       #拆分tasks到独立文件
       function splitTasks() {
-        local configFile=__hURgSn__1
-        local tempPreifx=__hURgSn__2
-        local section=__hURgSn__3
+        local configFile=__DEDh8p__1
+        local tempPreifx=__DEDh8p__2
+        local section=__DEDh8p__3
         
         local i=0
         local file=
         while IFS=~ read line; do
-          if echo "__hURgSn__line"|grep ^- 2>&1 >/dev/null; then
-            i=__hURgSn__(( __hURgSn__i + 1 ))
-            file=__hURgSn__{tempPreifx}__hURgSn__i
-            touch __hURgSn__file
+          if echo "__DEDh8p__line"|grep ^- 2>&1 >/dev/null; then
+            i=__DEDh8p__(( __DEDh8p__i + 1 ))
+            file=__DEDh8p__{tempPreifx}__DEDh8p__i
+            touch __DEDh8p__file
           fi
-          echo "__hURgSn__line" >> __hURgSn__{file}
+          echo "__DEDh8p__line" >> __DEDh8p__{file}
         done <<EOF
-      __hURgSn__(sed -nr "/^__hURgSn__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __hURgSn__{configFile})
+      __DEDh8p__(sed -nr "/^__DEDh8p__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __DEDh8p__{configFile})
       EOF
       }
       
       function getTaskType() {
-        local taskFile=__hURgSn__1
-        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __hURgSn__{taskFile}
+        local taskFile=__DEDh8p__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __DEDh8p__{taskFile}
       }
       function getContent() {
-        local file=__hURgSn__1
-        local key=__hURgSn__2
+        local file=__DEDh8p__1
+        local key=__DEDh8p__2
         
-        local hasKey=__hURgSn__3
+        local hasKey=__DEDh8p__3
         local args=
-        if test "__hURgSn__hasKey" == "true"; then
-          args="/^  __hURgSn__key:/{p;d} /^- __hURgSn__key:/{s/^-(.*)/ \\1/p;d}"
+        if test "__DEDh8p__hasKey" == "true"; then
+          args="/^  __DEDh8p__key:/{p;d} /^- __DEDh8p__key:/{s/^-(.*)/ \\1/p;d}"
         fi
-        sed -nr "/^[- ] __hURgSn__key:/,/^  [a-zA-Z0-9]/{__hURgSn__args /^  [- ]/p}" __hURgSn__file
+        sed -nr "/^[- ] __DEDh8p__key:/,/^  [a-zA-Z0-9]/{__DEDh8p__args /^  [- ]/p}" __DEDh8p__file
       }
       function getValue() {
-        local file=__hURgSn__1
-        local name=__hURgSn__2
-        local prefix="__hURgSn__3"
-        sed -nr "/^__hURgSn__{prefix}- name: __hURgSn__{name}/,/^__hURgSn__{prefix}[^ ]/ {
-          /^__hURgSn__{prefix}  value: [^|]/ {
+        local file=__DEDh8p__1
+        local name=__DEDh8p__2
+        local prefix="__DEDh8p__3"
+        sed -nr "/^__DEDh8p__{prefix}- name: __DEDh8p__{name}/,/^__DEDh8p__{prefix}[^ ]/ {
+          /^__DEDh8p__{prefix}  value: [^|]/ {
             s/^ +value: (.*)/\\1/p;
             q;
           }
-          /^__hURgSn__{prefix}  value: |/ {
+          /^__DEDh8p__{prefix}  value: |/ {
             s/^ +value: (.*)/\\1/p;
           }
-          /^__hURgSn__{prefix}    / {
-            s/^__hURgSn__{prefix}  (.*)/\\1/p;
+          /^__DEDh8p__{prefix}    / {
+            s/^__DEDh8p__{prefix}  (.*)/\\1/p;
           }
-        }" __hURgSn__{file}
+        }" __DEDh8p__{file}
       }
       function addValue() {
-        local taskFile=__hURgSn__1
-        local prefix=__hURgSn__2
-        local name=__hURgSn__3
-        local value=__hURgSn__4
-        sed -i "/^__hURgSn__{prefix}params:/a\\\\__hURgSn__{prefix}- name: __hURgSn__{name}\\n__hURgSn__{prefix}  value: __hURgSn__{value}" __hURgSn__{taskFile}
+        local taskFile=__DEDh8p__1
+        local prefix=__DEDh8p__2
+        local name=__DEDh8p__3
+        local value=__DEDh8p__4
+        sed -i "/^__DEDh8p__{prefix}params:/a\\\\__DEDh8p__{prefix}- name: __DEDh8p__{name}\\n__DEDh8p__{prefix}  value: __DEDh8p__{value}" __DEDh8p__{taskFile}
       }
       
       function commonTask() {
-        local taskFile=__hURgSn__1
-        if getContent __hURgSn__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+        local taskFile=__DEDh8p__1
+        if getContent __DEDh8p__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
           echo '[kind] cannot be specified in [taskRef] !' >&2
           return 1
         fi
-        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __hURgSn__{taskFile} \\
-        | awk '{print "  "__hURgSn__0}' >> __hURgSn__{output}
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __DEDh8p__{taskFile} \\
+        | awk '{print "  "__DEDh8p__0}' >> __DEDh8p__{output}
       }
       
       function imageBuildTask() {
-        deployedTaskByTemplate __hURgSn__1 __hURgSn__{IMAGE_BUILD_TASK_TEMPLATE}
+        deployedTaskByTemplate __DEDh8p__1 __DEDh8p__{IMAGE_BUILD_TASK_TEMPLATE}
       }
       function envReleaseTask() {
-        deployedTaskByTemplate __hURgSn__1 __hURgSn__{ENV_RELEASE_TASK_TEMPLATE}
+        deployedTaskByTemplate __DEDh8p__1 __DEDh8p__{ENV_RELEASE_TASK_TEMPLATE}
       }
       function envDeployTask() {
-        deployedTaskByTemplate __hURgSn__1 __hURgSn__{ENV_DEPLOY_TASK_TEMPLATE}
+        deployedTaskByTemplate __DEDh8p__1 __DEDh8p__{ENV_DEPLOY_TASK_TEMPLATE}
       }
       function manualTestTask() {
-        deployedTaskByTemplate __hURgSn__1 __hURgSn__{MANUAL_TEST_TASK_TEMPLATE}
+        deployedTaskByTemplate __DEDh8p__1 __DEDh8p__{MANUAL_TEST_TASK_TEMPLATE}
       }
       
       function deployedTaskByTemplate() {
-        local taskFile=__hURgSn__1
-        local templateFile=__hURgSn__2
+        local taskFile=__DEDh8p__1
+        local templateFile=__DEDh8p__2
         
-        local name=__hURgSn__(getContent __hURgSn__{taskFile} name true)
-        local innerPipelineRunName=__hURgSn__{name#*: }
+        local name=__DEDh8p__(getContent __DEDh8p__{taskFile} name true)
+        local innerPipelineRunName=__DEDh8p__{name#*: }
         
-        echo "__hURgSn__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __hURgSn__{output}
-        getContent __hURgSn__{taskFile} runAfter true | awk '{print "  "__hURgSn__0}' >> __hURgSn__{output}
+        echo "__DEDh8p__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __DEDh8p__{output}
+        getContent __DEDh8p__{taskFile} runAfter true | awk '{print "  "__DEDh8p__0}' >> __DEDh8p__{output}
         
-        local env=__hURgSn__(getValue __hURgSn__{taskFile} env "  ")
-        sed -e "s/\\__hURgSn__{INNER_PIPELINE_RUN_NAME}/__hURgSn__{innerPipelineRunName}/" \\
-            -e "s/\\__hURgSn__{ENV}/__hURgSn__{env}/" \\
-            __hURgSn__{templateFile} \\
-        | awk '{print "    "__hURgSn__0}' >> __hURgSn__{output}
+        local env=__DEDh8p__(getValue __DEDh8p__{taskFile} env "  ")
+        local deployImageNames=__DEDh8p__(getValue __DEDh8p__{taskFile} deploy-image-names "  ")
+        local deployImageTagPattern='__DEDh8p__(params.repo-ref)'
+        sed -e "s/\\__DEDh8p__{INNER_PIPELINE_RUN_NAME}/__DEDh8p__{innerPipelineRunName}/" \\
+            -e "s/\\__DEDh8p__{ENV}/__DEDh8p__{env}/" \\
+            -e "s/\\__DEDh8p__{DEPLOY_IMAGE_NAMES}/__DEDh8p__{deployImageNames}/" \\
+            -e "s/\\__DEDh8p__{DEPLOY_IMAGE_TAG_PATTERN}/__DEDh8p__{deployImageTagPattern}/" \\
+            __DEDh8p__{templateFile} \\
+        | awk '{print "    "__DEDh8p__0}' >> __DEDh8p__{output}
       }
       
       #-----------------------------------------------------
       set -ex
       
-      mkdir __hURgSn__{pipelineDir} -p
+      mkdir __DEDh8p__{pipelineDir} -p
       
-      for file in __hURgSn__(find __hURgSn__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
-        output=__hURgSn__{pipelineDir}/__hURgSn__(basename __hURgSn__file)
+      for file in __DEDh8p__(find __DEDh8p__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__DEDh8p__{pipelineDir}/__DEDh8p__(basename __DEDh8p__file)
         
-        validateConfig __hURgSn__file
+        validateConfig __DEDh8p__file
       
-        pipelineHeader __hURgSn__file
+        pipelineHeader __DEDh8p__file
       
-        pipelineTasks __hURgSn__file
+        pipelineTasks __DEDh8p__file
         
-        pipelineFinally __hURgSn__file
+        pipelineFinally __DEDh8p__file
       done
       EOFEOFEOFEOF
-      sed -i '/__hURgSn__/s/__hURgSn__/$/g' convert.sh
+      sed -i '/__DEDh8p__/s/__DEDh8p__/$/g' convert.sh
       sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output
       $kubectl apply -f ~/output

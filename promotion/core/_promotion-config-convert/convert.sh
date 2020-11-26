@@ -193,8 +193,12 @@ function deployedTaskByTemplate() {
   getContent ${taskFile} runAfter true | awk '{print "  "$0}' >> ${output}
   
   local env=$(getValue ${taskFile} env "  ")
+  local deployImageNames=$(getValue ${taskFile} deploy-image-names "  ")
+  local deployImageTagPattern='$(params.repo-ref)'
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
       -e "s/\${ENV}/${env}/" \
+      -e "s/\${DEPLOY_IMAGE_NAMES}/${deployImageNames}/" \
+      -e "s/\${DEPLOY_IMAGE_TAG_PATTERN}/${deployImageTagPattern}/" \
       ${templateFile} \
   | awk '{print "    "$0}' >> ${output}
 }
