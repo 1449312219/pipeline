@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: kaniko-batch
+  name: image-build
 spec:
   workspaces:
   - name: source
