@@ -78,9 +78,23 @@ spec:
       
       #------------ deploy ------------#
       
-      $fluxctl sync
+      function initWorkloads() {
+        $fluxctl sync
+        workloads=$($fluxctl list-workloads -n=${deployedNamespace} --no-headers | awk '$0~/^[^ ]/{print $1}')
+        workloadSize=$(wc -l <<EOF
+      ${workloads}
+      EOF
+      )
+      }
       
-      workloads=$($fluxctl list-workloads -n=${deployedNamespace} --no-headers | awk '$0~/^[^ ]/{print $1}')
+      initWorkloads
+      
+      # only flux workloads (flux+memcached)
+      while test ${workloadSize} -le 2; do
+        doAwait
+        initWorkloads
+      done
+      
       for workload in ${workloads}; do
         tag='glob:$(params.tag-pattern)'
         cmd="$fluxctl policy --tag-all='${tag}' -w ${workload} -v -m 'update tag-all to ${tag}'"
@@ -97,6 +111,7 @@ spec:
       $fluxctl sync
       $fluxctl release --update-all-images --all 2>${result} \
       || grep "no changes made in repo" ${result}
+      $fluxctl sync
       
       #--------------------------------#
       
@@ -106,8 +121,14 @@ spec:
       
       expectImages='$(params.expect-images)'
       function checkAllDeployed() {
-        $fluxctl list-workloads -n=${deployedNamespace} -o json \
-        | jq -r .[].Containers[].Current.ID >${result}
+        $fluxctl list-workloads -n=${deployedNamespace} -o json > ${result} 
+        
+        if jq -r .[].Status ${result} | grep -v ready; then
+          echo "has workload not ready!"
+          return 1
+        fi
+        
+        jq -r .[].Containers[].Current.ID >${result}
         
         for image in ${expectImages}; do
           if grep "^${image}$" ${result}; then
