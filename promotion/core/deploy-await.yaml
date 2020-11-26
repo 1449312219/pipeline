@@ -72,11 +72,11 @@ spec:
       deployedNamespace=$(parseToNameSpace $(context.taskRun.namespace)-$(params.promotion-name)-$(params.env-version)-$(params.env))
       fluxctl="fluxctl --k8s-fwd-ns=${deployedNamespace} --k8s-fwd-labels=name=flux --timeout=$(params.cmd-timeout)"
       
-      result=.result
-      
       
       
       #------------ deploy ------------#
+      
+      output=.deploy.output
       
       function initWorkloads() {
         $fluxctl sync
@@ -98,9 +98,9 @@ spec:
       for workload in ${workloads}; do
         tag='glob:$(params.tag-pattern)'
         cmd="$fluxctl policy --tag-all='${tag}' -w ${workload} -v -m 'update tag-all to ${tag}'"
-        if eval ${cmd} 2>${result}; then
+        if eval ${cmd} 2>${output}; then
           continue
-        elif grep "fast-forwards" ${result} >/dev/null; then
+        elif grep "fast-forwards" ${output} >/dev/null; then
           $fluxctl sync
           eval ${cmd}
         else
@@ -109,8 +109,8 @@ spec:
       done
       
       $fluxctl sync
-      $fluxctl release --update-all-images --all 2>${result} \
-      || grep "no changes made in repo" ${result}
+      $fluxctl release --update-all-images --all 2>${output} \
+      || grep "no changes made in repo" ${output}
       $fluxctl sync
       
       #--------------------------------#
@@ -119,19 +119,22 @@ spec:
       
       #------------ await ------------#
       
+      output=.await.output
+      output1=.await-1.output
+      
       expectImages='$(params.expect-images)'
       function checkAllDeployed() {
-        $fluxctl list-workloads -n=${deployedNamespace} -o json > ${result} 
+        $fluxctl list-workloads -n=${deployedNamespace} -o json > ${output1} 
         
-        if jq -r .[].Status ${result} | grep -v ready; then
+        if jq -r .[].Status ${output1} | grep -v ready; then
           echo "has workload not ready!"
           return 1
         fi
         
-        jq -r .[].Containers[].Current.ID >${result}
+        jq -r .[].Containers[].Current.ID ${output1} >${output}
         
         for image in ${expectImages}; do
-          if grep "^${image}$" ${result}; then
+          if grep "^${image}$" ${output}; then
             continue
           else
             return 1
