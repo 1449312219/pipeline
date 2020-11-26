@@ -167,18 +167,16 @@ function commonTask() {
 }
 
 function envReleaseTask() {
-  deployedTestTask $1 ${ENV_RELEASE_TASK_TEMPLATE}
+  deployedTaskByTemplate $1 ${ENV_RELEASE_TASK_TEMPLATE}
 }
-
 function envDeployTask() {
-  deployedTestTask $1 ${ENV_DEPLOY_TASK_TEMPLATE}
+  deployedTaskByTemplate $1 ${ENV_DEPLOY_TASK_TEMPLATE}
 }
-
 function manualTestTask() {
-  deployedTestTask $1 ${MANUAL_TEST_TASK_TEMPLATE}
+  deployedTaskByTemplate $1 ${MANUAL_TEST_TASK_TEMPLATE}
 }
 
-function deployedTestTask() {
+function deployedTaskByTemplate() {
   local taskFile=$1
   local templateFile=$2
   
