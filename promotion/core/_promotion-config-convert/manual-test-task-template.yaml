@@ -38,6 +38,10 @@ params:
       value: "$(params.manifest-repo-full-name)"
     - name: manifest-repo-url
       value: $(params.manifest-repo-url)
+    - name: deploy-image-names
+      value: "${DEPLOY_IMAGE_NAMES}"
+    - name: deploy-image-tag-pattern
+      value: "${DEPLOY_IMAGE_TAG_PATTERN}"
     - name: git-server-http
       value: $(params.git-server-http)
     - name: issue-id

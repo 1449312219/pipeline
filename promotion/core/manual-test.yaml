@@ -30,6 +30,11 @@ spec:
   - name: manifest-repo-url
     description: 资源仓库URL
 
+  - name: deploy-image-names
+    description: 要部署的image
+  - name: deploy-image-tag-pattern
+    description: 要部署的image tag pattern, 需保证仅匹配待部署image
+
   - name: git-server-http
     description: git server host (如:http://localhost:30280)
   - name: issue-id
@@ -129,7 +134,7 @@ spec:
         command:
         - echo
 
-  - name: tag-deploy-images
+  - name: await-deploy-success
     runAfter:
     - await-answer
     conditions:
@@ -145,22 +150,6 @@ spec:
         value: $(params.await-interval)
     taskRef:
       kind: ClusterTask
-      name: kaniko-batch
-    workspaces:
-    - name: source
-      workspace: pipeline
-      subPath: temporary/project-repo
-    params:
-    - name: dest-prefix
-      value: 10.1.40.43:5000/$(params.repo-full-name)/
-    - name: dest-suffix
-      value: ":$(params.repo-ref)"
-
-  - name: await-deploy-success
-    runAfter:
-    - tag-deploy-images
-    taskRef:
-      kind: ClusterTask
       name: deploy-await
     params:
     - name: promotion-name
@@ -170,9 +159,9 @@ spec:
     - name: env
       value: $(params.env)
     - name: expect-images
-      value: $(tasks.tag-deploy-images.results.image-names)
+      value: $(params.deploy-image-names)
     - name: tag-pattern
-      value: $(params.repo-ref)
+      value: $(params.deploy-image-tag-pattern)
     - name: await-count
       value: $(params.await-count)
     - name: await-interval

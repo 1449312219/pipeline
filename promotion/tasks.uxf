@@ -132,11 +132,11 @@ r2pos=55,10</panel_attributes>
       <x>330</x>
       <y>4830</y>
       <w>30</w>
-      <h>100</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
@@ -253,28 +253,10 @@ fontsize=14
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>300</x>
-      <y>5640</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-//style=autoresize
-valign=center
-halign=left
-fontsize=16
-/docker tag/
-/docker push/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
       <x>280</x>
-      <y>5450</y>
+      <y>5480</y>
       <w>30</w>
       <h>290</h>
     </coordinates>
@@ -286,7 +268,7 @@ lw=.5</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>290</x>
-      <y>5490</y>
+      <y>5520</y>
       <w>80</w>
       <h>30</h>
     </coordinates>
@@ -302,8 +284,8 @@ fontsize=16
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>5440</y>
+      <x>770</x>
+      <y>5470</y>
       <w>30</w>
       <h>290</h>
     </coordinates>
@@ -315,7 +297,7 @@ lw=.5</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>300</x>
-      <y>5460</y>
+      <y>5490</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -332,7 +314,7 @@ fontsize=14
     <id>Text</id>
     <coordinates>
       <x>330</x>
-      <y>5830</y>
+      <y>5860</y>
       <w>130</w>
       <h>40</h>
     </coordinates>
@@ -349,7 +331,7 @@ fontsize=14
     <id>UMLClass</id>
     <coordinates>
       <x>330</x>
-      <y>5790</y>
+      <y>5820</y>
       <w>60</w>
       <h>40</h>
     </coordinates>
@@ -366,7 +348,7 @@ fontsize=16
     <id>Relation</id>
     <coordinates>
       <x>380</x>
-      <y>5800</y>
+      <y>5830</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
@@ -380,8 +362,8 @@ r2pos=55,10</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>720</x>
-      <y>5640</y>
+      <x>670</x>
+      <y>5680</y>
       <w>80</w>
       <h>50</h>
     </coordinates>
@@ -399,7 +381,7 @@ fontsize=16
     <id>Relation</id>
     <coordinates>
       <x>270</x>
-      <y>5490</y>
+      <y>5520</y>
       <w>40</w>
       <h>30</h>
     </coordinates>
@@ -410,7 +392,7 @@ fontsize=16
     <id>UMLClass</id>
     <coordinates>
       <x>290</x>
-      <y>5580</y>
+      <y>5610</y>
       <w>80</w>
       <h>30</h>
     </coordinates>
@@ -427,7 +409,7 @@ fontsize=16
     <id>Text</id>
     <coordinates>
       <x>300</x>
-      <y>5550</y>
+      <y>5580</y>
       <w>70</w>
       <h>40</h>
     </coordinates>
@@ -444,7 +426,7 @@ fontsize=14
     <id>Text</id>
     <coordinates>
       <x>300</x>
-      <y>5600</y>
+      <y>5630</y>
       <w>50</w>
       <h>40</h>
     </coordinates>
@@ -472,7 +454,7 @@ fontsize=14
     <id>UMLClass</id>
     <coordinates>
       <x>220</x>
-      <y>5640</y>
+      <y>5670</y>
       <w>60</w>
       <h>40</h>
     </coordinates>
@@ -488,8 +470,8 @@ fontsize=16
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>5640</y>
+      <x>510</x>
+      <y>5680</y>
       <w>60</w>
       <h>40</h>
     </coordinates>
@@ -505,8 +487,8 @@ fontsize=16
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>5640</y>
+      <x>580</x>
+      <y>5680</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -522,8 +504,8 @@ fontsize=16
   <element>
     <id>Text</id>
     <coordinates>
-      <x>620</x>
-      <y>5690</y>
+      <x>570</x>
+      <y>5730</y>
       <w>320</w>
       <h>50</h>
     </coordinates>
@@ -608,7 +590,7 @@ group=3</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>5990</y>
+      <y>6020</y>
       <w>140</w>
       <h>30</h>
     </coordinates>
@@ -619,7 +601,7 @@ valign=center
 halign=center
 fontsize=16
 /pipelinerun-apply/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1054,7 +1036,7 @@ group=9</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>680</x>
-      <y>5990</y>
+      <y>6020</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -1065,28 +1047,28 @@ valign=center
 halign=center
 fontsize=18
 /env-init/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
-      <y>5990</y>
+      <y>6020</y>
       <w>180</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 lw=.1
 
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>5960</y>
+      <y>5990</y>
       <w>60</w>
       <h>40</h>
     </coordinates>
@@ -1097,14 +1079,14 @@ valign=center
 halign=left
 fontsize=15
 /env-init/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>670</x>
-      <y>5960</y>
+      <y>5990</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -1115,14 +1097,14 @@ valign=center
 halign=left
 fontsize=15
 /&lt;run&gt;-env-init/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6110</y>
+      <y>6140</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -1133,14 +1115,14 @@ valign=center
 halign=center
 fontsize=16
 /gitea/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6080</y>
+      <y>6110</y>
       <w>40</w>
       <h>40</h>
     </coordinates>
@@ -1151,14 +1133,14 @@ valign=center
 halign=left
 fontsize=15
 /ask/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>6100</y>
+      <y>6130</y>
       <w>150</w>
       <h>40</h>
     </coordinates>
@@ -1169,14 +1151,14 @@ valign=center
 halign=left
 fontsize=16
 /询问用户 是否部署/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>470</x>
-      <y>6100</y>
+      <y>6130</y>
       <w>220</w>
       <h>60</h>
     </coordinates>
@@ -1188,14 +1170,14 @@ fontsize=15
 
 -
 /由外部流水线 保证已创建issue/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6180</y>
+      <y>6210</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -1206,14 +1188,14 @@ valign=center
 halign=center
 fontsize=16
 _/none/_
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6150</y>
+      <y>6180</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -1224,14 +1206,14 @@ valign=center
 halign=left
 fontsize=15
 /await-answer/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>6170</y>
+      <y>6200</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -1242,68 +1224,14 @@ valign=center
 halign=left
 fontsize=16
 /等待用户响应/
-group=6</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>390</x>
-      <y>6260</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=15
-/tag-deploy-images/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6290</y>
-      <w>70</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-//style=autoresize
-valign=center
-halign=center
-fontsize=16
-/kaniko/
-group=6</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>460</x>
-      <y>6280</y>
-      <w>310</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/在环境可用后, 将image, 打上环境期望tag/
-group=6</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>390</x>
-      <y>6420</y>
+      <y>6310</y>
       <w>110</w>
       <h>30</h>
     </coordinates>
@@ -1314,14 +1242,14 @@ valign=center
 halign=center
 fontsize=16
 /deploy-await/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6390</y>
+      <y>6280</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -1332,14 +1260,14 @@ valign=center
 halign=left
 fontsize=15
 /await-deploy-success/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6520</y>
+      <y>6490</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -1350,14 +1278,14 @@ valign=center
 halign=center
 fontsize=16
 /gitea/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6490</y>
+      <y>6460</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -1368,14 +1296,14 @@ valign=center
 halign=left
 fontsize=15
 /notify-deploy-success/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>6520</y>
+      <y>6490</y>
       <w>260</w>
       <h>40</h>
     </coordinates>
@@ -1386,14 +1314,14 @@ valign=center
 halign=left
 fontsize=16
 /通知用户部署成功, 可进行手动测试/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6590</y>
+      <y>6560</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -1404,14 +1332,14 @@ valign=center
 halign=center
 fontsize=16
 /padding/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6560</y>
+      <y>6530</y>
       <w>150</w>
       <h>40</h>
     </coordinates>
@@ -1422,14 +1350,14 @@ valign=center
 halign=left
 fontsize=15
 /await-manual-result/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>6580</y>
+      <y>6550</y>
       <w>170</w>
       <h>40</h>
     </coordinates>
@@ -1440,14 +1368,14 @@ valign=center
 halign=left
 fontsize=16
 /等待用户响应测试结果/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>6690</y>
+      <y>6660</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
@@ -1458,14 +1386,14 @@ valign=center
 halign=center
 fontsize=16
 /env-lock-release/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>390</x>
-      <y>6660</y>
+      <y>6630</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -1476,28 +1404,28 @@ valign=center
 halign=left
 fontsize=15
 /release-lock/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>5950</y>
+      <y>5980</y>
       <w>30</w>
       <h>270</h>
     </coordinates>
     <panel_attributes>lt=..&gt;&gt;
 lw=.6
 // 等待
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>310</x>
-      <y>5960</y>
+      <y>5990</y>
       <w>70</w>
       <h>30</h>
     </coordinates>
@@ -1508,14 +1436,14 @@ valign=center
 halign=center
 fontsize=15
 _/pipeline/_
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>6020</y>
+      <y>6050</y>
       <w>240</w>
       <h>60</h>
     </coordinates>
@@ -1527,14 +1455,14 @@ fontsize=15
 
 -
 /由env-init pipeline保证不重复构建/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>440</x>
-      <y>6020</y>
+      <y>6050</y>
       <w>90</w>
       <h>40</h>
     </coordinates>
@@ -1545,14 +1473,14 @@ valign=center
 halign=left
 fontsize=16
 /初始化环境/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>460</x>
-      <y>6170</y>
+      <y>6200</y>
       <w>430</w>
       <h>80</h>
     </coordinates>
@@ -1565,16 +1493,34 @@ fontsize=15
 -
 /由env-selector cond实现等待候选/
 /候选名:  &lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.menual-test/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>470</x>
-      <y>6280</y>
+      <x>500</x>
+      <y>6300</y>
+      <w>220</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=16
+/在环境可用后, 等待部署完成/
+group=14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>510</x>
+      <y>6300</y>
       <w>420</w>
-      <h>120</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lw=.16
 style=autoresize
@@ -1587,53 +1533,18 @@ fontsize=15
 /lock名:  &lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.menual-test/
 /owner名:  &lt;job-id&gt;/
 -.
-/期望tag:/
-group=6</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>500</x>
-      <y>6410</y>
-      <w>110</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/等待部署完成/
-group=6</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>510</x>
-      <y>6410</y>
-      <w>360</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lw=.16
-style=autoresize
-valign=center
-halign=left
-fontsize=15
-
--
+/期望tag:  &lt;repo-ref&gt;/
+-.
 /查询&lt;promotion-pipeline-env&gt;内/
 /Deployments, DaemonSets, StatefulSets, CronJobs/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>470</x>
-      <y>6580</y>
+      <y>6550</y>
       <w>490</w>
       <h>60</h>
     </coordinates>
@@ -1645,14 +1556,14 @@ fontsize=15
 
 -
 /padding名:  &lt;promotion-name&gt;.&lt;env-version&gt;.&lt;env&gt;.result.menual-test/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>520</x>
-      <y>6680</y>
+      <y>6650</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -1663,14 +1574,14 @@ valign=center
 halign=left
 fontsize=16
 /释放环境/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>530</x>
-      <y>6680</y>
+      <y>6650</y>
       <w>70</w>
       <h>60</h>
     </coordinates>
@@ -1682,107 +1593,93 @@ fontsize=15
 
 -
 /环境可用/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>6680</y>
+      <y>6650</y>
       <w>30</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=..&gt;
 lw=.6
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>6190</y>
+      <y>6220</y>
       <w>30</w>
-      <h>120</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.3
-group=6</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+group=14</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>6280</y>
+      <y>6310</y>
       <w>30</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-// 等待
-group=6</panel_attributes>
+    <panel_attributes>lt=.
+lw=.3
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>6420</y>
+      <y>6450</y>
       <w>30</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=.
-lw=.3
-group=6</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>370</x>
-      <y>6510</y>
-      <w>30</w>
-      <h>120</h>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=..&gt;&gt;
 lw=.6
-group=6</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+group=14</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>6600</y>
+      <y>6570</y>
       <w>30</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>lt=.
 lw=.3
 // 等待
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>260</x>
-      <y>6180</y>
+      <y>6210</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 lw=.3
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>110</x>
-      <y>6170</y>
+      <y>6200</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -1793,27 +1690,27 @@ valign=center
 halign=right
 fontsize=15
 /gitea-comment-notify/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>260</x>
-      <y>6590</y>
+      <y>6560</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 lw=.3
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>110</x>
-      <y>6580</y>
+      <y>6550</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -1824,7 +1721,7 @@ valign=center
 halign=right
 fontsize=15
 /gitea-comment-notify/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2250,7 +2147,7 @@ group=3</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>0</x>
-      <y>6770</y>
+      <y>6750</y>
       <w>1120</w>
       <h>30</h>
     </coordinates>
@@ -2285,7 +2182,7 @@ lw=.1</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>0</x>
-      <y>5410</y>
+      <y>5420</y>
       <w>1120</w>
       <h>30</h>
     </coordinates>
@@ -2297,7 +2194,7 @@ lw=.1</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>360</x>
-      <y>5920</y>
+      <y>5950</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -2308,7 +2205,7 @@ valign=center
 halign=center
 fontsize=18
 /manual-test/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -2634,7 +2531,7 @@ group=3</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>110</x>
-      <y>5880</y>
+      <y>5910</y>
       <w>860</w>
       <h>30</h>
     </coordinates>
@@ -3347,7 +3244,7 @@ group=9</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>320</x>
-      <y>6680</y>
+      <y>6650</y>
       <w>50</w>
       <h>40</h>
     </coordinates>
@@ -3359,7 +3256,7 @@ halign=right
 fontsize=14
 fg=red
 /finally/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -4968,65 +4865,10 @@ group=9</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>410</x>
-      <y>5640</y>
-      <w>140</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=..
-lw=.6
-style=autoresize
-valign=center
-halign=left
-fontsize=16
-/await-flux-deploy/</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>340</x>
+      <x>660</x>
       <y>5680</y>
-      <w>30</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=.
-lw=.1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>370</x>
-      <y>5670</y>
-      <w>120</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=..&gt;
-lw=.1
-/query/</panel_attributes>
-    <additional_attributes>100.0;10.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>380</x>
-      <y>5740</y>
-      <w>40</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=..&gt;
-lw=.1
-</panel_attributes>
-    <additional_attributes>20.0;20.0;10.0;30.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>5640</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -5112,19 +4954,19 @@ group=12</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>740</x>
-      <y>6440</y>
+      <y>6400</y>
       <w>310</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
 lw=.6
-//style=autoresize
+style=autoresize
 valign=top
 halign=left
 fontsize=12
 fg=red
 /默认: &lt;current-ns&gt;-&lt;promotion-name&gt;-&lt;version&gt;-&lt;env&gt;/
-group=6</panel_attributes>
+group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -5760,5 +5602,97 @@ fg=red
 /image格式:  10.1.40.43:5000/&lt;owner&gt;/&lt;project&gt;[/&lt;dockerfile-dir&gt;]:&lt;repo-ref&gt;/
 group=13</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>5680</y>
+      <w>130</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+//style=autoresize
+valign=center
+halign=left
+fontsize=16
+/fluxctl-policy/
+/fluxctl-release/
+-
+/deploy-await/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>5730</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=.1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>5730</y>
+      <w>60</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.1
+r1=/query/
+r1pos=0,-30</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>5790</y>
+      <w>30</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..&gt;
+lw=.1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>670</x>
+      <y>6380</y>
+      <w>230</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=12
+fg=red
+/需由image-build Task保证iamge tag格式/
+group=14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>6290</y>
+      <w>30</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+// 等待
+group=14</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
   </element>
 </diagram>
