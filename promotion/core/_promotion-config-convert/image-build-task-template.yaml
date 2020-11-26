@@ -1,0 +1,14 @@
+taskRef:
+  kind: ClusterTask
+  name: image-build
+params:
+- name: dest-prefix
+  value: 10.1.40.43:5000/$(params.repo-full-name)/
+- name: dest-suffix
+  value: ":$(params.repo-ref)"
+- name: insecure-registry
+  value: 10.1.40.43:5000
+workspaces:
+- name: source
+  workspace: pipeline
+  subPath: temporary/project-repo

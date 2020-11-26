@@ -1,4 +1,5 @@
 PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
+IMAGE_BUILD_TASK_TEMPLATE="image-build-task-template.yaml"
 ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
 ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
@@ -57,6 +58,7 @@ function pipelineTasks() {
   for file in ${TEMP_PREFIX}*; do
     local task=$(getTaskType $file)
     case $task in
+      image-build ) imageBuildTask $file;;
       env-deploy ) envDeployTask $file;;
       manual-test ) manualTestTask $file;;
       env-release ) envReleaseTask $file;;
@@ -84,6 +86,7 @@ function pipelineFinally() {
   for file in ${TEMP_PREFIX}*; do
     local task=$(getTaskType $file)
     case $task in
+      image-build ) return 1;;
       env-deploy ) return 1;;
       manual-test ) return 1;;
       env-release ) envReleaseTask $file;;
@@ -166,6 +169,9 @@ function commonTask() {
   | awk '{print "  "$0}' >> ${output}
 }
 
+function imageBuildTask() {
+  deployedTaskByTemplate $1 ${IMAGE_BUILD_TASK_TEMPLATE}
+}
 function envReleaseTask() {
   deployedTaskByTemplate $1 ${ENV_RELEASE_TASK_TEMPLATE}
 }
