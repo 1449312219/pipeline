@@ -51,7 +51,7 @@ spec:
         project=$(basename $dir)
         if [[ $project == . ]]; then
           project=
-          destPrefix=$(echo ${destPrefix}|sed -r 's/[/-:]+$//')
+          destPrefix=$(echo ${destPrefix}|sed -r 's/[/:-]+$//')
         fi
 
         destination=${destPrefix}${project}${destSuffix}
