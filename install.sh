@@ -1,18 +1,51 @@
-set -ex
+set -eu
 set -o pipefail
 
-gitServerHttp=$1
-owner=$2
-type=$3
-repoName=$4
-repoOwnerToken=$5
-robotName=${6:-${owner}-${repoName}-robot}
 
-namespace=${7:-promotion-promotion-${owner}-${repoName}}
+#------------- parse params ------------#
+
+args=$(getopt --long gitServerHttp:,\
+owner:,type::,repoName:,repoOwnerToken:,robotName::,\
+namespace:: -- "" $@)
+
+set -- ${args}
+while true; do
+  case $1 in
+    --gitServerHttp | --owner | --repoName | --repoOwnerToken ) 
+      name=${1:2}
+      value=$2
+      shift 2
+      eval ${name}=${value}
+      ;;
+    --type | --robotName | --namespace )
+      name=${1:2}
+      shift
+      next=$1
+      case ${next} in
+        --* ) ;;
+        * )
+          eval ${name}=${next}
+          shift
+          ;;
+      esac
+      ;;
+    * ) break;;
+  esac
+done
+
+gitServerHttp=${gitServerHttp}
+owner=${owner}
+repoName=${repoName}
+repoOwnerToken=${repoOwnerToken}
+type=${type:-user}
+robotName=${robotName:-${owner}-${repoName}-robo}
+namespace=${namespace:-promotion-promotion-${owner}-${repoName}}
+
+#---------------------------------------#
+
+
 repoStandardName=${owner}-${repoName}
-
 giteaIssueSecret=$(head -n 20 /dev/urandom | md5sum | cut -c 1-32)
-
 
 kubectl create ns ${namespace}
 kubectl="kubectl -n ${namespace}"
