@@ -1,0 +1,52 @@
+branchPattern: "master.*"
+
+tasks:
+- name: params
+  taskRef:
+    name: ns-opt
+  params:
+  - name: names
+    value: default
+  - name: opt
+    value: has
+- name: image-build
+  runAfter:
+  - params
+  taskRef:
+    name: image-build
+- name: auto-test
+  runAfter:
+  - image-build
+  taskRef:
+    name: env-deploy
+  params:
+  - name: env
+    value: auto-test
+  - name: deploy-image-names
+    value: $(tasks.image-build.results.image-names)
+- name: auto-test-env-release
+  runAfter:
+  - auto-test
+  taskRef:
+    name: env-release
+  params:
+  - name: env
+    value: auto-test
+- name: menual-test
+  runAfter:
+  - auto-test-env-release
+  taskRef:
+    name: manual-test
+  params:
+  - name: env
+    value: uat
+  - name: deploy-image-names
+    value: $(tasks.image-build.results.image-names)
+
+finally:
+- name: auto-test-env-release-finally
+  taskRef:
+    name: env-release
+  params:
+  - name: env
+    value: auto-test
