@@ -14,3 +14,7 @@
 - op: add
   path: /spec/template/spec/containers/0/args/-
   value: --git-label=GIT_LABEL_PLACEHOLDER
+
+- op: add
+  path: /spec/template/spec/containers/0/args/-
+  value: --sync-garbage-collection=SYNC_GARBAGE_PLACEHOLDER

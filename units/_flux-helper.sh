@@ -23,6 +23,8 @@ spec:
     - name: cluster-role
       default: flux
     - name: http-registry
+    - name: sync-garbage
+      default: "true"
 
   results:
   - name: ssh-key
@@ -123,7 +125,7 @@ done)
           eval path=\\$\paths\$i
 
           ./install.sh \$gitLabel \$(params.git-url) \$path \$ns \
-                       \$(params.manifest-gen) \$(params.cluster-role) \$(params.http-registry) > .logs
+                       \$(params.manifest-gen) \$(params.cluster-role) \$(params.http-registry) \$(params.sync-garbage) > .logs
 
           cat .logs
           echo \$gitLabel \$(tail -n 1 .logs) >> \$(results.ssh-key.path)

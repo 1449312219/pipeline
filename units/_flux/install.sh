@@ -7,6 +7,7 @@ ns=${4:-default}
 manifestGen=${5:-true}
 clusterRole=${6:-flux}
 httpRegistry=${7:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
+syncGarbage=${8:-false}
 
 
 # 创建命名空间
@@ -39,6 +40,7 @@ kubectl apply -k k --dry-run=client -o yaml \
          -e "s|NAMESPACE_PLACEHOLDER|${ns}|" \
          -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|${clusterRole}|" \
          -e "s|HTTP_REGISTRYS_PLACEHOLDER|${httpRegistry}|" \
+         -e "s|SYNC_GARBAGE_PLACEHOLDER|${syncGarbage}|" \
 | kubectl apply -f - -n ${ns}
 
 

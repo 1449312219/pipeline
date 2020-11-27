@@ -18,6 +18,8 @@ spec:
     - name: cluster-role
       default: flux
     - name: http-registry
+    - name: sync-garbage
+      default: "true"
 
   results:
   - name: ssh-key
@@ -46,6 +48,7 @@ spec:
         manifestGen=\${5:-true}
         clusterRole=\${6:-flux}
         httpRegistry=\${7:-\$MASTER_IP:\$DOCKER_REGISTRY_PORT}
+        syncGarbage=\${8:-false}
         
         
         # 创建命名空间
@@ -78,6 +81,7 @@ spec:
                  -e "s|NAMESPACE_PLACEHOLDER|\${ns}|" \\
                  -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|\${clusterRole}|" \\
                  -e "s|HTTP_REGISTRYS_PLACEHOLDER|\${httpRegistry}|" \\
+                 -e "s|SYNC_GARBAGE_PLACEHOLDER|\${syncGarbage}|" \\
         | kubectl apply -f - -n \${ns}
         
         
@@ -108,6 +112,10 @@ spec:
         - op: add
           path: /spec/template/spec/containers/0/args/-
           value: --git-label=GIT_LABEL_PLACEHOLDER
+        
+        - op: add
+          path: /spec/template/spec/containers/0/args/-
+          value: --sync-garbage-collection=SYNC_GARBAGE_PLACEHOLDER
         EOF
         cat > flux-role.yaml <<EOF
         apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -241,7 +249,7 @@ spec:
           eval ns=\$$namespaces$i
           eval path=\$\paths$i
 
-          ./install.sh $gitLabel $(params.git-url) $path $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) > .logs
+          ./install.sh $gitLabel $(params.git-url) $path $ns                        $(params.manifest-gen) $(params.cluster-role) $(params.http-registry) $(params.sync-garbage) > .logs
 
           cat .logs
           echo $gitLabel $(tail -n 1 .logs) >> $(results.ssh-key.path)
