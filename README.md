@@ -15,4 +15,4 @@ install.sh \
 
 ###### *概述*
 
-![概述.png](https://raw.githubusercontent.com/1449312219/pipeline/master/promotion/tasks.png)
+![概述.png](https://raw.githubusercontent.com/1449312219/pipeline/master/general.png)
