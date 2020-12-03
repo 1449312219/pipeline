@@ -1,10 +1,10 @@
 Tekton + Gitea 实现触发流水线
 
 ###### *安装*
-install.sh \
---gitServerHttp http://10.1.40.43:30280 \
---owner root \
---repoName test1234567890 \
+install.sh \  
+--gitServerHttp http://10.1.40.43:30280 \  
+--owner root \  
+--repoName test1234567890 \  
 --repoOwnerToken 2050dd8afac6219f87e956944ae7dd2d1935b906
 
 `默认命名空间:  promotion-promotion-<owner>-<repoName>`  
