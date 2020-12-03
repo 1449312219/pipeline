@@ -25,7 +25,7 @@ spec:
     readOnly: true
   steps:
   - name: build
-    image: lachlanevenson/k8s-kubectl
+    image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
     imagePullPolicy: IfNotPresent 
     script: |
       url=$(params.url)

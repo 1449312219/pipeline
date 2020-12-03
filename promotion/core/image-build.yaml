@@ -18,7 +18,7 @@ spec:
     default: info
 
   - name: insecure-registry
-    default: 10.1.40.43:5000
+    default: inner-docker-registry:5000
 
   results:
   - name: image-names
@@ -27,7 +27,7 @@ spec:
   
   steps:
   - name: build-and-push
-    image: 10.1.40.43:5000/gcr.io/kaniko-project/executor:debug
+    image: inner-docker-registry:5000/gcr.io/kaniko-project/executor:debug
     workingDir: $(workspaces.source.path)
     script: |
       #!/busybox/sh

@@ -6,7 +6,7 @@ gitPaths=${3:-""}
 ns=${4:-default}
 manifestGen=${5:-true}
 clusterRole=${6:-flux}
-httpRegistry=${7:-$MASTER_IP:$DOCKER_REGISTRY_PORT}
+httpRegistry=${7:-inner-docker-registry:5000}
 syncGarbage=${8:-false}
 
 

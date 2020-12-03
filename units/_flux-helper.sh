@@ -35,7 +35,7 @@ spec:
 
   steps:
     - name: init
-      image: busybox:1.31
+      image: inner-docker-registry:5000/busybox:1.31
       imagePullPolicy: IfNotPresent
       volumeMounts:
       - name: workspace
@@ -57,7 +57,7 @@ $(for i in $(ls k); do
 done)
 
     - name: fluxctl
-      image: 10.1.40.43:5000/fluxctl:1.20.1
+      image: inner-docker-registry:5000/fluxctl:1.20.1
       volumeMounts:
       - name: workspace
         mountPath: /workspace/flux
@@ -65,7 +65,7 @@ done)
         cp /usr/bin/fluxctl /workspace/flux/fluxctl
 
     - name: openssh
-      image: 10.1.40.43:5000/lgatica/openssh-client:latest
+      image: inner-docker-registry:5000/lgatica/openssh-client:latest
       volumeMounts:
       - name: workspace
         mountPath: /workspace/flux
@@ -79,7 +79,7 @@ done)
         ssh-keyscan \${port:+-p \$port} \${host} > /workspace/flux/k/ssh-config.yaml
 
     - name: flux
-      image: lachlanevenson/k8s-kubectl
+      image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
       imagePullPolicy: IfNotPresent
       volumeMounts:
       - name: workspace

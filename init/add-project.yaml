@@ -67,7 +67,7 @@ spec:
   - name: params
     taskSpec:
       steps:
-      - image: 10.1.40.43:5000/busybox:1.31
+      - image: inner-docker-registry:5000/busybox:1.31
         volumeMounts:
         - name: gitea-issue-secret
           mountPath: /volumes/gitea-issue-secret

@@ -35,7 +35,7 @@ spec:
       description: The precise commit SHA that was fetched by this Task
   steps:
     - name: clone
-      image: 10.1.40.43:5000/alpine/git:1.0.17
+      image: inner-docker-registry:5000/alpine/git:1.0.17
       script: |
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
         mkdir -p $CHECKOUT_DIR

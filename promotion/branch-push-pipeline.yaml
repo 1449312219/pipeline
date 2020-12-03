@@ -70,7 +70,7 @@ spec:
       - name: manifest-repo-full-name
         description: 资源仓库名称   
       steps:
-      - image: 10.1.40.43:5000/busybox:1.31
+      - image: inner-docker-registry:5000/busybox:1.31
         script: |
           echo -n $(workspaces.pipelines.claim) > $(results.pipelines-claim.path)
           

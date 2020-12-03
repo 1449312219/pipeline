@@ -30,7 +30,7 @@ spec:
 
   steps:
     - name: init
-      image: busybox:1.31
+      image: inner-docker-registry:5000/busybox:1.31
       imagePullPolicy: IfNotPresent
       volumeMounts:
       - name: workspace
@@ -47,7 +47,7 @@ spec:
         ns=\${4:-default}
         manifestGen=\${5:-true}
         clusterRole=\${6:-flux}
-        httpRegistry=\${7:-\$MASTER_IP:\$DOCKER_REGISTRY_PORT}
+        httpRegistry=\${7:-inner-docker-registry:5000}
         syncGarbage=\${8:-false}
         
         
@@ -182,7 +182,7 @@ spec:
         EOF
 
     - name: fluxctl
-      image: 10.1.40.43:5000/fluxctl:1.20.1
+      image: inner-docker-registry:5000/fluxctl:1.20.1
       volumeMounts:
       - name: workspace
         mountPath: /workspace/flux
@@ -190,7 +190,7 @@ spec:
         cp /usr/bin/fluxctl /workspace/flux/fluxctl
 
     - name: openssh
-      image: 10.1.40.43:5000/lgatica/openssh-client:latest
+      image: inner-docker-registry:5000/lgatica/openssh-client:latest
       volumeMounts:
       - name: workspace
         mountPath: /workspace/flux
@@ -204,7 +204,7 @@ spec:
         ssh-keyscan ${port:+-p $port} ${host} > /workspace/flux/k/ssh-config.yaml
 
     - name: flux
-      image: lachlanevenson/k8s-kubectl
+      image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
       imagePullPolicy: IfNotPresent
       volumeMounts:
       - name: workspace

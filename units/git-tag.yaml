@@ -30,7 +30,7 @@ spec:
 
   steps:
     - name: tag
-      image: 10.1.40.43:5000/alpine/git:1.0.17
+      image: inner-docker-registry:5000/alpine/git:1.0.17
       workingDir: $(workspaces.workspace.path)/$(params.sub-directory)
       script: |
         ln -s $HOME/.ssh /root/.ssh

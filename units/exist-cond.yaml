@@ -15,7 +15,7 @@ spec:
       description: 求反 (不存在时通过)
 
   check:
-    image: 10.1.40.43:5000/busybox:1.31
+    image: inner-docker-registry:5000/busybox:1.31
     imagePullPolicy: IfNotPresent 
     script: |
       while read line; do

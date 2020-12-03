@@ -38,7 +38,7 @@ spec:
   - name: params
     taskSpec:
       steps:
-      - image: 10.1.40.43:5000/busybox:1.31
+      - image: inner-docker-registry:5000/busybox:1.31
         script: |
           echo -n $(params.promotion-name)-$(params.env-version)-$(params.env)-flux \
           > $(results.git-label.path)
@@ -183,12 +183,12 @@ spec:
     - name: cluster-role
       value: $(tasks.params.results.flux-cluster-role)
     - name: http-registry
-      value: 10.1.40.43:5000 
+      value: inner-docker-registry:5000 
 
   - name: prepare-deploy-key-args
     taskSpec:
       steps:
-      - image: 10.1.40.43:5000/busybox:1.31
+      - image: inner-docker-registry:5000/busybox:1.31
         script: |
           while read label key; do
             test -n "$label" && echo $(params.project) $label \"$key\" >> $(results.args.path) || true

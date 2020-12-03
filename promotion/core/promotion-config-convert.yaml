@@ -20,7 +20,7 @@ spec:
     readOnly: true
   steps:
   - name: build
-    image: lachlanevenson/k8s-kubectl
+    image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
     imagePullPolicy: IfNotPresent 
     script: |
       url=$(params.url)
@@ -110,11 +110,11 @@ spec:
         name: image-build
       params:
       - name: dest-prefix
-        value: 10.1.40.43:5000/__etGitR__(params.repo-full-name)/
+        value: inner-docker-registry:5000/__etGitR__(params.repo-full-name)/
       - name: dest-suffix
         value: ":__etGitR__(params.repo-ref)"
       - name: insecure-registry
-        value: 10.1.40.43:5000
+        value: inner-docker-registry:5000
       workspaces:
       - name: source
         workspace: pipeline

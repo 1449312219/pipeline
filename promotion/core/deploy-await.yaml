@@ -35,7 +35,7 @@ spec:
 
   steps:
   - name: jq
-    image: 10.1.40.43:5000/stedolan/jq
+    image: inner-docker-registry:5000/stedolan/jq
     volumeMounts:
     - name: share
       mountPath: /volumes/share
@@ -44,7 +44,7 @@ spec:
       cp /usr/local/bin/jq .
      
   - name: await
-    image: 10.1.40.43:5000/fluxctl:1.20.1
+    image: inner-docker-registry:5000/fluxctl:1.20.1
     volumeMounts:
     - name: share
       mountPath: /volumes/share

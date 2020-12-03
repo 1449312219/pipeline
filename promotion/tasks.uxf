@@ -5625,7 +5625,7 @@ group=13</panel_attributes>
     <coordinates>
       <x>480</x>
       <y>3840</y>
-      <w>420</w>
+      <w>480</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=..
@@ -5635,7 +5635,7 @@ valign=center
 halign=left
 fontsize=12
 fg=red
-/image格式:  10.1.40.43:5000/&lt;owner&gt;/&lt;project&gt;[/&lt;dockerfile-dir&gt;]:&lt;repo-ref&gt;/
+/image格式:  inner-docker-registry:5000/&lt;owner&gt;/&lt;project&gt;[/&lt;dockerfile-dir&gt;]:&lt;repo-ref&gt;/
 group=13</panel_attributes>
     <additional_attributes/>
   </element>

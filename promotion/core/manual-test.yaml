@@ -130,7 +130,7 @@ spec:
         value: $(params.await-interval)
     taskSpec:
       steps:
-      - image: busybox:1.31
+      - image: inner-docker-registry:5000/busybox:1.31
         command:
         - echo
 
