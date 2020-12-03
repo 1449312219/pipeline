@@ -1,4 +1,4 @@
-Tekton + Gitea 实现触发流水线
+Tekton + Gitea + Flux 实现触发升级流水线
 
 ###### *安装*
 install.sh \  
