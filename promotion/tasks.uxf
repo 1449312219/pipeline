@@ -4244,7 +4244,7 @@ fontsize=18
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>550</y>
       <w>90</w>
       <h>40</h>
@@ -4262,7 +4262,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>580</y>
       <w>90</w>
       <h>30</h>
@@ -4280,7 +4280,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>560</y>
       <w>180</w>
       <h>40</h>
@@ -4298,7 +4298,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>540</x>
+      <x>620</x>
       <y>560</y>
       <w>220</w>
       <h>130</h>
@@ -4322,7 +4322,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1190</y>
       <w>90</w>
       <h>30</h>
@@ -4340,7 +4340,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1160</y>
       <w>120</w>
       <h>40</h>
@@ -4358,7 +4358,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>1180</y>
       <w>230</w>
       <h>40</h>
@@ -4376,7 +4376,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>720</y>
       <w>90</w>
       <h>30</h>
@@ -4394,7 +4394,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>690</y>
       <w>110</w>
       <h>40</h>
@@ -4412,7 +4412,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>710</y>
       <w>290</w>
       <h>40</h>
@@ -4430,7 +4430,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>540</x>
+      <x>620</x>
       <y>1180</y>
       <w>260</w>
       <h>60</h>
@@ -4449,7 +4449,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>800</y>
       <w>90</w>
       <h>30</h>
@@ -4467,7 +4467,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>770</y>
       <w>100</w>
       <h>40</h>
@@ -4485,7 +4485,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>790</y>
       <w>180</w>
       <h>40</h>
@@ -4503,7 +4503,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>870</y>
       <w>90</w>
       <h>30</h>
@@ -4521,7 +4521,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>870</y>
       <w>130</w>
       <h>40</h>
@@ -4539,7 +4539,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>840</y>
       <w>140</w>
       <h>40</h>
@@ -4557,7 +4557,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>930</y>
       <w>130</w>
       <h>30</h>
@@ -4575,7 +4575,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>570</x>
+      <x>650</x>
       <y>930</y>
       <w>130</w>
       <h>40</h>
@@ -4593,7 +4593,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>900</y>
       <w>120</w>
       <h>40</h>
@@ -4611,7 +4611,7 @@ group=15</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
+      <x>490</x>
       <y>770</y>
       <w>30</w>
       <h>480</h>
@@ -4624,7 +4624,7 @@ group=15</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
+      <x>490</x>
       <y>530</y>
       <w>50</w>
       <h>80</h>
@@ -4637,7 +4637,7 @@ group=15</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
+      <x>490</x>
       <y>610</y>
       <w>30</w>
       <h>160</h>
@@ -4650,7 +4650,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
+      <x>480</x>
       <y>500</y>
       <w>120</w>
       <h>40</h>
@@ -4668,7 +4668,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>350</x>
+      <x>430</x>
       <y>540</y>
       <w>70</w>
       <h>30</h>
@@ -4790,7 +4790,7 @@ m1=/查询flux部署结果/</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>990</y>
       <w>90</w>
       <h>30</h>
@@ -4808,7 +4808,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>980</y>
       <w>200</w>
       <h>40</h>
@@ -4826,7 +4826,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>960</y>
       <w>150</w>
       <h>40</h>
@@ -5000,7 +5000,7 @@ group=14</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>540</x>
+      <x>620</x>
       <y>710</y>
       <w>260</w>
       <h>60</h>
@@ -5438,7 +5438,7 @@ _/configmap/_</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1090</y>
       <w>80</w>
       <h>40</h>
@@ -5456,7 +5456,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1120</y>
       <w>80</w>
       <h>30</h>
@@ -5474,7 +5474,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>520</x>
+      <x>600</x>
       <y>1120</y>
       <w>200</w>
       <h>40</h>
@@ -5492,7 +5492,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1030</y>
       <w>140</w>
       <h>40</h>
@@ -5510,7 +5510,7 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>520</x>
       <y>1060</y>
       <w>80</w>
       <h>30</h>
@@ -5528,7 +5528,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>520</x>
+      <x>600</x>
       <y>1060</y>
       <w>110</w>
       <h>40</h>
@@ -5546,7 +5546,7 @@ group=15</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>530</x>
+      <x>610</x>
       <y>1060</y>
       <w>460</w>
       <h>60</h>
@@ -6106,5 +6106,80 @@ fontsize=14
     <panel_attributes>lt=..
 lw=.1</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>760</y>
+      <w>370</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.3
+style=autoresize
+valign=center
+//halign=center
+fontsize=16
+/config-promotion-pipeline/
+--
+/destination-docker-regisry,  构建image目的registry/
+
+-
+/docker-registry-http,  可HTTP访问的registry/
+
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>150</x>
+      <y>800</y>
+      <w>260</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/默认: inner-docker-registry.default:5000/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>150</x>
+      <y>840</y>
+      <w>260</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=left
+fontsize=14
+/默认: inner-docker-registry.default:5000/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>40</x>
+      <y>730</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=..
+lw=.6
+style=autoresize
+valign=center
+halign=center
+fontsize=15
+_/configmap/_</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

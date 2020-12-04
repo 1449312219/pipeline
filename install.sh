@@ -6,7 +6,7 @@ set -o pipefail
 
 args=$(getopt --long gitServerHttp:,\
 owner:,type::,repoName:,repoOwnerToken:,robotName::,\
-namespace:: -- "" $@)
+namespace::,destDockerRegisry::,insecureDockerRegistrys:: -- "" $@)
 
 set -- ${args}
 while true; do
@@ -17,7 +17,7 @@ while true; do
       shift 2
       eval ${name}=${value}
       ;;
-    --type | --robotName | --namespace )
+    --type | --robotName | --namespace | --destDockerRegisry | --insecureDockerRegistrys )
       name=${1:2}
       shift
       next=$1
@@ -40,9 +40,10 @@ repoOwnerToken=${repoOwnerToken}
 type=${type:-user}
 robotName=${robotName:-${owner}-${repoName}-robo}
 namespace=${namespace:-promotion-pipeline-${owner}-${repoName}}
+destDockerRegisry=${destDockerRegisry:-inner-docker-registry:5000}
+insecureDockerRegistrys=${insecureDockerRegistrys:-inner-docker-registry:5000}
 
 #---------------------------------------#
-
 
 repoStandardName=${owner}-${repoName}
 giteaIssueSecret=$(head -n 20 /dev/urandom | md5sum | cut -c 1-32)
@@ -58,12 +59,14 @@ $kubectl apply -f ./promotion/core
 $kubectl apply -f ./promotion
 
 
-# config (security)
+# config (configmap,security)
 $kubectl create -f ./config -R --dry-run=client -o yaml \
 | sed -e "s/\${NAMESPACE}/${namespace}/g" \
       -e "s/\${PROJECT_STANDARD_NAME}/${repoStandardName}/g" \
       -e "s/\${GITEA_USER_TOKEN}/${repoOwnerToken}/g" \
       -e "s/\${GITEA_ISSUE_SECRET}/${giteaIssueSecret}/g" \
+      -e "s/\${DESTINATION_DOCKER_REGISRY}/${destDockerRegisry}/g" \
+      -e "s/\${DOCKER_REGISTRY_HTTP}/${insecureDockerRegistrys}/g" \
 | $kubectl apply -f -
 
 

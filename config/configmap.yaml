@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-promotion-pipeline
+data:
+  destination-docker-regisry: ${DESTINATION_DOCKER_REGISRY}
+  docker-registry-http: ${DOCKER_REGISTRY_HTTP}
