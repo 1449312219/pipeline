@@ -3,11 +3,11 @@ taskRef:
   name: image-build
 params:
 - name: dest-prefix
-  value: inner-docker-registry:5000/$(params.repo-full-name)/
+  value: ${DESTINATION_DOCKER_REGISRY}/$(params.repo-full-name)/
 - name: dest-suffix
   value: ":$(params.repo-ref)"
 - name: insecure-registry
-  value: inner-docker-registry:5000
+  value: "${DOCKER_REGISTRY_HTTP}"
 workspaces:
 - name: source
   workspace: pipeline

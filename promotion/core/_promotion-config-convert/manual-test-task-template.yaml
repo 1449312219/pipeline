@@ -42,6 +42,8 @@ params:
       value: "${DEPLOY_IMAGE_NAMES}"
     - name: deploy-image-tag-pattern
       value: "${DEPLOY_IMAGE_TAG_PATTERN}"
+    - name: docker-registry-http
+      value: "${DOCKER_REGISTRY_HTTP}"
     - name: git-server-http
       value: $(params.git-server-http)
     - name: issue-id
