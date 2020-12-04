@@ -198,11 +198,15 @@ function deployedTaskByTemplate() {
   local env=$(getValue ${taskFile} env "  ")
   local deployImageNames=$(getValue ${taskFile} deploy-image-names "  ")
   local deployImageTagPattern='$(params.repo-ref)'
+  local destDockerRegistry=$(cat ${configParamsDir}/destination-docker-regisry)
+  local httpDockerRegistry=$(cat ${configParamsDir}/docker-registry-http)
   sed -e "s/\${INNER_PIPELINE_RUN_NAME}/${innerPipelineRunName}/" \
       -e "s/\${ENV}/${env}/" \
       -e "s/\${DEPLOY_IMAGE_NAMES}/${deployImageNames}/" \
       -e "s/\${DEPLOY_IMAGE_TAG_PATTERN}/${deployImageTagPattern}/" \
-      ${templateFile} \
+      -e "s/\${DESTINATION_DOCKER_REGISRY}/${destDockerRegistry}/" \
+      -e "s/\${DOCKER_REGISTRY_HTTP}/${httpDockerRegistry}/" \
+    ${templateFile} \
   | awk '{print "    "$0}' >> ${output}
 }
 
