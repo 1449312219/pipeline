@@ -35,7 +35,7 @@ type ssh-keyscan 2>/dev/null \
 
 # 生成 flux + fluxcloud 资源文件
 kubectl apply -k k --dry-run=client -o yaml \
-| sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1${httpRegistry}/\2| }" \
+| sed -r -e "/image:/{ s|image:( *)docker.io/|image:\1|; s|image:( *)(.*)|image:\1inner-docker-registry:5000/\2| }" \
          -e "s|GIT_LABEL_PLACEHOLDER|${gitLabel}|" \
          -e "s|NAMESPACE_PLACEHOLDER|${ns}|" \
          -e "s|FLUX_CLUSTERROLE_PLACEHOLDER|${clusterRole}|" \
