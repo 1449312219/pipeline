@@ -21,6 +21,10 @@ spec:
   - name: git-server-http
     description: git server host (如:http://localhost:30280)
     
+  - name: docker-registry-http
+    description: 可以HTTP访问的docker registry, 多个以'逗号'分割
+    default: inner-docker-registry:5000 
+    
   - name: await-count
     default: '1440'
   - name: await-interval
@@ -183,7 +187,7 @@ spec:
     - name: cluster-role
       value: $(tasks.params.results.flux-cluster-role)
     - name: http-registry
-      value: inner-docker-registry:5000 
+      value: $(params.docker-registry-http)
 
   - name: prepare-deploy-key-args
     taskSpec:
