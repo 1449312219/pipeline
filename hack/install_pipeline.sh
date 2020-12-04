@@ -48,5 +48,6 @@ cp ./*/* $where -R
 popd >& /dev/null
 
 chmod u+x $where/install.sh
+ln -sf $where/install.sh /usr/bin/pipeline-install
 
 echo pipeline installed to current directory.
