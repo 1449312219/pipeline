@@ -64,22 +64,22 @@ spec:
       serviceAccountName: pipeline
       params:
       - name: job-id
-        value: $(params.repo-ref)-$(uid)
+        value: $(tt.params.repo-ref)-$(uid)
 
       - name: env-version
-        value: $(params.repo-branch)
+        value: $(tt.params.repo-branch)
     
       - name: repo-full-name
-        value: $(params.repo-full-name)
+        value: $(tt.params.repo-full-name)
       - name: repo-branch
-        value: $(params.repo-branch)
+        value: $(tt.params.repo-branch)
       - name: repo-ref
-        value: $(params.repo-ref)
+        value: $(tt.params.repo-ref)
       - name: repo-url
-        value: $(params.repo-url)
+        value: $(tt.params.repo-url)
 
       - name: git-server-http
-        value: $(params.git-server-http)
+        value: $(tt.params.git-server-http)
         
       workspaces:
       - name: pipelines

@@ -1,5 +1,12 @@
 Tekton + Gitea + Flux 实现触发升级流水线
 
+###### *版本*
+kubernetes: v1.18.0
+Tekton: v0.15.2
+Gitea: v1.12.2
+Flux: v1.20.1
+
+
 ###### *安装*
 install.sh \  
 --gitServerHttp http://10.1.40.43:30280 \  

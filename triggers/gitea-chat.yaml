@@ -72,14 +72,14 @@ spec:
       name: gc-$(uid)
     spec:
       pipelineRef:
-        name: chat-$(params.command)
+        name: chat-$(tt.params.command)
       serviceAccountName: pipeline
       params:
       - name: title
-        value: $(params.title)
+        value: $(tt.params.title)
       - name: content
-        value: $(params.content)
+        value: $(tt.params.content)
       - name: message
-        value: $(params.message)
+        value: $(tt.params.message)
       - name: params
-        value: $(params.params)
+        value: $(tt.params.params)
