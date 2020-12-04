@@ -4,7 +4,7 @@ ENV_DEPLOY_TASK_TEMPLATE="env-deploy-task-template.yaml"
 ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
 MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
 
-configDir=$1  #存储项目中资源配置
+manifestConfigDir=$1  #存储项目中资源配置
 shift
 
 pipelineDir=$1  #pipeline输出目录
@@ -208,7 +208,7 @@ set -ex
 
 mkdir ${pipelineDir} -p
 
-for file in $(find ${configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+for file in $(find ${manifestConfigDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
   output=${pipelineDir}/$(basename $file)
   
   validateConfig $file
