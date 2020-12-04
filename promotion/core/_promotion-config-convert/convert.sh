@@ -13,6 +13,9 @@ output="" #存储生成的pipeline文件
 
 tmpDir="./"  #存储临时文件
 
+configParamsDir=$1  #存储配置文件
+shift
+
 #-----------------------------------------------------
 
 function validateConfig() {

@@ -23,10 +23,17 @@ spec:
   - name: resources
     description: 存储资源, 将扫描其内配置
     readOnly: true
+  volumes:
+  - name: pipeline-config
+    configmap:
+      name: config-promotion-pipeline
   steps:
   - name: build
     image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
-    imagePullPolicy: IfNotPresent 
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: pipeline-config
+      mountPath: /volumes/pipeline-config
     script: |
       url=$(params.url)
       ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -84,6 +91,6 @@ done
 printFile ${scriptDir}/convert.sh
 
 scanPath='$(workspaces.resources.path)/$(params.scan-path)'
-execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output'
+execScript ${scriptDir}/convert.sh "'${scanPath}'" '~/output' '/volumes/pipeline-config'
 
 echo '      $kubectl apply -f ~/output'
