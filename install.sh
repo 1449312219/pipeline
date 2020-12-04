@@ -39,7 +39,7 @@ repoName=${repoName}
 repoOwnerToken=${repoOwnerToken}
 type=${type:-user}
 robotName=${robotName:-${owner}-${repoName}-robo}
-namespace=${namespace:-promotion-promotion-${owner}-${repoName}}
+namespace=${namespace:-promotion-pipeline-${owner}-${repoName}}
 
 #---------------------------------------#
 
