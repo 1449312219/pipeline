@@ -18,10 +18,17 @@ spec:
   - name: resources
     description: 存储资源, 将扫描其内配置
     readOnly: true
+  volumes:
+  - name: pipeline-config
+    configmap:
+      name: config-promotion-pipeline
   steps:
   - name: build
     image: inner-docker-registry:5000/lachlanevenson/k8s-kubectl
-    imagePullPolicy: IfNotPresent 
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: pipeline-config
+      mountPath: /volumes/pipeline-config
     script: |
       url=$(params.url)
       ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -42,9 +49,9 @@ spec:
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__tlQytl__(params.job-id)"
+        value: "__OuMc8T__(params.job-id)"
       - name: generate-name
-        value: env-deploy-__tlQytl__{INNER_PIPELINE_RUN_NAME}
+        value: env-deploy-__OuMc8T__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -53,83 +60,85 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __tlQytl__(params.pipelines-claim)
-            subPath: __tlQytl__(params.job-id)
+              claimName: __OuMc8T__(params.pipelines-claim)
+            subPath: __OuMc8T__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__tlQytl__(params.job-id)"
+            value: "__OuMc8T__(params.job-id)"
           - name: pipelines-claim
-            value: "__tlQytl__(params.pipelines-claim)"
+            value: "__OuMc8T__(params.pipelines-claim)"
           - name: env
-            value: "__tlQytl__{ENV}"
+            value: "__OuMc8T__{ENV}"
           - name: promotion-name
-            value: "__tlQytl__(params.promotion-name)"
+            value: "__OuMc8T__(params.promotion-name)"
           - name: env-version
-            value: "__tlQytl__(params.env-version)"
+            value: "__OuMc8T__(params.env-version)"
           - name: repo-full-name
-            value: "__tlQytl__(params.repo-full-name)"
+            value: "__OuMc8T__(params.repo-full-name)"
           - name: repo-ref
-            value: "__tlQytl__(params.repo-ref)"
+            value: "__OuMc8T__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__tlQytl__(params.manifest-repo-full-name)"
+            value: "__OuMc8T__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __tlQytl__(params.manifest-repo-url)
+            value: __OuMc8T__(params.manifest-repo-url)
           - name: deploy-image-names
-            value: "__tlQytl__{DEPLOY_IMAGE_NAMES}"
+            value: "__OuMc8T__{DEPLOY_IMAGE_NAMES}"
           - name: deploy-image-tag-pattern
-            value: "__tlQytl__{DEPLOY_IMAGE_TAG_PATTERN}"
+            value: "__OuMc8T__{DEPLOY_IMAGE_TAG_PATTERN}"
+          - name: docker-registry-http
+            value: "__OuMc8T__{DOCKER_REGISTRY_HTTP}"
           - name: git-server-http
-            value: __tlQytl__(params.git-server-http)
+            value: __OuMc8T__(params.git-server-http)
           - name: issue-id
-            value: "__tlQytl__(params.issue-id)"
+            value: "__OuMc8T__(params.issue-id)"
       - name: return-task
         value: env-lock-name
       EOFEOFEOFEOF
-      sed -i '/__tlQytl__/s/__tlQytl__/$/g' env-deploy-task-template.yaml
+      sed -i '/__OuMc8T__/s/__OuMc8T__/$/g' env-deploy-task-template.yaml
       cat <<EOFEOFEOFEOF > env-release-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: env-release
       params:
       - name: job-id
-        value: "__UjHDnc__(params.job-id)"
+        value: "__DLcJYx__(params.job-id)"
       - name: env
-        value: __UjHDnc__{ENV}
+        value: __DLcJYx__{ENV}
       - name: promotion-name
-        value: "__UjHDnc__(params.promotion-name)"
+        value: "__DLcJYx__(params.promotion-name)"
       - name: env-version
-        value: "__UjHDnc__(params.env-version)"
+        value: "__DLcJYx__(params.env-version)"
       EOFEOFEOFEOF
-      sed -i '/__UjHDnc__/s/__UjHDnc__/$/g' env-release-task-template.yaml
+      sed -i '/__DLcJYx__/s/__DLcJYx__/$/g' env-release-task-template.yaml
       cat <<EOFEOFEOFEOF > image-build-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: image-build
       params:
       - name: dest-prefix
-        value: inner-docker-registry:5000/__etGitR__(params.repo-full-name)/
+        value: __7lW8eh__{DESTINATION_DOCKER_REGISRY}/__7lW8eh__(params.repo-full-name)/
       - name: dest-suffix
-        value: ":__etGitR__(params.repo-ref)"
+        value: ":__7lW8eh__(params.repo-ref)"
       - name: insecure-registry
-        value: inner-docker-registry:5000
+        value: "__7lW8eh__{DOCKER_REGISTRY_HTTP}"
       workspaces:
       - name: source
         workspace: pipeline
         subPath: temporary/project-repo
       EOFEOFEOFEOF
-      sed -i '/__etGitR__/s/__etGitR__/$/g' image-build-task-template.yaml
+      sed -i '/__7lW8eh__/s/__7lW8eh__/$/g' image-build-task-template.yaml
       cat <<EOFEOFEOFEOF > manual-test-task-template.yaml
       taskRef:
         kind: ClusterTask
         name: pipelinerun-apply
       params:
       - name: span-id
-        value: "__9Zi6G8__(params.job-id)"
+        value: "__1JCmV2__(params.job-id)"
       - name: generate-name
-        value: manual-test-__9Zi6G8__{INNER_PIPELINE_RUN_NAME}
+        value: manual-test-__1JCmV2__{INNER_PIPELINE_RUN_NAME}
       - name: spec
         value: |
           pipelineRef:
@@ -138,49 +147,51 @@ spec:
           workspaces:
           - name: pipeline 
             persistentVolumeClaim:
-              claimName: __9Zi6G8__(params.pipelines-claim)
-            subPath: __9Zi6G8__(params.job-id)
+              claimName: __1JCmV2__(params.pipelines-claim)
+            subPath: __1JCmV2__(params.job-id)
           - name: gitea-user-token
             secret:
               SecretName: gitea-user-token
           params:
           - name: job-id
-            value: "__9Zi6G8__(params.job-id)"
+            value: "__1JCmV2__(params.job-id)"
           - name: pipelines-claim
-            value: "__9Zi6G8__(params.pipelines-claim)"
+            value: "__1JCmV2__(params.pipelines-claim)"
           - name: env
-            value: "__9Zi6G8__{ENV}"
+            value: "__1JCmV2__{ENV}"
           - name: promotion-name
-            value: "__9Zi6G8__(params.promotion-name)"
+            value: "__1JCmV2__(params.promotion-name)"
           - name: env-version
-            value: "__9Zi6G8__(params.env-version)"
+            value: "__1JCmV2__(params.env-version)"
           - name: repo-full-name
-            value: "__9Zi6G8__(params.repo-full-name)"
+            value: "__1JCmV2__(params.repo-full-name)"
           - name: repo-ref
-            value: "__9Zi6G8__(params.repo-ref)"
+            value: "__1JCmV2__(params.repo-ref)"
           - name: manifest-repo-full-name
-            value: "__9Zi6G8__(params.manifest-repo-full-name)"
+            value: "__1JCmV2__(params.manifest-repo-full-name)"
           - name: manifest-repo-url
-            value: __9Zi6G8__(params.manifest-repo-url)
+            value: __1JCmV2__(params.manifest-repo-url)
           - name: deploy-image-names
-            value: "__9Zi6G8__{DEPLOY_IMAGE_NAMES}"
+            value: "__1JCmV2__{DEPLOY_IMAGE_NAMES}"
           - name: deploy-image-tag-pattern
-            value: "__9Zi6G8__{DEPLOY_IMAGE_TAG_PATTERN}"
+            value: "__1JCmV2__{DEPLOY_IMAGE_TAG_PATTERN}"
+          - name: docker-registry-http
+            value: "__1JCmV2__{DOCKER_REGISTRY_HTTP}"
           - name: git-server-http
-            value: __9Zi6G8__(params.git-server-http)
+            value: __1JCmV2__(params.git-server-http)
           - name: issue-id
-            value: "__9Zi6G8__(params.issue-id)"
+            value: "__1JCmV2__(params.issue-id)"
       EOFEOFEOFEOF
-      sed -i '/__9Zi6G8__/s/__9Zi6G8__/$/g' manual-test-task-template.yaml
+      sed -i '/__1JCmV2__/s/__1JCmV2__/$/g' manual-test-task-template.yaml
       cat <<EOFEOFEOFEOF > promotion-pipeline-header-template.yaml
       apiVersion: tekton.dev/v1beta1
       kind: Pipeline
       metadata:
-        name: __4hHakd__{PROMOTION_NAME}
+        name: __iXNAFb__{PROMOTION_NAME}
         labels:
           promotion-pipelines/custom-config: "true"
         annotations:
-          promotion-pipelines/branch-pattern: __4hHakd__{BRANCH_PATTERN}
+          promotion-pipelines/branch-pattern: __iXNAFb__{BRANCH_PATTERN}
       spec:
         params:
         - name: job-id
@@ -216,7 +227,7 @@ spec:
         - name: pipeline
           description: 流水线数据目录
       EOFEOFEOFEOF
-      sed -i '/__4hHakd__/s/__4hHakd__/$/g' promotion-pipeline-header-template.yaml
+      sed -i '/__iXNAFb__/s/__iXNAFb__/$/g' promotion-pipeline-header-template.yaml
       cat <<EOFEOFEOFEOF > convert.sh
       PROMOTION_PIPELINE_HEADER_TEMPLATE="promotion-pipeline-header-template.yaml"
       IMAGE_BUILD_TASK_TEMPLATE="image-build-task-template.yaml"
@@ -224,20 +235,23 @@ spec:
       ENV_RELEASE_TASK_TEMPLATE="env-release-task-template.yaml"
       MANUAL_TEST_TASK_TEMPLATE="manual-test-task-template.yaml"
       
-      configDir=__pzfS2n__1  #存储项目中资源配置
+      manifestConfigDir=__SdKZE8__1  #存储项目中资源配置
       shift
       
-      pipelineDir=__pzfS2n__1  #pipeline输出目录
+      pipelineDir=__SdKZE8__1  #pipeline输出目录
       shift
       output="" #存储生成的pipeline文件
       
       tmpDir="./"  #存储临时文件
       
+      configParamsDir=__SdKZE8__1  #存储配置文件
+      shift
+      
       #-----------------------------------------------------
       
       function validateConfig() {
-        local configFile=__pzfS2n__1
-        if egrep "^ +taskSpec:" __pzfS2n__{configFile}; then
+        local configFile=__SdKZE8__1
+        if egrep "^ +taskSpec:" __SdKZE8__{configFile}; then
           echo '[taskSpec] cannot exist !' >&2
           return 1
         fi
@@ -246,200 +260,204 @@ spec:
       #-----------------------------------------------------
       
       function pipelineHeader() {
-        local configFile=__pzfS2n__1
+        local configFile=__SdKZE8__1
         
-        local pipelineName=__pzfS2n__(basename __pzfS2n__configFile) \\
-           && pipelineName=__pzfS2n__{configFile#*pipeline.promotion-} \\
-           && pipelineName=__pzfS2n__{pipelineName%.yaml*}
+        local pipelineName=__SdKZE8__(basename __SdKZE8__configFile) \\
+           && pipelineName=__SdKZE8__{configFile#*pipeline.promotion-} \\
+           && pipelineName=__SdKZE8__{pipelineName%.yaml*}
         
-        local branchPattern=__pzfS2n__(sed -nr '/^branchPattern: .+__pzfS2n__/ {s/^branchPattern: (.+)__pzfS2n__/\\1/p;q}' __pzfS2n__{configFile})
-        if test -z "__pzfS2n__{branchPattern}"; then
+        local branchPattern=__SdKZE8__(sed -nr '/^branchPattern: .+__SdKZE8__/ {s/^branchPattern: (.+)__SdKZE8__/\\1/p;q}' __SdKZE8__{configFile})
+        if test -z "__SdKZE8__{branchPattern}"; then
           echo '[branchPattern] not specified !' >&2
           return 1
         fi
         
-        sed -e "s/\\__pzfS2n__{PROMOTION_NAME}/__pzfS2n__{pipelineName}/" \\
-            -e "s/\\__pzfS2n__{BRANCH_PATTERN}/__pzfS2n__{branchPattern}/" \\
-            __pzfS2n__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __pzfS2n__{output}
+        sed -e "s/\\__SdKZE8__{PROMOTION_NAME}/__SdKZE8__{pipelineName}/" \\
+            -e "s/\\__SdKZE8__{BRANCH_PATTERN}/__SdKZE8__{branchPattern}/" \\
+            __SdKZE8__{PROMOTION_PIPELINE_HEADER_TEMPLATE} >> __SdKZE8__{output}
       }
       
       #-----------------------------------------------------
       
       function pipelineTasks() {
-        echo "  tasks:" >> __pzfS2n__{output}
+        echo "  tasks:" >> __SdKZE8__{output}
         
-        local configFile=__pzfS2n__1
+        local configFile=__SdKZE8__1
         
-        local TEMP_PREFIX="__pzfS2n__{tmpDir}/.tmp.pipeline-task-"
+        local TEMP_PREFIX="__SdKZE8__{tmpDir}/.tmp.pipeline-task-"
         
-        splitTasks __pzfS2n__{configFile} __pzfS2n__{TEMP_PREFIX} tasks
+        splitTasks __SdKZE8__{configFile} __SdKZE8__{TEMP_PREFIX} tasks
         
         local file=""
-        for file in __pzfS2n__{TEMP_PREFIX}*; do
-          local task=__pzfS2n__(getTaskType __pzfS2n__file)
-          case __pzfS2n__task in
-            image-build ) imageBuildTask __pzfS2n__file;;
-            env-deploy ) envDeployTask __pzfS2n__file;;
-            manual-test ) manualTestTask __pzfS2n__file;;
-            env-release ) envReleaseTask __pzfS2n__file;;
-            * ) commonTask __pzfS2n__file;;
+        for file in __SdKZE8__{TEMP_PREFIX}*; do
+          local task=__SdKZE8__(getTaskType __SdKZE8__file)
+          case __SdKZE8__task in
+            image-build ) imageBuildTask __SdKZE8__file;;
+            env-deploy ) envDeployTask __SdKZE8__file;;
+            manual-test ) manualTestTask __SdKZE8__file;;
+            env-release ) envReleaseTask __SdKZE8__file;;
+            * ) commonTask __SdKZE8__file;;
           esac
         done
         
-        rm __pzfS2n__{TEMP_PREFIX}* -f
+        rm __SdKZE8__{TEMP_PREFIX}* -f
       }
       
       function pipelineFinally() {
-        local configFile=__pzfS2n__1
+        local configFile=__SdKZE8__1
         
-        if grep "^finally:" 2>&1 >/dev/null __pzfS2n__{configFile}; then
-          echo "  finally:" >> __pzfS2n__{output}
+        if grep "^finally:" 2>&1 >/dev/null __SdKZE8__{configFile}; then
+          echo "  finally:" >> __SdKZE8__{output}
         else
           return 0
         fi
         
-        local TEMP_PREFIX="__pzfS2n__{tmpDir}/.tmp.pipeline-finally-task-"
+        local TEMP_PREFIX="__SdKZE8__{tmpDir}/.tmp.pipeline-finally-task-"
         
-        splitTasks __pzfS2n__{configFile} __pzfS2n__{TEMP_PREFIX} finally
+        splitTasks __SdKZE8__{configFile} __SdKZE8__{TEMP_PREFIX} finally
         
         local file=""
-        for file in __pzfS2n__{TEMP_PREFIX}*; do
-          local task=__pzfS2n__(getTaskType __pzfS2n__file)
-          case __pzfS2n__task in
+        for file in __SdKZE8__{TEMP_PREFIX}*; do
+          local task=__SdKZE8__(getTaskType __SdKZE8__file)
+          case __SdKZE8__task in
             image-build ) return 1;;
             env-deploy ) return 1;;
             manual-test ) return 1;;
-            env-release ) envReleaseTask __pzfS2n__file;;
-            * ) commonTask __pzfS2n__file;;
+            env-release ) envReleaseTask __SdKZE8__file;;
+            * ) commonTask __SdKZE8__file;;
           esac
         done
         
-        rm __pzfS2n__{TEMP_PREFIX}* -f
+        rm __SdKZE8__{TEMP_PREFIX}* -f
       }
       
       #-----------------------------------------------------
       
       #拆分tasks到独立文件
       function splitTasks() {
-        local configFile=__pzfS2n__1
-        local tempPreifx=__pzfS2n__2
-        local section=__pzfS2n__3
+        local configFile=__SdKZE8__1
+        local tempPreifx=__SdKZE8__2
+        local section=__SdKZE8__3
         
         local i=0
         local file=
         while IFS=~ read line; do
-          if echo "__pzfS2n__line"|grep ^- 2>&1 >/dev/null; then
-            i=__pzfS2n__(( __pzfS2n__i + 1 ))
-            file=__pzfS2n__{tempPreifx}__pzfS2n__i
-            touch __pzfS2n__file
+          if echo "__SdKZE8__line"|grep ^- 2>&1 >/dev/null; then
+            i=__SdKZE8__(( __SdKZE8__i + 1 ))
+            file=__SdKZE8__{tempPreifx}__SdKZE8__i
+            touch __SdKZE8__file
           fi
-          echo "__pzfS2n__line" >> __pzfS2n__{file}
+          echo "__SdKZE8__line" >> __SdKZE8__{file}
         done <<EOF
-      __pzfS2n__(sed -nr "/^__pzfS2n__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __pzfS2n__{configFile})
+      __SdKZE8__(sed -nr "/^__SdKZE8__{section}:/,/^[a-zA-Z0-9]/ {/^[- ]/p}" __SdKZE8__{configFile})
       EOF
       }
       
       function getTaskType() {
-        local taskFile=__pzfS2n__1
-        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __pzfS2n__{taskFile}
+        local taskFile=__SdKZE8__1
+        sed -nr '/  taskRef:/,/^  [a-zA-Z0-9]/{/^    name:/s/.*name: (.*)/\\1/p}' __SdKZE8__{taskFile}
       }
       function getContent() {
-        local file=__pzfS2n__1
-        local key=__pzfS2n__2
+        local file=__SdKZE8__1
+        local key=__SdKZE8__2
         
-        local hasKey=__pzfS2n__3
+        local hasKey=__SdKZE8__3
         local args=
-        if test "__pzfS2n__hasKey" == "true"; then
-          args="/^  __pzfS2n__key:/{p;d} /^- __pzfS2n__key:/{s/^-(.*)/ \\1/p;d}"
+        if test "__SdKZE8__hasKey" == "true"; then
+          args="/^  __SdKZE8__key:/{p;d} /^- __SdKZE8__key:/{s/^-(.*)/ \\1/p;d}"
         fi
-        sed -nr "/^[- ] __pzfS2n__key:/,/^  [a-zA-Z0-9]/{__pzfS2n__args /^  [- ]/p}" __pzfS2n__file
+        sed -nr "/^[- ] __SdKZE8__key:/,/^  [a-zA-Z0-9]/{__SdKZE8__args /^  [- ]/p}" __SdKZE8__file
       }
       function getValue() {
-        local file=__pzfS2n__1
-        local name=__pzfS2n__2
-        local prefix="__pzfS2n__3"
-        sed -nr "/^__pzfS2n__{prefix}- name: __pzfS2n__{name}/,/^__pzfS2n__{prefix}[^ ]/ {
-          /^__pzfS2n__{prefix}  value: [^|]/ {
+        local file=__SdKZE8__1
+        local name=__SdKZE8__2
+        local prefix="__SdKZE8__3"
+        sed -nr "/^__SdKZE8__{prefix}- name: __SdKZE8__{name}/,/^__SdKZE8__{prefix}[^ ]/ {
+          /^__SdKZE8__{prefix}  value: [^|]/ {
             s/^ +value: (.*)/\\1/p;
             q;
           }
-          /^__pzfS2n__{prefix}  value: |/ {
+          /^__SdKZE8__{prefix}  value: |/ {
             s/^ +value: (.*)/\\1/p;
           }
-          /^__pzfS2n__{prefix}    / {
-            s/^__pzfS2n__{prefix}  (.*)/\\1/p;
+          /^__SdKZE8__{prefix}    / {
+            s/^__SdKZE8__{prefix}  (.*)/\\1/p;
           }
-        }" __pzfS2n__{file}
+        }" __SdKZE8__{file}
       }
       function addValue() {
-        local taskFile=__pzfS2n__1
-        local prefix=__pzfS2n__2
-        local name=__pzfS2n__3
-        local value=__pzfS2n__4
-        sed -i "/^__pzfS2n__{prefix}params:/a\\\\__pzfS2n__{prefix}- name: __pzfS2n__{name}\\n__pzfS2n__{prefix}  value: __pzfS2n__{value}" __pzfS2n__{taskFile}
+        local taskFile=__SdKZE8__1
+        local prefix=__SdKZE8__2
+        local name=__SdKZE8__3
+        local value=__SdKZE8__4
+        sed -i "/^__SdKZE8__{prefix}params:/a\\\\__SdKZE8__{prefix}- name: __SdKZE8__{name}\\n__SdKZE8__{prefix}  value: __SdKZE8__{value}" __SdKZE8__{taskFile}
       }
       
       function commonTask() {
-        local taskFile=__pzfS2n__1
-        if getContent __pzfS2n__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
+        local taskFile=__SdKZE8__1
+        if getContent __SdKZE8__{taskFile} taskRef | grep kind: 2>&1 >/dev/null; then
           echo '[kind] cannot be specified in [taskRef] !' >&2
           return 1
         fi
-        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __pzfS2n__{taskFile} \\
-        | awk '{print "  "__pzfS2n__0}' >> __pzfS2n__{output}
+        sed -r '/^  taskRef:/a\\    kind: ClusterTask' __SdKZE8__{taskFile} \\
+        | awk '{print "  "__SdKZE8__0}' >> __SdKZE8__{output}
       }
       
       function imageBuildTask() {
-        deployedTaskByTemplate __pzfS2n__1 __pzfS2n__{IMAGE_BUILD_TASK_TEMPLATE}
+        deployedTaskByTemplate __SdKZE8__1 __SdKZE8__{IMAGE_BUILD_TASK_TEMPLATE}
       }
       function envReleaseTask() {
-        deployedTaskByTemplate __pzfS2n__1 __pzfS2n__{ENV_RELEASE_TASK_TEMPLATE}
+        deployedTaskByTemplate __SdKZE8__1 __SdKZE8__{ENV_RELEASE_TASK_TEMPLATE}
       }
       function envDeployTask() {
-        deployedTaskByTemplate __pzfS2n__1 __pzfS2n__{ENV_DEPLOY_TASK_TEMPLATE}
+        deployedTaskByTemplate __SdKZE8__1 __SdKZE8__{ENV_DEPLOY_TASK_TEMPLATE}
       }
       function manualTestTask() {
-        deployedTaskByTemplate __pzfS2n__1 __pzfS2n__{MANUAL_TEST_TASK_TEMPLATE}
+        deployedTaskByTemplate __SdKZE8__1 __SdKZE8__{MANUAL_TEST_TASK_TEMPLATE}
       }
       
       function deployedTaskByTemplate() {
-        local taskFile=__pzfS2n__1
-        local templateFile=__pzfS2n__2
+        local taskFile=__SdKZE8__1
+        local templateFile=__SdKZE8__2
         
-        local name=__pzfS2n__(getContent __pzfS2n__{taskFile} name true)
-        local innerPipelineRunName=__pzfS2n__{name#*: }
+        local name=__SdKZE8__(getContent __SdKZE8__{taskFile} name true)
+        local innerPipelineRunName=__SdKZE8__{name#*: }
         
-        echo "__pzfS2n__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __pzfS2n__{output}
-        getContent __pzfS2n__{taskFile} runAfter true | awk '{print "  "__pzfS2n__0}' >> __pzfS2n__{output}
+        echo "__SdKZE8__{name}" |  sed -r 's/^ (.*)/  -\\1/' >> __SdKZE8__{output}
+        getContent __SdKZE8__{taskFile} runAfter true | awk '{print "  "__SdKZE8__0}' >> __SdKZE8__{output}
         
-        local env=__pzfS2n__(getValue __pzfS2n__{taskFile} env "  ")
-        local deployImageNames=__pzfS2n__(getValue __pzfS2n__{taskFile} deploy-image-names "  ")
-        local deployImageTagPattern='__pzfS2n__(params.repo-ref)'
-        sed -e "s/\\__pzfS2n__{INNER_PIPELINE_RUN_NAME}/__pzfS2n__{innerPipelineRunName}/" \\
-            -e "s/\\__pzfS2n__{ENV}/__pzfS2n__{env}/" \\
-            -e "s/\\__pzfS2n__{DEPLOY_IMAGE_NAMES}/__pzfS2n__{deployImageNames}/" \\
-            -e "s/\\__pzfS2n__{DEPLOY_IMAGE_TAG_PATTERN}/__pzfS2n__{deployImageTagPattern}/" \\
-            __pzfS2n__{templateFile} \\
-        | awk '{print "    "__pzfS2n__0}' >> __pzfS2n__{output}
+        local env=__SdKZE8__(getValue __SdKZE8__{taskFile} env "  ")
+        local deployImageNames=__SdKZE8__(getValue __SdKZE8__{taskFile} deploy-image-names "  ")
+        local deployImageTagPattern='__SdKZE8__(params.repo-ref)'
+        local destDockerRegistry=__SdKZE8__(cat __SdKZE8__{configParamsDir}/destination-docker-regisry)
+        local httpDockerRegistry=__SdKZE8__(cat __SdKZE8__{configParamsDir}/docker-registry-http)
+        sed -e "s/\\__SdKZE8__{INNER_PIPELINE_RUN_NAME}/__SdKZE8__{innerPipelineRunName}/" \\
+            -e "s/\\__SdKZE8__{ENV}/__SdKZE8__{env}/" \\
+            -e "s/\\__SdKZE8__{DEPLOY_IMAGE_NAMES}/__SdKZE8__{deployImageNames}/" \\
+            -e "s/\\__SdKZE8__{DEPLOY_IMAGE_TAG_PATTERN}/__SdKZE8__{deployImageTagPattern}/" \\
+            -e "s/\\__SdKZE8__{DESTINATION_DOCKER_REGISRY}/__SdKZE8__{destDockerRegistry}/" \\
+            -e "s/\\__SdKZE8__{DOCKER_REGISTRY_HTTP}/__SdKZE8__{httpDockerRegistry}/" \\
+          __SdKZE8__{templateFile} \\
+        | awk '{print "    "__SdKZE8__0}' >> __SdKZE8__{output}
       }
       
       #-----------------------------------------------------
       set -ex
       
-      mkdir __pzfS2n__{pipelineDir} -p
+      mkdir __SdKZE8__{pipelineDir} -p
       
-      for file in __pzfS2n__(find __pzfS2n__{configDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
-        output=__pzfS2n__{pipelineDir}/__pzfS2n__(basename __pzfS2n__file)
+      for file in __SdKZE8__(find __SdKZE8__{manifestConfigDir} -maxdepth 1 -name 'pipeline.promotion-*.yaml'); do
+        output=__SdKZE8__{pipelineDir}/__SdKZE8__(basename __SdKZE8__file)
         
-        validateConfig __pzfS2n__file
+        validateConfig __SdKZE8__file
       
-        pipelineHeader __pzfS2n__file
+        pipelineHeader __SdKZE8__file
       
-        pipelineTasks __pzfS2n__file
+        pipelineTasks __SdKZE8__file
         
-        pipelineFinally __pzfS2n__file
+        pipelineFinally __SdKZE8__file
       done
       EOFEOFEOFEOF
-      sed -i '/__pzfS2n__/s/__pzfS2n__/$/g' convert.sh
-      sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output
+      sed -i '/__SdKZE8__/s/__SdKZE8__/$/g' convert.sh
+      sh convert.sh '$(workspaces.resources.path)/$(params.scan-path)' ~/output /volumes/pipeline-config
       $kubectl apply -f ~/output
