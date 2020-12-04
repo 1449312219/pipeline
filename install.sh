@@ -40,8 +40,8 @@ repoOwnerToken=${repoOwnerToken}
 type=${type:-user}
 robotName=${robotName:-${owner}-${repoName}-robo}
 namespace=${namespace:-promotion-pipeline-${owner}-${repoName}}
-destDockerRegisry=${destDockerRegisry:-inner-docker-registry:5000}
-insecureDockerRegistrys=${insecureDockerRegistrys:-inner-docker-registry:5000}
+destDockerRegisry=${destDockerRegisry:-inner-docker-registry.default:5000}
+insecureDockerRegistrys=${insecureDockerRegistrys:-inner-docker-registry.default:5000}
 
 #---------------------------------------#
 
